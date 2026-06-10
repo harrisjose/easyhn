@@ -1,0 +1,861 @@
+/* easyhn theme — every surface is driven by CSS custom properties so settings
+   changes apply live. Works in the content-script shadow root (:host) and in
+   the popup/options pages (:root).
+
+   Design language: refined editorial minimalism. The polish comes from a warm
+   neutral palette, a strict 4px spacing rhythm, confident type hierarchy and a
+   few restrained micro-interactions — never from decoration for its own sake.
+   No web fonts: the extension's whole promise is that nothing leaves the
+   browser, so we tune the native stack instead. */
+
+:host,
+:root {
+  --ehn-accent: #ff6600;
+  --ehn-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --ehn-font-size: 15px;
+  --ehn-width: 820px;
+
+  /* Derived accent tints (kept in one place so the whole UI moves together). */
+  --accent-soft: color-mix(in srgb, var(--ehn-accent) 12%, transparent);
+  --accent-line: color-mix(in srgb, var(--ehn-accent) 30%, transparent);
+
+  /* Spacing rhythm — a strict 4px scale. */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+
+  /* Corner radii. */
+  --r-sm: 6px;
+  --r-md: 9px;
+  --r-lg: 14px;
+  --r-pill: 999px;
+
+  /* Light palette — warm paper, not clinical white. A faint warmth in the
+     neutrals reads as "designed" where pure cold grays read as templated. */
+  --bg: #fcfcfa;
+  --bg-elev: #ffffff;
+  --bg-sunken: #f1f0ec;
+  --fg: #1b1a17;
+  --fg-dim: #6e6c64;
+  --fg-faint: #a8a59b;
+  --border: #e9e7e0;
+  --border-strong: #ddd9cf;
+  --link: #1b1a17;
+  --link-hover: var(--ehn-accent);
+  --shadow-sm: 0 1px 2px rgba(40, 35, 20, 0.05);
+  --shadow-md: 0 6px 24px -8px rgba(40, 35, 20, 0.18);
+  --header-bg: color-mix(in srgb, var(--bg) 78%, transparent);
+  --selection: color-mix(in srgb, var(--ehn-accent) 22%, transparent);
+}
+
+:host([data-theme="dark"]),
+:root[data-theme="dark"] {
+  /* Warm charcoal — deliberately neutral-warm rather than the blue-black that
+     screams "default dark mode". */
+  --bg: #181715;
+  --bg-elev: #201f1c;
+  --bg-sunken: #100f0d;
+  --fg: #ece9e2;
+  --fg-dim: #9c988c;
+  --fg-faint: #66635b;
+  --border: #2c2a26;
+  --border-strong: #3a372f;
+  --link: #ddd9d0;
+  --link-hover: var(--ehn-accent);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 28px -10px rgba(0, 0, 0, 0.6);
+  --header-bg: color-mix(in srgb, var(--bg) 72%, transparent);
+  --selection: color-mix(in srgb, var(--ehn-accent) 30%, transparent);
+}
+
+/* WXT's shadow-root UI nests an <html><body> inside the shadow DOM; the inner
+   body still carries the UA default 8px margin, which collapses through and
+   offsets the whole page. Zero it (also harmless on popup/options pages). */
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.ehn-root {
+  all: initial;
+  display: block;
+  font-family: var(--ehn-font);
+  font-size: var(--ehn-font-size);
+  line-height: 1.5;
+  color: var(--fg);
+  background: var(--bg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga", "calt";
+}
+
+.ehn-root *,
+.ehn-root *::before,
+.ehn-root *::after {
+  box-sizing: border-box;
+}
+
+.ehn-root ::selection {
+  background: var(--selection);
+}
+
+.ehn-root a {
+  color: var(--link);
+  text-decoration: none;
+  transition: color 0.12s ease;
+}
+.ehn-root a:hover {
+  color: var(--link-hover);
+}
+
+/* Tabular figures everywhere a number sits in a metadata line. */
+.ehn-rank,
+.ehn-meta,
+.ehn-profile-stats,
+.ehn-comment-head {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom scrollbar — quiet, matches the surface. */
+.ehn-root ::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+.ehn-root ::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: var(--r-pill);
+}
+.ehn-root ::-webkit-scrollbar-thumb:hover {
+  background: var(--fg-faint);
+  background-clip: padding-box;
+}
+
+.ehn-container {
+  max-width: var(--ehn-width);
+  margin: 0 auto;
+  padding: 0 var(--sp-4) var(--sp-7);
+}
+/* ---- Top bar ---- */
+.ehn-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--header-bg);
+  backdrop-filter: saturate(180%) blur(14px);
+  -webkit-backdrop-filter: saturate(180%) blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.ehn-header-inner {
+  /* Match the content column so the logo lines up with story ranks. */
+  max-width: var(--ehn-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-3) var(--sp-4);
+}
+.ehn-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-weight: 700;
+  color: var(--fg);
+  font-size: 1.02em;
+  letter-spacing: -0.025em;
+}
+.ehn-logo-mark {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--r-sm);
+  background: var(--ehn-accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+/* Center the nav tabs between the logo and the right cluster. */
+.ehn-nav {
+  display: flex;
+  gap: var(--sp-1);
+  flex-wrap: wrap;
+  margin: 0 auto;
+}
+.ehn-nav a {
+  position: relative;
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  color: var(--fg-dim);
+  font-size: 0.92em;
+  font-weight: 500;
+  transition: color 0.14s ease, background 0.14s ease;
+}
+.ehn-nav a:hover {
+  color: var(--fg);
+  background: var(--bg-sunken);
+}
+.ehn-nav a.active {
+  color: var(--ehn-accent);
+  background: var(--accent-soft);
+}
+.ehn-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 0.9em;
+  color: var(--fg-dim);
+}
+.ehn-user {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  color: var(--fg-dim);
+}
+.ehn-user:hover {
+  background: var(--bg-sunken);
+  color: var(--fg);
+}
+.ehn-user b {
+  color: var(--fg);
+  font-weight: 600;
+}
+.ehn-iconbtn {
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--fg-dim);
+  padding: 6px;
+  border-radius: var(--r-sm);
+  transition: background 0.14s ease, color 0.14s ease;
+}
+.ehn-iconbtn:hover {
+  background: var(--bg-sunken);
+  color: var(--fg);
+}
+.ehn-iconbtn svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
+/* ---- Story list ---- */
+.ehn-list {
+  padding-top: var(--sp-3);
+}
+/* Rows are calm — no hover effects (like Modern's front page). Only keyboard
+   selection highlights a row. */
+.ehn-story {
+  display: flex;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-3);
+  border-radius: var(--r-md);
+  align-items: baseline;
+}
+.ehn-story.selected {
+  background: var(--bg-sunken);
+  box-shadow: inset 2px 0 0 var(--ehn-accent);
+}
+.ehn-rank {
+  color: var(--fg-faint);
+  min-width: 1.5em;
+  text-align: right;
+  font-size: 0.92em;
+  font-weight: 500;
+}
+/* Vote arrow stays out of the way on the list, fading in right-aligned on
+   hover/selection the way Modern does it. */
+.ehn-vote {
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: var(--fg-dim);
+  background: none;
+  border: none;
+  padding: 5px;
+  border-radius: var(--r-sm);
+  opacity: 0;
+  transition: opacity 0.14s ease, color 0.14s ease, transform 0.14s ease, background 0.14s ease;
+}
+.ehn-vote svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+/* In list rows the arrow sits at the right edge, vertically centered. */
+.ehn-story .ehn-vote {
+  align-self: center;
+  margin-left: var(--sp-2);
+}
+.ehn-story:hover .ehn-vote,
+.ehn-story.selected .ehn-vote,
+.ehn-vote.voted {
+  opacity: 1;
+}
+.ehn-vote:hover {
+  color: var(--ehn-accent);
+  background: var(--accent-soft);
+}
+.ehn-vote.voted {
+  color: var(--ehn-accent);
+  animation: ehn-pop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ehn-vote:disabled {
+  opacity: 0 !important;
+  cursor: default;
+}
+@keyframes ehn-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.45) translateY(-1px); }
+  100% { transform: scale(1); }
+}
+.ehn-story-main {
+  flex: 1;
+  min-width: 0;
+}
+/* Titles are regular weight — hierarchy comes from size and the dim meta
+   line below, the way Modern keeps the list calm. */
+.ehn-story-title {
+  font-size: 1.08em;
+  font-weight: 400;
+  line-height: 1.34;
+  letter-spacing: -0.011em;
+}
+.ehn-story-title a {
+  color: var(--fg);
+}
+.ehn-story-title a:hover {
+  color: var(--ehn-accent);
+}
+.ehn-favicon {
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  vertical-align: -2px;
+  margin-right: var(--sp-2);
+  background: var(--bg-sunken);
+}
+.ehn-meta {
+  margin-top: 5px;
+  color: var(--fg-dim);
+  font-size: 0.83em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+}
+/* Quiet dot separators between meta items — calmer than gaps alone. */
+.ehn-meta > * + *::before {
+  content: "·";
+  margin-right: var(--sp-2);
+  color: var(--fg-faint);
+}
+.ehn-meta a {
+  color: var(--fg-dim);
+}
+.ehn-meta a:hover {
+  color: var(--ehn-accent);
+}
+/* Domain leads the meta line in the accent color, the way Modern does it.
+   (Two classes so it outranks the `.ehn-meta a` dim color above.) */
+.ehn-meta .ehn-domain,
+.ehn-domain {
+  color: var(--ehn-accent);
+  font-weight: 500;
+}
+.ehn-meta a.ehn-domain:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.ehn-badge {
+  background: var(--accent-soft);
+  color: var(--ehn-accent);
+  border-radius: var(--r-sm);
+  padding: 1px 7px;
+  font-size: 0.7em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  vertical-align: 1px;
+}
+
+/* Centered pill, styled like the top-bar nav buttons. */
+.ehn-more {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: var(--sp-5) auto 0;
+  padding: 5px 13px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  font-weight: 500;
+  font-size: 0.85em;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 0.14s ease, color 0.14s ease;
+}
+.ehn-more:hover {
+  border-color: var(--accent-line);
+  color: var(--ehn-accent);
+}
+
+/* ---- Item page ---- */
+.ehn-item-head {
+  padding: var(--sp-5) 0 var(--sp-4);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--sp-3);
+}
+.ehn-item-title {
+  font-size: 1.85em;
+  font-weight: 500;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+}
+.ehn-item-title a {
+  color: var(--fg);
+}
+.ehn-item-title a:hover {
+  color: var(--ehn-accent);
+}
+/* Item actions sit at the right end of the meta row (the title stays flush
+   with the content column — no left gutter). */
+.ehn-item-actions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+}
+.ehn-meta > .ehn-item-actions::before {
+  content: none;
+}
+/* The item-page vote arrow is a primary action, so it's always visible
+   (unlike the list rows, where it fades in on hover). */
+.ehn-vote-lg {
+  opacity: 1;
+}
+.ehn-vote-lg svg {
+  width: 17px;
+  height: 17px;
+}
+/* Keep the arrow in place (just muted) when voting isn't available, so the
+   row doesn't shift. */
+.ehn-vote-lg:disabled {
+  opacity: 0.3 !important;
+  cursor: default;
+}
+.ehn-text {
+  margin-top: var(--sp-3);
+  font-size: 1.0em;
+}
+/* A proper heading, the way Modern leads its comment section. */
+.ehn-comments-count {
+  margin: var(--sp-5) 0 var(--sp-3);
+  font-weight: 600;
+  font-size: 1.25em;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+
+/* ---- Comments ---- */
+.ehn-comment {
+  margin-top: 2px;
+}
+.ehn-comment-body {
+  padding: var(--sp-4) 0;
+  border-top: 1px solid var(--border);
+}
+.ehn-comment-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: 0.85em;
+  color: var(--fg-dim);
+}
+.ehn-comment-author {
+  font-weight: 650;
+  color: var(--fg);
+}
+.ehn-comment-author:hover {
+  color: var(--ehn-accent);
+}
+.ehn-comment-head .sep {
+  color: var(--fg-faint);
+}
+.ehn-collapse {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--fg-faint);
+  font-size: 1em;
+  padding: 2px 6px;
+  margin-left: -6px;
+  border-radius: var(--r-sm);
+  opacity: 0;
+  transition: background 0.14s ease, color 0.14s ease, opacity 0.14s ease;
+}
+.ehn-collapse:hover {
+  color: var(--ehn-accent);
+  background: var(--accent-soft);
+}
+/* Collapse only shows on hover — except when collapsed, where it must stay
+   visible (with its hidden-reply count) so the thread can be reopened. */
+.ehn-comment-body:hover > .ehn-comment-head .ehn-collapse,
+.ehn-collapse.collapsed {
+  opacity: 1;
+}
+.ehn-collapse svg {
+  width: 11px;
+  height: 11px;
+  display: block;
+  transition: transform 0.18s ease;
+}
+.ehn-collapse.collapsed svg {
+  transform: rotate(-90deg);
+}
+.ehn-collapse-count {
+  font-size: 0.85em;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.ehn-comment-text {
+  margin: var(--sp-2) 0 var(--sp-1);
+}
+/* Upvote / reply live at the right end of the comment head, revealed on
+   hover — like Modern. */
+.ehn-comment-actions {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.14s ease;
+}
+.ehn-comment-body:hover > .ehn-comment-head .ehn-comment-actions {
+  opacity: 1;
+}
+.ehn-comment-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--fg-dim);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--r-sm);
+  transition: background 0.14s ease, color 0.14s ease;
+}
+.ehn-comment-actions button:hover:not(:disabled) {
+  color: var(--ehn-accent);
+  background: var(--accent-soft);
+}
+.ehn-comment-actions button:disabled {
+  cursor: default;
+}
+.ehn-comment-actions button svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+.ehn-comment-actions button.voted {
+  color: var(--ehn-accent);
+}
+/* Nesting is pure indentation — no spine lines. The per-comment top borders
+   plus the indent carry the structure, the way Modern keeps threads clean. */
+.ehn-children {
+  margin-left: 28px;
+}
+.ehn-dead {
+  color: var(--fg-faint);
+  font-style: italic;
+}
+
+/* ---- Reply composer ---- */
+.ehn-composer {
+  margin: var(--sp-2) 0;
+}
+.ehn-composer textarea {
+  width: 100%;
+  min-height: 92px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 0.95em;
+  line-height: 1.5;
+  padding: var(--sp-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-md);
+  background: var(--bg-elev);
+  color: var(--fg);
+  transition: border-color 0.14s ease, box-shadow 0.14s ease;
+}
+.ehn-composer textarea::placeholder {
+  color: var(--fg-faint);
+}
+.ehn-composer textarea:focus {
+  outline: none;
+  border-color: var(--ehn-accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.ehn-composer-actions {
+  display: flex;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+.ehn-btn {
+  cursor: pointer;
+  border: 1px solid transparent;
+  background: var(--ehn-accent);
+  color: #fff;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 7px 15px;
+  border-radius: var(--r-md);
+  font-size: 0.9em;
+  transition: filter 0.14s ease, opacity 0.14s ease;
+}
+.ehn-btn:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+.ehn-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.ehn-btn.secondary {
+  background: var(--bg-sunken);
+  color: var(--fg);
+  border-color: var(--border-strong);
+}
+.ehn-btn.secondary:hover:not(:disabled) {
+  filter: none;
+  border-color: var(--fg-faint);
+}
+
+/* ---- User profile ---- */
+.ehn-profile {
+  padding: var(--sp-5) 0;
+}
+.ehn-profile h1 {
+  font-size: 1.7em;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--sp-1);
+}
+.ehn-profile-stats {
+  color: var(--fg-dim);
+  display: flex;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
+  font-size: 0.92em;
+}
+.ehn-profile-stats > * + *::before {
+  content: "·";
+  margin-right: var(--sp-2);
+  color: var(--fg-faint);
+}
+.ehn-about {
+  padding: var(--sp-3) 0;
+  border-top: 1px solid var(--border);
+}
+
+/* ---- Prose: HN-rendered text content (comments, story text, about) ----
+   Placed after the base rules so its link styling overrides the global
+   "no underline". HN emits a small markup subset; we cover the extras. */
+.ehn-prose {
+  line-height: 1.62;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.ehn-prose > :first-child {
+  margin-top: 0;
+}
+.ehn-prose > :last-child {
+  margin-bottom: 0;
+}
+.ehn-prose p {
+  margin: 0 0 0.85em;
+}
+.ehn-prose a {
+  color: var(--ehn-accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-line);
+  text-underline-offset: 2px;
+}
+.ehn-prose a:hover {
+  color: var(--ehn-accent);
+  text-decoration-color: var(--ehn-accent);
+}
+.ehn-prose i,
+.ehn-prose em {
+  font-style: italic;
+}
+.ehn-prose b,
+.ehn-prose strong {
+  font-weight: 650;
+}
+.ehn-prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.88em;
+  background: var(--bg-sunken);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+.ehn-prose pre {
+  margin: 0 0 0.85em;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  overflow-x: auto;
+  line-height: 1.45;
+}
+.ehn-prose pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.85em;
+  white-space: pre;
+}
+.ehn-prose blockquote {
+  margin: 0 0 0.85em;
+  padding: 2px 0 2px var(--sp-3);
+  border-left: 3px solid var(--border-strong);
+  color: var(--fg-dim);
+}
+.ehn-prose ul,
+.ehn-prose ol {
+  margin: 0 0 0.85em;
+  padding-left: 1.5em;
+}
+.ehn-prose li {
+  margin: 0.2em 0;
+}
+.ehn-prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--r-sm);
+}
+.ehn-prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1em 0;
+}
+
+/* ---- Settings drawer / panel ---- */
+.ehn-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 18, 12, 0.4);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  z-index: 40;
+  display: flex;
+  justify-content: flex-end;
+  animation: ehn-fade 0.18s ease;
+}
+.ehn-drawer {
+  width: 340px;
+  max-width: 90vw;
+  background: var(--bg-elev);
+  height: 100%;
+  padding: var(--sp-5);
+  overflow-y: auto;
+  box-shadow: var(--shadow-md);
+  border-left: 1px solid var(--border);
+  animation: ehn-slide-in 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ehn-drawer-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--sp-5);
+}
+.ehn-drawer-head strong {
+  font-size: 1.1em;
+  letter-spacing: -0.01em;
+}
+@keyframes ehn-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ehn-slide-in {
+  from { transform: translateX(16px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* ---- Misc ---- */
+.ehn-empty {
+  padding: var(--sp-7) var(--sp-3);
+  color: var(--fg-dim);
+  text-align: center;
+}
+.ehn-toast {
+  position: fixed;
+  bottom: var(--sp-5);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--fg);
+  color: var(--bg);
+  padding: 9px 18px;
+  border-radius: var(--r-pill);
+  font-size: 0.88em;
+  font-weight: 500;
+  z-index: 50;
+  box-shadow: var(--shadow-md);
+  animation: ehn-toast-in 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes ehn-toast-in {
+  from { transform: translate(-50%, 12px); opacity: 0; }
+  to { transform: translate(-50%, 0); opacity: 1; }
+}
+.ehn-kbd-hint {
+  font-size: 0.85em;
+  color: var(--fg-faint);
+  line-height: 1.7;
+}
+.ehn-kbd-hint kbd {
+  font-family: inherit;
+  font-size: 0.92em;
+  font-weight: 600;
+  color: var(--fg-dim);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+
+/* Staggered reveal on first paint — one orchestrated load beats scattered
+   fidgeting. Capped so long lists don't crawl in. */
+@media (prefers-reduced-motion: no-preference) {
+  .ehn-story {
+    animation: ehn-rise 0.34s ease both;
+  }
+  .ehn-story:nth-child(1) { animation-delay: 0.01s; }
+  .ehn-story:nth-child(2) { animation-delay: 0.02s; }
+  .ehn-story:nth-child(3) { animation-delay: 0.03s; }
+  .ehn-story:nth-child(4) { animation-delay: 0.04s; }
+  .ehn-story:nth-child(5) { animation-delay: 0.05s; }
+  .ehn-story:nth-child(6) { animation-delay: 0.06s; }
+  .ehn-story:nth-child(7) { animation-delay: 0.07s; }
+  .ehn-story:nth-child(8) { animation-delay: 0.08s; }
+  .ehn-story:nth-child(9) { animation-delay: 0.09s; }
+  .ehn-story:nth-child(10) { animation-delay: 0.10s; }
+  .ehn-story:nth-child(n + 11) { animation-delay: 0.11s; }
+  @keyframes ehn-rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
