@@ -16,8 +16,8 @@ export function Header({ route, session }: { route: Route; session: Session }) {
     <header className="ehn-header">
       <div className="ehn-header-inner">
         <a className="ehn-logo" href="https://news.ycombinator.com/news">
-          <span className="ehn-logo-mark">Y</span>
-          easyhn
+          <span className="ehn-logo-mark">hn</span>
+          Hacker News
         </a>
         <nav className="ehn-nav">
           {NAV.map((n) => (
