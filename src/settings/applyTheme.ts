@@ -29,7 +29,7 @@ export function applyTheme(el: HTMLElement, s: Settings): void {
 /** Page color behind the flush UI — keep in sync with --bg. */
 const PAGE_BG: Record<'light' | 'dark', string> = {
   light: '#fcfcfa',
-  dark: '#181715',
+  dark: '#181a1e',
 };
 
 /**

@@ -86,7 +86,7 @@ function injectHideStyle(): HTMLStyleElement {
     html, body { margin: 0 !important; padding: 0 !important; }
     body { background: transparent !important; }
     html { background: #fcfcfa; }
-    @media (prefers-color-scheme: dark) { html { background: #181715; } }
+    @media (prefers-color-scheme: dark) { html { background: #181a1e; } }
   `;
   (document.head ?? document.documentElement).append(style);
   return style;

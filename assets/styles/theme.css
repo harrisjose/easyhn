@@ -54,17 +54,17 @@
 
 :host([data-theme="dark"]),
 :root[data-theme="dark"] {
-  /* Warm charcoal — deliberately neutral-warm rather than the blue-black that
-     screams "default dark mode". */
-  --bg: #181715;
-  --bg-elev: #201f1c;
-  --bg-sunken: #100f0d;
-  --fg: #ece9e2;
-  --fg-dim: #9c988c;
-  --fg-faint: #66635b;
-  --border: #2c2a26;
-  --border-strong: #3a372f;
-  --link: #ddd9d0;
+  /* Cool near-black, matching Modern — a faint blue lean (blue > red) so it
+     never reads brown, with text dimmed off pure white. */
+  --bg: #181a1e;
+  --bg-elev: #212429;
+  --bg-sunken: #121316;
+  --fg: #d6d8dd;
+  --fg-dim: #888c93;
+  --fg-faint: #5a5e66;
+  --border: #282b31;
+  --border-strong: #383c44;
+  --link: #cdd0d6;
   --link-hover: var(--ehn-accent);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 8px 28px -10px rgba(0, 0, 0, 0.6);
@@ -474,7 +474,7 @@ body {
   margin-top: 2px;
 }
 .ehn-comment-body {
-  padding: var(--sp-4) 0;
+  padding: 22px 0;
   border-top: 1px solid var(--border);
 }
 .ehn-comment-head {
@@ -579,7 +579,7 @@ body {
 /* Nesting is pure indentation — no spine lines. The per-comment top borders
    plus the indent carry the structure, the way Modern keeps threads clean. */
 .ehn-children {
-  margin-left: 28px;
+  margin-left: 32px;
 }
 .ehn-dead {
   color: var(--fg-faint);
