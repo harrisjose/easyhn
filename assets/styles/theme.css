@@ -171,19 +171,21 @@ body {
   font-size: 1.02em;
   letter-spacing: -0.025em;
 }
+/* The classic YC mark: white "Y" on the orange (accent) square, tightly
+   rounded corners, no border. */
 .ehn-logo-mark {
   display: grid;
   place-items: center;
   width: 22px;
   height: 22px;
-  border-radius: var(--r-sm);
+  border-radius: 5px;
   background: var(--ehn-accent);
   color: #fff;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+}
+.ehn-logo-mark svg {
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 /* Center the nav tabs between the logo and the right cluster. */
 .ehn-nav {
@@ -205,9 +207,11 @@ body {
   color: var(--fg);
   background: var(--bg-sunken);
 }
+/* Active tab uses the same neutral fill as the icon-button hover — no accent
+   tint (which goes muddy brown on dark). */
 .ehn-nav a.active {
-  color: var(--ehn-accent);
-  background: var(--accent-soft);
+  color: var(--fg);
+  background: var(--bg-sunken);
 }
 .ehn-header-right {
   display: flex;
@@ -232,14 +236,17 @@ body {
   color: var(--fg);
   font-weight: 600;
 }
+/* Fixed square so every icon button has an identical hover/hit area,
+   regardless of how wide or tall its glyph is. */
 .ehn-iconbtn {
   display: grid;
   place-items: center;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
   background: none;
   border: none;
   color: var(--fg-dim);
-  padding: 6px;
   border-radius: var(--r-sm);
   transition: background 0.14s ease, color 0.14s ease;
 }
@@ -251,6 +258,13 @@ body {
   width: 17px;
   height: 17px;
   display: block;
+}
+/* The "Aa" glyph carries a lot of vertical padding inside its viewBox, so its
+   letters render much shorter than a single-glyph icon at the same box size.
+   Scale the box up so the letter cap-height matches the user icon beside it. */
+.ehn-iconbtn-aa svg {
+  width: 22px;
+  height: 22px;
 }
 
 /* ---- Story list ---- */
@@ -296,9 +310,11 @@ body {
   height: 16px;
   display: block;
 }
-/* In list rows the arrow sits at the right edge, vertically centered. */
+/* In list rows the arrow sits at the right edge, aligned to the first line of
+   the title (not centered across a wrapped title). */
 .ehn-story .ehn-vote {
-  align-self: center;
+  align-self: flex-start;
+  margin-top: 1px;
   margin-left: var(--sp-2);
 }
 .ehn-story:hover .ehn-vote,

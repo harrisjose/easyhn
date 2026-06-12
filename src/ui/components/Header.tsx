@@ -1,6 +1,6 @@
 import type { Route, Session } from '@/src/types';
 import { useOpenSettings } from '../util';
-import { Cog, UserIcon } from './icons';
+import { TextSize, UserIcon, YCombinator } from './icons';
 
 const NAV: { label: string; path: string; list: string }[] = [
   { label: 'Top', path: 'news', list: 'news' },
@@ -16,7 +16,9 @@ export function Header({ route, session }: { route: Route; session: Session }) {
     <header className="ehn-header">
       <div className="ehn-header-inner">
         <a className="ehn-logo" href="https://news.ycombinator.com/news">
-          <span className="ehn-logo-mark">hn</span>
+          <span className="ehn-logo-mark">
+            <YCombinator />
+          </span>
           Hacker News
         </a>
         <nav className="ehn-nav">
@@ -50,12 +52,12 @@ export function Header({ route, session }: { route: Route; session: Session }) {
             </a>
           )}
           <button
-            className="ehn-iconbtn"
+            className="ehn-iconbtn ehn-iconbtn-aa"
             title="Settings"
             aria-label="Settings"
             onClick={openSettings}
           >
-            <Cog />
+            <TextSize />
           </button>
         </div>
       </div>
