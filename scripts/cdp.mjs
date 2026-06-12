@@ -53,7 +53,14 @@ if (cmd === 'nav') {
   await cdp.send('Page.navigate', { url: arg });
   console.log(`navigating ${target.id} -> ${arg}`);
 } else if (cmd === 'shot') {
-  const { data } = await cdp.send('Page.captureScreenshot', { format: 'png' });
+  // Optional 3rd arg: "x,y,w,h" clip region (CSS px) for a zoomed crop.
+  const clipArg = process.argv[4];
+  const params = { format: 'png' };
+  if (clipArg) {
+    const [x, y, width, height] = clipArg.split(',').map(Number);
+    params.clip = { x, y, width, height, scale: 3 };
+  }
+  const { data } = await cdp.send('Page.captureScreenshot', params);
   const { writeFileSync } = await import('node:fs');
   writeFileSync(arg, Buffer.from(data, 'base64'));
   console.log(`wrote ${arg}`);
