@@ -48,10 +48,20 @@ export function StoryList({ stories, moreUrl }: { stories: Story[]; moreUrl?: st
     return <div className="ehn-empty">No stories on this page.</div>;
   }
 
+  // On the Jobs feed every post is a job, so the "JOB" tag is redundant — only
+  // show it when jobs are mixed in among regular stories.
+  const showJobBadge = !stories.every((s) => s.isJob);
+
   return (
     <div ref={containerRef} className="ehn-list">
       {stories.map((s, i) => (
-        <StoryRow key={s.id} story={s} index={i} selected={i === selected} />
+        <StoryRow
+          key={s.id}
+          story={s}
+          index={i}
+          selected={i === selected}
+          showJobBadge={showJobBadge}
+        />
       ))}
       {moreUrl && (
         <a className="ehn-more" href={moreUrl}>
