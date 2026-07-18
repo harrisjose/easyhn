@@ -140,7 +140,7 @@ function parseCommentRow(row: HTMLTableRowElement): Comment | null {
   };
 }
 
-function stripReply(commtext: Element): string {
+export function stripReply(commtext: Element): string {
   const clone = commtext.cloneNode(true) as Element;
   clone.querySelector('.reply')?.remove();
   return clone.innerHTML.trim();
