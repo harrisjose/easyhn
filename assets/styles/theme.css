@@ -246,21 +246,6 @@ body {
   font-size: 0.9em;
   color: var(--fg-dim);
 }
-.ehn-user {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 4px;
-  padding: 4px 2px;
-  color: var(--fg-dim);
-  transition: color 0.14s ease;
-}
-.ehn-user:hover {
-  color: var(--fg);
-}
-.ehn-user b {
-  color: var(--fg);
-  font-weight: 600;
-}
 /* Fixed square so every icon button has an identical hover/hit area,
    regardless of how wide or tall its glyph is. */
 /* Scoped under .ehn-root so the colour beats the global `.ehn-root a` rule —
@@ -693,11 +678,16 @@ body {
 
 /* ---- User profile ---- */
 .ehn-profile {
-  padding: var(--sp-5) 0;
+  padding: var(--sp-5) 0 0;
 }
-.ehn-profile h1 {
-  font-size: 1.7em;
-  font-weight: 500;
+/* Header (name, stats, tab bar) is indented to the story-list title / nav edge;
+   the tab bar's divider then spans the rest of the column. */
+.ehn-profile-head {
+  padding-left: calc(var(--sp-3) + 1.5em + var(--sp-3));
+}
+.ehn-profile-name {
+  font-size: 1.9em;
+  font-weight: 600;
   letter-spacing: -0.02em;
   margin: 0 0 var(--sp-1);
 }
@@ -705,7 +695,6 @@ body {
   color: var(--fg-dim);
   display: flex;
   gap: var(--sp-2);
-  margin-bottom: var(--sp-4);
   font-size: 0.92em;
 }
 .ehn-profile-stats > * + *::before {
@@ -713,9 +702,59 @@ body {
   margin-right: var(--sp-2);
   color: var(--fg-faint);
 }
+/* Tab bar — mirrors the top nav: muted inactive, accent + underline on active,
+   sitting on a full-width divider. */
+.ehn-tabbar {
+  display: flex;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+  margin-top: var(--sp-5);
+  border-bottom: 1px solid var(--border);
+}
+.ehn-root .ehn-tabbar a {
+  position: relative;
+  padding: 0 0 10px;
+  color: var(--fg-dim);
+  font-size: 0.95em;
+  font-weight: 500;
+  transition: color 0.14s ease;
+}
+.ehn-root .ehn-tabbar a:hover {
+  color: var(--fg);
+}
+.ehn-root .ehn-tabbar a.active {
+  color: var(--ehn-accent);
+}
+.ehn-tabbar a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--ehn-accent);
+  transform: scaleX(0);
+  transition: transform 0.16s ease;
+}
+.ehn-tabbar a.active::after {
+  transform: scaleX(1);
+}
+/* Content indent for the tabs without a rank column (About, Comments). */
+.ehn-profile-body {
+  padding-left: calc(var(--sp-3) + 1.5em + var(--sp-3));
+}
+.ehn-profile-body .ehn-about {
+  padding-top: var(--sp-5);
+}
 .ehn-about {
   padding: var(--sp-3) 0;
-  border-top: 1px solid var(--border);
+}
+/* "on <story>" link in the comments tab. */
+.ehn-root .ehn-oncomment {
+  color: var(--fg-dim);
+}
+.ehn-root .ehn-oncomment:hover {
+  color: var(--ehn-accent);
 }
 
 /* ---- Prose: HN-rendered text content (comments, story text, about) ----
@@ -808,6 +847,16 @@ body {
   background: rgba(10, 10, 12, 0.28);
   animation: ehn-fade 0.14s ease;
 }
+/* Bare = transparent click-catcher (dropdown menus); center = flex-center a
+   modal in the viewport. */
+.ehn-overlay.bare {
+  background: transparent;
+}
+.ehn-overlay.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 /* Floating card anchored under the header's settings button (top-right). */
 .ehn-popover {
   position: fixed;
@@ -842,6 +891,130 @@ body {
 @keyframes ehn-pop-in {
   from { opacity: 0; transform: translateY(-6px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---- Account menu (signed in) ---- */
+.ehn-menu {
+  position: fixed;
+  top: 52px;
+  right: 12px;
+  width: 224px;
+  max-width: calc(100vw - 24px);
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--sp-2);
+  transform-origin: top right;
+  animation: ehn-pop-in 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ehn-root .ehn-menu-head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-3);
+  color: var(--fg);
+}
+.ehn-root .ehn-menu-head strong {
+  font-size: 1.05em;
+  font-weight: 700;
+}
+.ehn-root .ehn-menu-head span {
+  font-size: 0.85em;
+  color: var(--fg-dim);
+}
+.ehn-root .ehn-menu-head:hover strong {
+  color: var(--ehn-accent);
+}
+.ehn-menu-sep {
+  height: 1px;
+  background: var(--border);
+  margin: var(--sp-1) var(--sp-2);
+}
+.ehn-root .ehn-menu-item {
+  display: block;
+  padding: 8px var(--sp-3);
+  border-radius: var(--r-sm);
+  color: var(--fg-dim);
+  font-size: 0.95em;
+  transition: color 0.14s ease, background 0.14s ease;
+}
+.ehn-root .ehn-menu-item:hover {
+  color: var(--fg);
+  background: var(--bg-sunken);
+}
+
+/* ---- Login modal (signed out) ---- */
+.ehn-modal {
+  width: 440px;
+  max-width: calc(100vw - 32px);
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  animation: ehn-pop-in 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.ehn-modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid var(--border);
+}
+.ehn-modal-head strong {
+  font-size: 1.3em;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.ehn-modal-body {
+  padding: var(--sp-5);
+}
+.ehn-login-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+.ehn-login-row + .ehn-login-row {
+  margin-top: var(--sp-4);
+}
+.ehn-login-row span {
+  width: 84px;
+  color: var(--fg-dim);
+  font-size: 0.95em;
+}
+.ehn-login-row input {
+  flex: 1;
+  min-width: 0;
+  padding: 10px var(--sp-3);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.95em;
+  transition: border-color 0.14s ease, box-shadow 0.14s ease;
+}
+.ehn-login-row input:focus {
+  outline: none;
+  border-color: var(--ehn-accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+.ehn-modal-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-4) var(--sp-5);
+  border-top: 1px solid var(--border);
+}
+.ehn-root .ehn-login-create {
+  color: var(--ehn-accent);
+  font-weight: 600;
+  font-size: 0.95em;
+}
+.ehn-root .ehn-login-create:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 /* ---- Settings controls ---- */

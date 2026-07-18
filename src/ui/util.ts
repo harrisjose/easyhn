@@ -19,3 +19,7 @@ export const useToast = () => useContext(ToastContext);
 /** Settings open/close, shared so the header button can toggle the panel. */
 export const SettingsUIContext = createContext<() => void>(() => {});
 export const useOpenSettings = () => useContext(SettingsUIContext);
+
+/** Account menu / login open, shared so the header user button can open it. */
+export const AccountUIContext = createContext<() => void>(() => {});
+export const useOpenAccount = () => useContext(AccountUIContext);

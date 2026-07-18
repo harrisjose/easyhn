@@ -1,5 +1,5 @@
 import type { Route, Session } from '@/src/types';
-import { useOpenSettings } from '../util';
+import { useOpenSettings, useOpenAccount } from '../util';
 import { Settings, UserIcon, YCombinator } from './icons';
 
 const NAV: { label: string; path: string; list: string }[] = [
@@ -12,6 +12,7 @@ const NAV: { label: string; path: string; list: string }[] = [
 
 export function Header({ route, session }: { route: Route; session: Session }) {
   const openSettings = useOpenSettings();
+  const openAccount = useOpenAccount();
   return (
     <header className="ehn-header">
       <div className="ehn-header-inner">
@@ -33,24 +34,14 @@ export function Header({ route, session }: { route: Route; session: Session }) {
           ))}
         </nav>
         <div className="ehn-header-right">
-          {session.loggedIn ? (
-            <a
-              className="ehn-user"
-              href={`https://news.ycombinator.com/user?id=${session.username}`}
-            >
-              <b>{session.username}</b>
-              {session.karma != null ? session.karma.toLocaleString() : ''}
-            </a>
-          ) : (
-            <a
-              className="ehn-iconbtn"
-              href="https://news.ycombinator.com/login"
-              title="Log in"
-              aria-label="Log in"
-            >
-              <UserIcon />
-            </a>
-          )}
+          <button
+            className="ehn-iconbtn"
+            title={session.loggedIn ? (session.username ?? 'Account') : 'Log in'}
+            aria-label={session.loggedIn ? 'Account' : 'Log in'}
+            onClick={openAccount}
+          >
+            <UserIcon />
+          </button>
           <button
             className="ehn-iconbtn"
             title="Settings"

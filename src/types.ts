@@ -6,6 +6,8 @@ export type RouteKind =
   | 'user' // /user?id=
   | 'unknown'; // anything we don't redesign — fall back to native page
 
+export type ProfileTab = 'about' | 'stories' | 'comments' | 'favorites' | 'upvoted' | 'hidden';
+
 export interface Route {
   kind: RouteKind;
   /** The HN list slug for story lists (news, newest, ask, show, jobs, front, best). */
@@ -14,6 +16,8 @@ export interface Route {
   itemId?: string;
   /** Username for user routes. */
   userId?: string;
+  /** Which profile tab a user route is showing. */
+  tab?: ProfileTab;
 }
 
 /** Logged-in session info scraped from the page header. */
@@ -101,4 +105,34 @@ export interface UserProfile {
   commentsUrl?: string;
   /** True if viewing one's own (editable) profile. */
   isSelf: boolean;
+}
+
+/** One of a user's own comments, as shown on the /threads page. */
+export interface UserComment {
+  id: string;
+  author?: string;
+  ageText?: string;
+  ageTitle?: string;
+  html: string;
+  /** The story this comment was posted on. */
+  onStoryTitle?: string;
+  onStoryUrl?: string;
+  vote: VoteState;
+  dead: boolean;
+}
+
+/** A user profile with the content of the active tab. */
+export interface ProfilePage {
+  id: string;
+  tab: ProfileTab;
+  isSelf: boolean;
+  karma?: number;
+  created?: string;
+  /** about tab */
+  aboutHtml?: string;
+  /** story-list tabs: stories / favorites / upvoted / hidden */
+  stories?: Story[];
+  moreUrl?: string;
+  /** comments tab */
+  comments?: UserComment[];
 }

@@ -1,10 +1,12 @@
 import { createRoot, type Root } from 'react-dom/client';
 import { defineContentScript, createShadowRootUi } from '#imports';
+import type { ProfilePage, Route, Session } from '@/src/types';
 import { detectRoute } from '@/src/parse/detectRoute';
 import { parseSession } from '@/src/parse/auth';
 import { parseStoryList } from '@/src/parse/parseStoryList';
 import { parseItem } from '@/src/parse/parseItem';
 import { parseUser } from '@/src/parse/parseUser';
+import { parseUserComments } from '@/src/parse/parseUserComments';
 import { App, type AppPayload } from '@/src/ui/App';
 import '@/assets/styles/theme.css';
 
@@ -22,15 +24,14 @@ export default defineContentScript({
 
     await domReady();
 
-    const payload = buildPayload(route);
+    const session = parseSession();
+    const payload = buildPayload(route, session);
     if (!payload) {
       // Parsing failed unexpectedly — restore the native page rather than
       // showing a blank screen.
       hideStyle.remove();
       return;
     }
-
-    const session = parseSession();
 
     const ui = await createShadowRootUi(ctx, {
       name: 'easyhn-root',
@@ -60,7 +61,7 @@ export default defineContentScript({
   },
 });
 
-function buildPayload(route: ReturnType<typeof detectRoute>): AppPayload | null {
+function buildPayload(route: ReturnType<typeof detectRoute>, session: Session): AppPayload | null {
   if (route.kind === 'storylist') {
     return { kind: 'storylist', list: parseStoryList() };
   }
@@ -68,11 +69,36 @@ function buildPayload(route: ReturnType<typeof detectRoute>): AppPayload | null 
     const item = parseItem(route.itemId);
     return item ? { kind: 'item', item } : null;
   }
-  if (route.kind === 'user' && route.userId) {
-    const profile = parseUser(route.userId);
-    return profile ? { kind: 'user', profile } : null;
+  if (route.kind === 'user') {
+    // /hidden has no id in the URL — it's the logged-in user's own page.
+    const id = route.userId ?? (route.tab === 'hidden' ? session.username : undefined);
+    if (!id) return null;
+    const profile = buildProfile(id, route.tab ?? 'about', session);
+    return profile ? { kind: 'profile', profile } : null;
   }
   return null;
+}
+
+function buildProfile(id: string, tab: NonNullable<Route['tab']>, session: Session): ProfilePage | null {
+  const isSelf =
+    session.loggedIn && !!session.username && session.username.toLowerCase() === id.toLowerCase();
+  const page: ProfilePage = { id, tab, isSelf };
+
+  if (tab === 'about') {
+    const p = parseUser(id);
+    if (!p) return null;
+    page.karma = p.karma;
+    page.created = p.created;
+    page.aboutHtml = p.aboutHtml;
+  } else if (tab === 'comments') {
+    page.comments = parseUserComments();
+  } else {
+    // stories / favorites / upvoted / hidden are all standard story lists.
+    const list = parseStoryList();
+    page.stories = list.stories;
+    page.moreUrl = list.moreUrl;
+  }
+  return page;
 }
 
 function injectHideStyle(): HTMLStyleElement {

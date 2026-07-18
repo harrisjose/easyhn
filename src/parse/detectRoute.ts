@@ -1,4 +1,14 @@
-import type { Route } from '@/src/types';
+import type { ProfileTab, Route } from '@/src/types';
+
+/** Profile sub-pages we redesign as tabs of the user view. */
+const PROFILE_TABS: Record<string, ProfileTab> = {
+  user: 'about',
+  submitted: 'stories',
+  threads: 'comments',
+  favorites: 'favorites',
+  upvoted: 'upvoted',
+  hidden: 'hidden',
+};
 
 /** Lists we redesign as story lists. Maps pathname (no slash) -> slug. */
 const LIST_PATHS: Record<string, string> = {
@@ -30,9 +40,13 @@ export function detectRoute(loc: Location = window.location): Route {
     return itemId ? { kind: 'item', itemId } : { kind: 'unknown' };
   }
 
-  if (path === 'user') {
+  if (path in PROFILE_TABS) {
+    const tab = PROFILE_TABS[path];
+    // /hidden carries no ?id= — it's always the logged-in user's, resolved
+    // from the session once the DOM is ready (detection runs at document_start).
+    if (tab === 'hidden') return { kind: 'user', tab };
     const userId = params.get('id') ?? undefined;
-    return userId ? { kind: 'user', userId } : { kind: 'unknown' };
+    return userId ? { kind: 'user', userId, tab } : { kind: 'unknown' };
   }
 
   if (path in LIST_PATHS) {

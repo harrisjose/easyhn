@@ -1,20 +1,21 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { ItemPage, Route, Session, UserProfile } from '@/src/types';
+import type { ItemPage, ProfilePage, Route, Session } from '@/src/types';
 import type { StoryListResult } from '@/src/parse/parseStoryList';
 import { useSettings } from '@/src/settings/useSettings';
 import { applyTheme, applyPageBackground, watchSystemTheme } from '@/src/settings/applyTheme';
-import { ToastContext, SettingsUIContext } from './util';
+import { ToastContext, SettingsUIContext, AccountUIContext } from './util';
 import { Header } from './components/Header';
 import { SettingsPanel } from './components/SettingsPanel';
+import { AccountPanel } from './components/AccountPanel';
 import { Close } from './components/icons';
 import { StoryList } from './views/StoryList';
 import { Item } from './views/Item';
-import { User } from './views/User';
+import { Profile } from './views/Profile';
 
 export type AppPayload =
   | { kind: 'storylist'; list: StoryListResult }
   | { kind: 'item'; item: ItemPage }
-  | { kind: 'user'; profile: UserProfile };
+  | { kind: 'profile'; profile: ProfilePage };
 
 export function App({
   host,
@@ -30,6 +31,7 @@ export function App({
   const { settings } = useSettings();
   const [toast, setToast] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // Keep the shadow host's CSS variables / data-theme in sync with settings,
@@ -51,23 +53,29 @@ export function App({
   }, []);
 
   const openSettings = useCallback(() => setSettingsOpen(true), []);
+  const openAccount = useCallback(() => setAccountOpen(true), []);
 
   return (
     <ToastContext.Provider value={notify}>
       <SettingsUIContext.Provider value={openSettings}>
-        <Header route={route} session={session} />
-        <main className="ehn-container">
-          {payload.kind === 'storylist' && (
-            <StoryList stories={payload.list.stories} moreUrl={payload.list.moreUrl} />
-          )}
-          {payload.kind === 'item' && <Item item={payload.item} loggedIn={session.loggedIn} />}
-          {payload.kind === 'user' && <User profile={payload.profile} />}
-        </main>
+        <AccountUIContext.Provider value={openAccount}>
+          <Header route={route} session={session} />
+          <main className="ehn-container">
+            {payload.kind === 'storylist' && (
+              <StoryList stories={payload.list.stories} moreUrl={payload.list.moreUrl} />
+            )}
+            {payload.kind === 'item' && <Item item={payload.item} loggedIn={session.loggedIn} />}
+            {payload.kind === 'profile' && (
+              <Profile profile={payload.profile} loggedIn={session.loggedIn} />
+            )}
+          </main>
 
-        {settingsOpen && (
-          <SettingsPopover onClose={() => setSettingsOpen(false)} />
-        )}
-        {toast && <div className="ehn-toast">{toast}</div>}
+          {settingsOpen && <SettingsPopover onClose={() => setSettingsOpen(false)} />}
+          {accountOpen && (
+            <AccountPanel session={session} onClose={() => setAccountOpen(false)} />
+          )}
+          {toast && <div className="ehn-toast">{toast}</div>}
+        </AccountUIContext.Provider>
       </SettingsUIContext.Provider>
     </ToastContext.Provider>
   );
