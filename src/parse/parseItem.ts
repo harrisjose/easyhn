@@ -39,17 +39,11 @@ function parseHeader(row: HTMLTableRowElement, id: string): Story {
   const ageTitle = ageEl?.getAttribute('title') ?? undefined;
 
   let commentCount: number | undefined;
-  let favoriteUrl: string | undefined;
-  let flagUrl: string | undefined;
   subtext?.querySelectorAll<HTMLAnchorElement>('a').forEach((a) => {
     const text = a.textContent?.trim().toLowerCase() ?? '';
     const hrefAttr = a.getAttribute('href') ?? '';
     if (/comment/.test(text) && hrefAttr.includes(`item?id=${id}`)) {
       commentCount = parseInt(text, 10) || 0;
-    } else if (hrefAttr.startsWith('fave')) {
-      favoriteUrl = toAbsolute(hrefAttr);
-    } else if (hrefAttr.startsWith('flag')) {
-      flagUrl = toAbsolute(hrefAttr);
     }
   });
 
@@ -58,7 +52,6 @@ function parseHeader(row: HTMLTableRowElement, id: string): Story {
     title,
     url,
     domain: titleline?.querySelector('.sitestr')?.textContent?.trim() || domainOf(url),
-    isSelf,
     score: hasScore ? parseInt(scoreText, 10) : undefined,
     author,
     ageText,
@@ -66,8 +59,6 @@ function parseHeader(row: HTMLTableRowElement, id: string): Story {
     commentCount,
     isJob: !hasScore,
     vote: parseVote(id, row.parentElement ?? document),
-    favoriteUrl,
-    flagUrl,
   };
 }
 
