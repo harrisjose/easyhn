@@ -6,14 +6,14 @@ themeable interface — no separate app, no accounts, no pro tier.
 
 ## Features
 
-- **Redesigned story lists** — Top / New / Ask / Show / Jobs, with favicons, domains,
+- **Redesigned story lists** — Top / New / Ask / Show / Jobs, with domains,
   score, author, age and comment counts.
-- **Readable comment threads** with one-click collapse/expand (and hidden-reply counts).
+- **Readable comment threads** with one-click collapse/expand.
 - **Full account features** when you're logged in to HN: upvote, reply (inline composer),
   favorite, flag — wired straight through to HN using your existing session.
 - **User profiles** — karma, join date, about, links to submissions & comments.
-- **Customization** — theme (Light / Dark / Auto), accent color, font (sans/serif),
-  font size, content width, favicons on/off. Synced across your browsers and applied
+- **Customization** — theme (Light / Dark / Auto), font (sans/serif),
+  font size, content width. Synced across your browsers and applied
   live to every open tab.
 - **Keyboard navigation** — `j`/`k` to move, `o`/Enter to open, `c` for comments.
 

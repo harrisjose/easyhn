@@ -7,7 +7,17 @@
    for the vote arrow (a solid affordance), "bold" for the small line icons so
    they hold up at 11–17px. */
 
-import { ArrowFatUp, CaretDown, ChatCircle, Faders, UserCircle, X } from '@phosphor-icons/react';
+import {
+  ArrowFatUp,
+  CaretDown,
+  ChatCircle,
+  CircleHalf,
+  Faders,
+  Moon,
+  Sun,
+  UserCircle,
+  X,
+} from '@phosphor-icons/react';
 
 type IconProps = { className?: string };
 
@@ -34,6 +44,17 @@ export function Settings({ className }: IconProps) {
 /** Close (X). */
 export function Close({ className }: IconProps) {
   return <X className={className} weight="bold" aria-hidden="true" />;
+}
+
+/** Theme: light / dark / auto. */
+export function ThemeLight({ className }: IconProps) {
+  return <Sun className={className} weight="bold" aria-hidden="true" />;
+}
+export function ThemeDark({ className }: IconProps) {
+  return <Moon className={className} weight="bold" aria-hidden="true" />;
+}
+export function ThemeAuto({ className }: IconProps) {
+  return <CircleHalf className={className} weight="bold" aria-hidden="true" />;
 }
 
 /** User circle — the logged-out login button. */

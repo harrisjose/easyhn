@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import type { ItemPage } from '@/src/types';
 import { upvote } from '@/src/actions';
-import { faviconUrl, userUrl, plural, useToast } from '../util';
-import { useSettings } from '@/src/settings/useSettings';
+import { userUrl, plural, useToast } from '../util';
 import { CommentNode } from '../components/CommentNode';
 import { Composer } from '../components/Composer';
 import { Prose } from '../components/Prose';
@@ -16,7 +15,6 @@ function totalComments(item: ItemPage): number {
 
 export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) {
   const { story } = item;
-  const { settings } = useSettings();
   const toast = useToast();
   const [voted, setVoted] = useState(story.vote.upvoted);
   const total = totalComments(item);
@@ -31,15 +29,12 @@ export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) 
     }
   }
 
-  const favicon = settings.showFavicons ? faviconUrl(story.domain) : undefined;
-
   return (
-    <div>
+    <div className="ehn-item">
       <div className="ehn-item-head">
         <h1 className="ehn-item-title">
           {story.url ? (
             <a href={story.url} rel="noopener">
-              {favicon && <img className="ehn-favicon" src={favicon} alt="" />}
               {story.title}
             </a>
           ) : (
@@ -85,7 +80,7 @@ export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) 
       </div>
 
       {item.comments.map((c) => (
-        <CommentNode key={c.id} comment={c} />
+        <CommentNode key={c.id} comment={c} loggedIn={loggedIn} />
       ))}
     </div>
   );
