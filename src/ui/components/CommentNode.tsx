@@ -6,10 +6,6 @@ import { Composer } from './Composer';
 import { Prose } from './Prose';
 import { UpArrow, Chevron, Reply } from './icons';
 
-function countDescendants(c: Comment): number {
-  return c.children.reduce((sum, child) => sum + 1 + countDescendants(child), 0);
-}
-
 export function CommentNode({ comment }: { comment: Comment }) {
   const toast = useToast();
   const [collapsed, setCollapsed] = useState(false);
@@ -17,8 +13,6 @@ export function CommentNode({ comment }: { comment: Comment }) {
   const [replyForm, setReplyForm] = useState<ReplyForm | null>(comment.replyForm ?? null);
   const [replying, setReplying] = useState(false);
   const [loadingForm, setLoadingForm] = useState(false);
-
-  const hidden = countDescendants(comment);
 
   async function handleVote() {
     if (voted || !comment.vote.upvoteUrl) return;
@@ -54,7 +48,6 @@ export function CommentNode({ comment }: { comment: Comment }) {
             aria-label={collapsed ? 'Expand thread' : 'Collapse thread'}
           >
             <Chevron />
-            {collapsed && hidden > 0 && <span className="ehn-collapse-count">{hidden}</span>}
           </button>
           {comment.author ? (
             <a className="ehn-comment-author" href={userUrl(comment.author)}>

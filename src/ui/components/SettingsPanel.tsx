@@ -118,29 +118,20 @@ function Segmented<T extends string>({
   onChange: (v: T) => void;
 }) {
   return (
-    <div
-      style={{
-        display: 'inline-flex',
-        background: 'var(--bg-sunken)',
-        borderRadius: 8,
-        padding: 2,
-        gap: 2,
-      }}
-    >
+    <div style={{ display: 'inline-flex', gap: 18 }}>
       {options.map((o) => (
         <button
           key={o.value}
           onClick={() => onChange(o.value)}
           style={{
             border: 'none',
+            background: 'none',
             cursor: 'pointer',
-            padding: '5px 12px',
-            borderRadius: 6,
-            fontSize: '0.88em',
-            background: value === o.value ? 'var(--bg-elev)' : 'transparent',
-            color: value === o.value ? 'var(--fg)' : 'var(--fg-dim)',
-            fontWeight: value === o.value ? 600 : 400,
-            boxShadow: value === o.value ? 'var(--shadow)' : 'none',
+            padding: '2px 0',
+            fontSize: '0.9em',
+            color: value === o.value ? 'var(--ehn-accent)' : 'var(--fg-dim)',
+            fontWeight: value === o.value ? 600 : 500,
+            transition: 'color 0.14s ease',
           }}
         >
           {o.label}

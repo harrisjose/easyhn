@@ -9,10 +9,12 @@ export function StoryRow({
   story,
   index,
   selected,
+  showJobBadge = true,
 }: {
   story: Story;
   index: number;
   selected: boolean;
+  showJobBadge?: boolean;
 }) {
   const { settings } = useSettings();
   const toast = useToast();
@@ -36,7 +38,6 @@ export function StoryRow({
       <span className="ehn-rank">{story.rank ?? ''}</span>
       <div className="ehn-story-main">
         <div className="ehn-story-title">
-          {story.isJob && <span className="ehn-badge">JOB</span>}{' '}
           <a href={href} rel="noopener">
             {favicon && (
               <img
@@ -49,6 +50,12 @@ export function StoryRow({
             )}
             {story.title}
           </a>
+          {story.isJob && showJobBadge && (
+            <>
+              {' '}
+              <span className="ehn-badge">JOB</span>
+            </>
+          )}
         </div>
         <div className="ehn-meta">
           {story.domain && (
