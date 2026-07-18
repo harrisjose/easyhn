@@ -5,7 +5,7 @@ import { userUrl, plural, useToast } from '../util';
 import { CommentNode } from '../components/CommentNode';
 import { Composer } from '../components/Composer';
 import { Prose } from '../components/Prose';
-import { UpArrow } from '../components/icons';
+import { UpArrow, Reply } from '../components/icons';
 
 function totalComments(item: ItemPage): number {
   const count = (cs: ItemPage['comments']): number =>
@@ -17,6 +17,7 @@ export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) 
   const { story } = item;
   const toast = useToast();
   const [voted, setVoted] = useState(story.vote.upvoted);
+  const [composing, setComposing] = useState(false);
   const total = totalComments(item);
 
   async function handleVote() {
@@ -63,16 +64,33 @@ export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) 
             >
               <UpArrow filled={voted} />
             </button>
+            {loggedIn && item.commentForm && (
+              <button
+                className={`ehn-vote ehn-vote-lg${composing ? ' voted' : ''}`}
+                onClick={() => setComposing((c) => !c)}
+                title="Add a comment"
+                aria-label="Add a comment"
+              >
+                <Reply />
+              </button>
+            )}
           </span>
         </div>
 
         {item.textHtml && <Prose className="ehn-text" html={item.textHtml} />}
       </div>
 
-      {/* HN serves a comment form even when logged out (posting would just
-          bounce to login) — only show it for logged-in users, like Modern. */}
-      {loggedIn && item.commentForm && (
-        <Composer form={item.commentForm} placeholder="Add a comment…" />
+      {/* The comment box stays hidden until the chat icon above is clicked,
+          like the per-comment reply boxes. (HN serves the form to logged-out
+          users too, but posting would just bounce to login, so it's gated.) */}
+      {loggedIn && item.commentForm && composing && (
+        <Composer
+          form={item.commentForm}
+          placeholder="Add a comment…"
+          autoFocus
+          onPosted={() => setComposing(false)}
+          onCancel={() => setComposing(false)}
+        />
       )}
 
       <div className="ehn-comments-count">

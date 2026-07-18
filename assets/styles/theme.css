@@ -455,6 +455,7 @@ body {
   margin-left: auto;
   display: inline-flex;
   align-items: center;
+  gap: var(--sp-1);
 }
 .ehn-meta > .ehn-item-actions::before {
   content: none;
