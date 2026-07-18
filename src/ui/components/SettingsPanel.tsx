@@ -1,22 +1,23 @@
+import type { ComponentType, ReactNode } from 'react';
 import {
   type Settings,
   type Theme,
-  type Accent,
   type FontFamily,
   type Width,
-  ACCENT_HEX,
+  FONT_STACK,
 } from '@/src/settings/schema';
+import { ThemeLight, ThemeDark, ThemeAuto } from './icons';
 
-const THEMES: Theme[] = ['light', 'dark', 'auto'];
-const ACCENTS: Accent[] = ['orange', 'blue', 'green', 'purple', 'red'];
-const FONTS: { value: FontFamily; label: string }[] = [
-  { value: 'sans', label: 'Sans' },
-  { value: 'serif', label: 'Serif' },
+const THEMES: { value: Theme; label: string; Icon: ComponentType<{ className?: string }> }[] = [
+  { value: 'light', label: 'Light', Icon: ThemeLight },
+  { value: 'dark', label: 'Dark', Icon: ThemeDark },
+  { value: 'auto', label: 'Auto', Icon: ThemeAuto },
 ];
+const FONTS: FontFamily[] = ['sans', 'serif'];
 const WIDTHS: Width[] = ['narrow', 'medium', 'wide'];
 
 /** The shared settings controls — reused by the popup, options page and the
- *  in-page settings drawer. Pure presentational; persistence is the caller's. */
+ *  in-page settings popover. Pure presentational; persistence is the caller's. */
 export function SettingsPanel({
   settings,
   update,
@@ -27,116 +28,81 @@ export function SettingsPanel({
   return (
     <div className="ehn-settings">
       <Field label="Theme">
-        <Segmented
-          options={THEMES.map((t) => ({ value: t, label: cap(t) }))}
-          value={settings.theme}
-          onChange={(v) => update({ theme: v as Theme })}
-        />
-      </Field>
-
-      <Field label="Accent">
-        <div style={{ display: 'flex', gap: 8 }}>
-          {ACCENTS.map((a) => (
+        <div className="ehn-seg">
+          {THEMES.map((t) => (
             <button
-              key={a}
-              aria-label={a}
-              onClick={() => update({ accent: a })}
-              style={{
-                width: 24,
-                height: 24,
-                borderRadius: '50%',
-                background: ACCENT_HEX[a],
-                border: settings.accent === a ? '2px solid var(--fg)' : '2px solid transparent',
-                cursor: 'pointer',
-                outline: settings.accent === a ? '2px solid var(--bg)' : 'none',
-              }}
-            />
+              key={t.value}
+              className={`ehn-seg-btn${settings.theme === t.value ? ' active' : ''}`}
+              onClick={() => update({ theme: t.value })}
+              aria-pressed={settings.theme === t.value}
+            >
+              <t.Icon className="ehn-seg-icon" />
+              {t.label}
+            </button>
           ))}
         </div>
       </Field>
 
       <Field label="Font">
-        <Segmented
-          options={FONTS}
-          value={settings.font}
-          onChange={(v) => update({ font: v as FontFamily })}
-        />
+        <div className="ehn-fontcards">
+          {FONTS.map((f) => (
+            <button
+              key={f}
+              className={`ehn-fontcard${settings.font === f ? ' active' : ''}`}
+              onClick={() => update({ font: f })}
+              aria-pressed={settings.font === f}
+            >
+              <span className="ehn-fontcard-label">{cap(f)}</span>
+              <span className="ehn-fontcard-aa" style={{ fontFamily: FONT_STACK[f] }}>
+                Aa
+              </span>
+            </button>
+          ))}
+        </div>
       </Field>
 
       <Field label={`Font size — ${settings.fontSize}px`}>
-        <input
-          type="range"
-          min={12}
-          max={20}
-          step={1}
-          value={settings.fontSize}
-          onChange={(e) => update({ fontSize: Number(e.target.value) })}
-          style={{ width: '100%' }}
-        />
+        <div className="ehn-slider-row">
+          <span className="ehn-slider-cap" style={{ fontSize: '0.85em' }}>
+            A
+          </span>
+          <input
+            type="range"
+            min={12}
+            max={20}
+            step={1}
+            value={settings.fontSize}
+            onChange={(e) => update({ fontSize: Number(e.target.value) })}
+          />
+          <span className="ehn-slider-cap" style={{ fontSize: '1.3em' }}>
+            A
+          </span>
+        </div>
       </Field>
 
       <Field label="Width">
-        <Segmented
-          options={WIDTHS.map((w) => ({ value: w, label: cap(w) }))}
-          value={settings.width}
-          onChange={(v) => update({ width: v as Width })}
-        />
-      </Field>
-
-      <Field label="Favicons">
-        <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}>
-          <input
-            type="checkbox"
-            checked={settings.showFavicons}
-            onChange={(e) => update({ showFavicons: e.target.checked })}
-          />
-          Show site favicons
-        </label>
+        <div className="ehn-seg">
+          {WIDTHS.map((w) => (
+            <button
+              key={w}
+              className={`ehn-seg-btn${settings.width === w ? ' active' : ''}`}
+              onClick={() => update({ width: w })}
+              aria-pressed={settings.width === w}
+            >
+              {cap(w)}
+            </button>
+          ))}
+        </div>
       </Field>
     </div>
   );
 }
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({ label, children }: { label: string; children: ReactNode }) {
   return (
-    <div style={{ margin: '0 0 16px' }}>
-      <div style={{ fontSize: '0.82em', color: 'var(--fg-dim)', marginBottom: 6, fontWeight: 600 }}>
-        {label}
-      </div>
+    <div className="ehn-field">
+      <div className="ehn-field-label">{label}</div>
       {children}
-    </div>
-  );
-}
-
-function Segmented<T extends string>({
-  options,
-  value,
-  onChange,
-}: {
-  options: { value: T; label: string }[];
-  value: T;
-  onChange: (v: T) => void;
-}) {
-  return (
-    <div style={{ display: 'inline-flex', gap: 18 }}>
-      {options.map((o) => (
-        <button
-          key={o.value}
-          onClick={() => onChange(o.value)}
-          style={{
-            border: 'none',
-            background: 'none',
-            cursor: 'pointer',
-            padding: '2px 0',
-            fontSize: '0.9em',
-            color: value === o.value ? 'var(--ehn-accent)' : 'var(--fg-dim)',
-            fontWeight: value === o.value ? 600 : 500,
-            transition: 'color 0.14s ease',
-          }}
-        >
-          {o.label}
-        </button>
-      ))}
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { Composer } from './Composer';
 import { Prose } from './Prose';
 import { UpArrow, Chevron, Reply } from './icons';
 
-export function CommentNode({ comment }: { comment: Comment }) {
+export function CommentNode({ comment, loggedIn }: { comment: Comment; loggedIn: boolean }) {
   const toast = useToast();
   const [collapsed, setCollapsed] = useState(false);
   const [voted, setVoted] = useState(comment.vote.upvoted);
@@ -75,7 +75,7 @@ export function CommentNode({ comment }: { comment: Comment }) {
                 <UpArrow filled={voted} />
               </button>
             )}
-            {comment.replyUrl && (
+            {loggedIn && comment.replyUrl && (
               <button
                 onClick={openReply}
                 disabled={loadingForm}
@@ -112,7 +112,7 @@ export function CommentNode({ comment }: { comment: Comment }) {
       {!collapsed && comment.children.length > 0 && (
         <div className="ehn-children">
           {comment.children.map((child) => (
-            <CommentNode key={child.id} comment={child} />
+            <CommentNode key={child.id} comment={child} loggedIn={loggedIn} />
           ))}
         </div>
       )}

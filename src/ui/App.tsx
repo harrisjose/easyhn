@@ -65,7 +65,7 @@ export function App({
         </main>
 
         {settingsOpen && (
-          <SettingsDrawer onClose={() => setSettingsOpen(false)} />
+          <SettingsPopover onClose={() => setSettingsOpen(false)} />
         )}
         {toast && <div className="ehn-toast">{toast}</div>}
       </SettingsUIContext.Provider>
@@ -73,22 +73,18 @@ export function App({
   );
 }
 
-function SettingsDrawer({ onClose }: { onClose: () => void }) {
+function SettingsPopover({ onClose }: { onClose: () => void }) {
   const { settings, update } = useSettings();
   return (
     <div className="ehn-overlay" onClick={onClose}>
-      <div className="ehn-drawer" onClick={(e) => e.stopPropagation()}>
-        <div className="ehn-drawer-head">
+      <div className="ehn-popover" onClick={(e) => e.stopPropagation()}>
+        <div className="ehn-popover-head">
           <strong>Settings</strong>
           <button className="ehn-iconbtn" onClick={onClose} aria-label="Close">
             <Close />
           </button>
         </div>
         <SettingsPanel settings={settings} update={update} />
-        <p className="ehn-kbd-hint" style={{ marginTop: 24 }}>
-          <kbd>j</kbd>/<kbd>k</kbd> move · <kbd>o</kbd>/<kbd>Enter</kbd> open ·{' '}
-          <kbd>c</kbd> comments
-        </p>
       </div>
     </div>
   );

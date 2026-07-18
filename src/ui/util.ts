@@ -1,11 +1,5 @@
 import { createContext, useContext } from 'react';
 
-/** Privacy-light favicon source (no Google tracking). */
-export function faviconUrl(domain?: string): string | undefined {
-  if (!domain) return undefined;
-  return `https://icons.duckduckgo.com/ip3/${domain}.ico`;
-}
-
 export function itemUrl(id: string): string {
   return `https://news.ycombinator.com/item?id=${id}`;
 }

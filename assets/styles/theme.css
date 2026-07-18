@@ -382,18 +382,6 @@ body {
 .ehn-story-title a:hover {
   color: var(--ehn-accent);
 }
-.ehn-favicon {
-  width: 15px;
-  height: 15px;
-  border-radius: 4px;
-  vertical-align: -2px;
-  margin-right: var(--sp-2);
-  background: var(--bg-sunken);
-  /* A hairline ring so transparent or off-white favicons still read as a
-     deliberate chip rather than floating glyphs. */
-  box-shadow: inset 0 0 0 1px var(--border);
-  object-fit: contain;
-}
 .ehn-meta {
   margin-top: 5px;
   color: var(--fg-dim);
@@ -455,6 +443,12 @@ body {
 }
 
 /* ---- Item page ---- */
+/* Indent the whole item view so its title/comments share the left edge of the
+   story-list titles (and the nav) — the empty gutter matches where list ranks
+   sit, so a story's title stays put when you open it. */
+.ehn-item {
+  padding-left: calc(var(--sp-3) + 1.5em + var(--sp-3));
+}
 .ehn-item-head {
   padding: var(--sp-5) 0 var(--sp-4);
   border-bottom: 1px solid var(--border);
@@ -515,7 +509,7 @@ body {
   margin-top: 2px;
 }
 .ehn-comment-body {
-  padding: 22px 0;
+  padding: 14px 0;
   border-top: 1px solid var(--border);
 }
 /* No divider between the "N comments" heading and the first comment — the
@@ -587,7 +581,7 @@ body {
   transform: rotate(-90deg);
 }
 .ehn-comment-text {
-  margin: var(--sp-2) 0 var(--sp-1);
+  margin: var(--sp-1) 0 0;
 }
 /* Upvote / reply live at the right end of the comment head, revealed on
    hover — like Modern. */
@@ -806,46 +800,153 @@ body {
   margin: 1em 0;
 }
 
-/* ---- Settings drawer / panel ---- */
+/* ---- Settings popover ---- */
 .ehn-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(20, 18, 12, 0.4);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
   z-index: 40;
-  display: flex;
-  justify-content: flex-end;
-  animation: ehn-fade 0.18s ease;
+  background: rgba(10, 10, 12, 0.28);
+  animation: ehn-fade 0.14s ease;
 }
-.ehn-drawer {
-  width: 340px;
-  max-width: 90vw;
-  background: var(--bg-elev);
-  height: 100%;
-  padding: var(--sp-5);
+/* Floating card anchored under the header's settings button (top-right). */
+.ehn-popover {
+  position: fixed;
+  top: 52px;
+  right: 12px;
+  width: 320px;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 72px);
   overflow-y: auto;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
   box-shadow: var(--shadow-md);
-  border-left: 1px solid var(--border);
-  animation: ehn-slide-in 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+  padding: var(--sp-5);
+  transform-origin: top right;
+  animation: ehn-pop-in 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
-.ehn-drawer-head {
+.ehn-popover-head {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--sp-5);
+  margin-bottom: var(--sp-4);
 }
-.ehn-drawer-head strong {
-  font-size: 1.1em;
+.ehn-popover-head strong {
+  font-size: 1.05em;
   letter-spacing: -0.01em;
 }
 @keyframes ehn-fade {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-@keyframes ehn-slide-in {
-  from { transform: translateX(16px); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
+@keyframes ehn-pop-in {
+  from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ---- Settings controls ---- */
+.ehn-field {
+  margin: 0 0 var(--sp-4);
+}
+.ehn-field:last-child {
+  margin-bottom: 0;
+}
+.ehn-field-label {
+  font-size: 0.8em;
+  font-weight: 600;
+  color: var(--fg-dim);
+  margin-bottom: var(--sp-2);
+}
+
+/* Segmented switch buttons — theme and width. */
+.ehn-seg {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: var(--sp-2);
+}
+.ehn-seg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 6px;
+  font: inherit;
+  font-size: 0.88em;
+  font-weight: 500;
+  color: var(--fg-dim);
+  background: var(--bg-sunken);
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  transition: color 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+}
+.ehn-seg-btn:hover {
+  color: var(--fg);
+}
+.ehn-seg-btn.active {
+  color: var(--ehn-accent);
+  border-color: var(--ehn-accent);
+  background: var(--bg-elev);
+}
+.ehn-seg-icon {
+  width: 15px;
+  height: 15px;
+}
+
+/* Font preview cards. */
+.ehn-fontcards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-2);
+}
+.ehn-fontcard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 6px 14px;
+  background: var(--bg-sunken);
+  border: 1.5px solid transparent;
+  border-radius: var(--r-md);
+  color: var(--fg-dim);
+  cursor: pointer;
+  transition: color 0.14s ease, border-color 0.14s ease, background 0.14s ease;
+}
+.ehn-fontcard:hover {
+  color: var(--fg);
+}
+.ehn-fontcard.active {
+  color: var(--fg);
+  border-color: var(--ehn-accent);
+  background: var(--bg-elev);
+}
+.ehn-fontcard-label {
+  font-size: 0.82em;
+  font-weight: 500;
+}
+.ehn-fontcard-aa {
+  font-size: 1.9em;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--fg);
+}
+
+/* Font-size slider with A caps. */
+.ehn-slider-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+.ehn-slider-cap {
+  color: var(--fg-dim);
+  font-weight: 600;
+}
+.ehn-settings input[type='range'] {
+  flex: 1;
+  min-width: 0;
+  accent-color: var(--ehn-accent);
+  cursor: pointer;
 }
 
 /* ---- Misc ---- */

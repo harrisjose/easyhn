@@ -1,4 +1,4 @@
-import { ACCENT_HEX, FONT_STACK, WIDTH_PX, type Settings } from './schema';
+import { FONT_STACK, WIDTH_PX, type Settings } from './schema';
 
 function prefersDark(): boolean {
   return typeof window !== 'undefined' && window.matchMedia
@@ -20,7 +20,6 @@ export function applyTheme(el: HTMLElement, s: Settings): void {
   el.dataset.theme = effectiveTheme(s);
   el.dataset.font = s.font;
   const css = el.style;
-  css.setProperty('--ehn-accent', ACCENT_HEX[s.accent]);
   css.setProperty('--ehn-font', FONT_STACK[s.font]);
   css.setProperty('--ehn-font-size', `${s.fontSize}px`);
   css.setProperty('--ehn-width', `${WIDTH_PX[s.width]}px`);
