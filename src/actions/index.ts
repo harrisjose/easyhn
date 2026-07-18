@@ -6,8 +6,8 @@ import type { ReplyForm } from '@/src/types';
  * features without us ever handling credentials ourselves.
  */
 
-/** Fire a simple GET action link (vote/unvote/favorite/flag). */
-async function hit(url: string): Promise<boolean> {
+/** Upvote by firing HN's vote link (it carries the auth token). */
+export async function upvote(url: string): Promise<boolean> {
   try {
     const res = await fetch(url, {
       method: 'GET',
@@ -19,11 +19,6 @@ async function hit(url: string): Promise<boolean> {
     return false;
   }
 }
-
-export const upvote = (url: string) => hit(url);
-export const unvote = (url: string) => hit(url);
-export const favorite = (url: string) => hit(url);
-export const flag = (url: string) => hit(url);
 
 /**
  * Post a comment/reply. HN's /comment endpoint expects a urlencoded body with

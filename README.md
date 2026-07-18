@@ -9,9 +9,10 @@ themeable interface — no separate app, no accounts, no pro tier.
 - **Redesigned story lists** — Top / New / Ask / Show / Jobs, with domains,
   score, author, age and comment counts.
 - **Readable comment threads** with one-click collapse/expand.
-- **Full account features** when you're logged in to HN: upvote, reply (inline composer),
-  favorite, flag — wired straight through to HN using your existing session.
-- **User profiles** — karma, join date, about, links to submissions & comments.
+- **Account features** — sign in / out and, when logged in, upvote and reply
+  (inline composer), wired straight through to HN using your existing session.
+- **User profiles** — a tabbed profile (About, Stories, Comments, Favorites, plus
+  Upvoted / Hidden on your own account) rendered in place.
 - **Customization** — theme (Light / Dark / Auto), font (sans/serif),
   font size, content width. Synced across your browsers and applied
   live to every open tab.
@@ -30,7 +31,7 @@ entrypoints/hn.content   in-place takeover content script (parse → mount React
 entrypoints/popup        toolbar quick-settings
 entrypoints/options      full settings page
 src/parse                HN DOM → typed model (the core; covered by tests)
-src/actions              vote / reply / favorite / flag write-backs
+src/actions              vote / reply write-backs
 src/ui                   React views & components
 src/settings             schema, storage.sync store, theming
 ```

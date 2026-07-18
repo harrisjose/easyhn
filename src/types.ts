@@ -36,8 +36,6 @@ export interface Story {
   url?: string;
   /** Display domain, e.g. "github.com". */
   domain?: string;
-  /** True for Ask/Show/text posts that link to their own item page. */
-  isSelf: boolean;
   score?: number;
   author?: string;
   ageText?: string;
@@ -46,9 +44,6 @@ export interface Story {
   /** Whether this is a job posting (no score / no comments / no vote). */
   isJob: boolean;
   vote: VoteState;
-  /** "favorite" / "hide" / "flag" links available on the row, if any. */
-  favoriteUrl?: string;
-  flagUrl?: string;
 }
 
 export interface VoteState {
@@ -56,8 +51,6 @@ export interface VoteState {
   canUpvote: boolean;
   /** href for the upvote action (carries the auth token). */
   upvoteUrl?: string;
-  /** href for the unvote action, present when the user has already upvoted. */
-  unvoteUrl?: string;
   /** Whether the user has already upvoted this item. */
   upvoted: boolean;
 }
@@ -101,10 +94,6 @@ export interface UserProfile {
   created?: string;
   karma?: number;
   aboutHtml?: string;
-  submissionsUrl?: string;
-  commentsUrl?: string;
-  /** True if viewing one's own (editable) profile. */
-  isSelf: boolean;
 }
 
 /** One of a user's own comments, as shown on the /threads page. */

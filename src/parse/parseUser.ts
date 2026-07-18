@@ -1,5 +1,4 @@
 import type { UserProfile } from '@/src/types';
-import { toAbsolute } from './auth';
 
 /**
  * Parse a /user?id= page. HN renders a small <table> of labelled rows
@@ -26,8 +25,6 @@ export function parseUser(userId: string, doc: Document = document): UserProfile
     return value?.trim() || undefined;
   };
 
-  const isSelf = !!main.querySelector('input[name="hmac"], form[action="xuser"]');
-
   const created = fields.get('created')?.querySelector('a')?.textContent?.trim() || readText('created');
   const karmaText = readText('karma');
 
@@ -40,9 +37,6 @@ export function parseUser(userId: string, doc: Document = document): UserProfile
     created,
     karma: karmaText ? parseInt(karmaText, 10) : undefined,
     aboutHtml: aboutHtml || undefined,
-    submissionsUrl: toAbsolute(`submitted?id=${encodeURIComponent(userId)}`),
-    commentsUrl: toAbsolute(`threads?id=${encodeURIComponent(userId)}`),
-    isSelf,
   };
 }
 

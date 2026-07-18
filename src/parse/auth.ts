@@ -52,7 +52,6 @@ export function parseVote(id: string, scope: ParentNode = document): VoteState {
   return {
     canUpvote: !upHidden,
     upvoteUrl: toAbsolute(up?.getAttribute('href')),
-    unvoteUrl: toAbsolute(un?.getAttribute('href')),
     upvoted: !unHidden,
   };
 }

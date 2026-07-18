@@ -54,7 +54,7 @@ function parseStoryRow(row: HTMLTableRowElement, titleline: Element): Story | nu
   const ageText = ageEl?.querySelector('a')?.textContent?.trim() || ageEl?.textContent?.trim();
   const ageTitle = ageEl?.getAttribute('title') ?? undefined;
 
-  const { commentCount, favoriteUrl, flagUrl } = parseSubLinks(subtext, id);
+  const commentCount = parseCommentCount(subtext, id);
 
   return {
     id,
@@ -62,7 +62,6 @@ function parseStoryRow(row: HTMLTableRowElement, titleline: Element): Story | nu
     title,
     url,
     domain,
-    isSelf,
     score: hasScore ? score : undefined,
     author,
     ageText,
@@ -70,39 +69,24 @@ function parseStoryRow(row: HTMLTableRowElement, titleline: Element): Story | nu
     commentCount,
     isJob: !hasScore && commentCount === undefined,
     vote: parseVote(id, row.parentElement ?? document),
-    favoriteUrl,
-    flagUrl,
   };
 }
 
-function parseSubLinks(subtext: Element | undefined, id: string) {
-  let commentCount: number | undefined;
-  let favoriteUrl: string | undefined;
-  let flagUrl: string | undefined;
-  if (!subtext) return { commentCount, favoriteUrl, flagUrl };
+function parseCommentCount(subtext: Element | undefined, id: string): number | undefined {
+  if (!subtext) return undefined;
 
+  let commentCount: number | undefined;
   subtext.querySelectorAll<HTMLAnchorElement>('a').forEach((a) => {
     const text = a.textContent?.trim().toLowerCase() ?? '';
     const hrefAttr = a.getAttribute('href') ?? '';
     if (/comment|discuss/.test(text) && hrefAttr.includes(`item?id=${id}`)) {
       const n = parseInt(text, 10);
+      // "discuss" (no number) means zero comments.
       commentCount = Number.isNaN(n) ? 0 : n;
-    } else if (hrefAttr.startsWith('fave')) {
-      favoriteUrl = toAbsolute(hrefAttr);
-    } else if (hrefAttr.startsWith('flag')) {
-      flagUrl = toAbsolute(hrefAttr);
     }
   });
 
-  // "discuss" link with no count means zero comments.
-  if (commentCount === undefined && subtext.querySelector(`a[href*="item?id=${id}"]`)) {
-    const itemLinks = subtext.querySelectorAll<HTMLAnchorElement>(`a[href*="item?id=${id}"]`);
-    itemLinks.forEach((a) => {
-      if (/discuss/.test(a.textContent?.toLowerCase() ?? '')) commentCount = 0;
-    });
-  }
-
-  return { commentCount, favoriteUrl, flagUrl };
+  return commentCount;
 }
 
 function domainOf(url?: string): string | undefined {
