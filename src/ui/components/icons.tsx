@@ -7,7 +7,7 @@
    for the vote arrow (a solid affordance), "bold" for the small line icons so
    they hold up at 11–17px. */
 
-import { ArrowFatUp, CaretDown, ChatCircle, TextAa, User, X } from '@phosphor-icons/react';
+import { ArrowFatUp, CaretDown, ChatCircle, Faders, UserCircle, X } from '@phosphor-icons/react';
 
 type IconProps = { className?: string };
 
@@ -26,9 +26,9 @@ export function Reply({ className }: IconProps) {
   return <ChatCircle className={className} weight="bold" aria-hidden="true" />;
 }
 
-/** Appearance / text-settings toggle ("Aa"). */
-export function TextSize({ className }: IconProps) {
-  return <TextAa className={className} weight="bold" aria-hidden="true" />;
+/** Settings toggle — vertical faders / knobs. */
+export function Settings({ className }: IconProps) {
+  return <Faders className={className} weight="bold" aria-hidden="true" />;
 }
 
 /** Close (X). */
@@ -36,9 +36,9 @@ export function Close({ className }: IconProps) {
   return <X className={className} weight="bold" aria-hidden="true" />;
 }
 
-/** Person — the logged-out login button. */
+/** User circle — the logged-out login button. */
 export function UserIcon({ className }: IconProps) {
-  return <User className={className} weight="bold" aria-hidden="true" />;
+  return <UserCircle className={className} weight="bold" aria-hidden="true" />;
 }
 
 /** The Y Combinator "Y" letterform for the header logo mark. */

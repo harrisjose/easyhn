@@ -1,6 +1,6 @@
 import type { Route, Session } from '@/src/types';
 import { useOpenSettings } from '../util';
-import { TextSize, UserIcon, YCombinator } from './icons';
+import { Settings, UserIcon, YCombinator } from './icons';
 
 const NAV: { label: string; path: string; list: string }[] = [
   { label: 'Top', path: 'news', list: 'news' },
@@ -52,12 +52,12 @@ export function Header({ route, session }: { route: Route; session: Session }) {
             </a>
           )}
           <button
-            className="ehn-iconbtn ehn-iconbtn-aa"
+            className="ehn-iconbtn"
             title="Settings"
             aria-label="Settings"
             onClick={openSettings}
           >
-            <TextSize />
+            <Settings />
           </button>
         </div>
       </div>

@@ -182,7 +182,6 @@ body {
   place-items: center;
   width: 22px;
   height: 22px;
-  border-radius: 5px;
   background: var(--ehn-accent);
   color: #fff;
 }
@@ -264,7 +263,10 @@ body {
 }
 /* Fixed square so every icon button has an identical hover/hit area,
    regardless of how wide or tall its glyph is. */
-.ehn-iconbtn {
+/* Scoped under .ehn-root so the colour beats the global `.ehn-root a` rule —
+   otherwise the login button (an <a>) reads brighter than the settings
+   button (a <button>). */
+.ehn-root .ehn-iconbtn {
   display: grid;
   place-items: center;
   width: 32px;
@@ -275,20 +277,13 @@ body {
   color: var(--fg-dim);
   transition: color 0.14s ease;
 }
-.ehn-iconbtn:hover {
+.ehn-root .ehn-iconbtn:hover {
   color: var(--fg);
 }
 .ehn-iconbtn svg {
   width: 17px;
   height: 17px;
   display: block;
-}
-/* The "Aa" glyph carries a lot of vertical padding inside its viewBox, so its
-   letters render much shorter than a single-glyph icon at the same box size.
-   Scale the box up so the letter cap-height matches the user icon beside it. */
-.ehn-iconbtn-aa svg {
-  width: 22px;
-  height: 22px;
 }
 
 /* ---- Story list ---- */
@@ -441,8 +436,9 @@ body {
   vertical-align: 1px;
 }
 
-/* Plain centered link — muted, brightening to accent on hover. */
-.ehn-more {
+/* Plain centered link — muted, brightening to accent on hover. Scoped under
+   .ehn-root so the muted colour beats the global `.ehn-root a` link colour. */
+.ehn-root .ehn-more {
   display: flex;
   width: fit-content;
   align-items: center;
@@ -454,7 +450,7 @@ body {
   font-size: 0.9em;
   transition: color 0.14s ease;
 }
-.ehn-more:hover {
+.ehn-root .ehn-more:hover {
   color: var(--ehn-accent);
 }
 
