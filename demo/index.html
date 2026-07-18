@@ -72,7 +72,7 @@
             <span class="ehn-rank">1</span>
             <div class="ehn-story-main">
               <div class="ehn-story-title">
-                <a href="#">How the FLAC format compresses audio without loss of quality</a>
+                <a href="#"><img class="ehn-favicon" src="https://icons.duckduckgo.com/ip3/xiph.org.ico" alt="" />How the FLAC format compresses audio without loss of quality</a>
               </div>
               <div class="ehn-meta">
                 <a class="ehn-domain" href="#">xiph.org</a><span>84 points</span
@@ -85,7 +85,7 @@
             <span class="ehn-rank">2</span>
             <div class="ehn-story-main">
               <div class="ehn-story-title">
-                <a href="#">Userspace FUSE for macOS</a>
+                <a href="#"><img class="ehn-favicon" src="https://icons.duckduckgo.com/ip3/github.com.ico" alt="" />Userspace FUSE for macOS</a>
               </div>
               <div class="ehn-meta">
                 <a class="ehn-domain" href="#">fuse-t.org</a><span>128 points</span
@@ -98,8 +98,8 @@
             <span class="ehn-rank">3</span>
             <div class="ehn-story-main">
               <div class="ehn-story-title">
-                <span class="ehn-badge">JOB</span>
                 <a href="#">Senior Engineer at a small startup (YC W21)</a>
+                <span class="ehn-badge">JOB</span>
               </div>
               <div class="ehn-meta"><a href="#">5 hours ago</a></div>
             </div>
@@ -164,10 +164,7 @@
             <div class="ehn-comment">
               <div class="ehn-comment-body">
                 <div class="ehn-comment-head">
-                  <button class="ehn-collapse collapsed">
-                    <svg><use href="#i-chevron" /></svg>
-                    <span class="ehn-collapse-count">2</span>
-                  </button>
+                  <button class="ehn-collapse"><svg><use href="#i-chevron" /></svg></button>
                   <a class="ehn-comment-author" href="#">curious_dev</a>
                   <span class="sep">·</span>
                   <a href="#">52 minutes ago</a>
@@ -177,7 +174,64 @@
                   </span>
                 </div>
                 <div class="ehn-prose ehn-comment-text">
-                  <p>This is great, thank you. The <b>git repo</b> idea is what I was missing.</p>
+                  <p>This is great, thank you. The <b>git repo</b> idea is what I was missing. How do you handle merge conflicts when two machines save at once?</p>
+                </div>
+              </div>
+              <div class="ehn-children">
+                <div class="ehn-comment">
+                  <div class="ehn-comment-body">
+                    <div class="ehn-comment-head">
+                      <button class="ehn-collapse"><svg><use href="#i-chevron" /></svg></button>
+                      <a class="ehn-comment-author" href="#">winter_blue</a>
+                      <span class="sep">·</span>
+                      <a href="#">40 minutes ago</a>
+                      <span class="ehn-comment-actions">
+                        <button title="Upvote"><svg><use href="#i-up-outline" /></svg></button>
+                        <button title="Reply"><svg><use href="#i-reply" /></svg></button>
+                      </span>
+                    </div>
+                    <div class="ehn-prose ehn-comment-text">
+                      <p>Append-only, one line per link — conflicts basically never happen, and when they do it's a trivial two-line resolve.</p>
+                    </div>
+                  </div>
+                  <div class="ehn-children">
+                    <div class="ehn-comment">
+                      <div class="ehn-comment-body">
+                        <div class="ehn-comment-head">
+                          <button class="ehn-collapse"><svg><use href="#i-chevron" /></svg></button>
+                          <a class="ehn-comment-author" href="#">quiet_maple</a>
+                          <span class="sep">·</span>
+                          <a href="#">21 minutes ago</a>
+                          <span class="ehn-comment-actions">
+                            <button title="Upvote"><svg><use href="#i-up-outline" /></svg></button>
+                            <button title="Reply"><svg><use href="#i-reply" /></svg></button>
+                          </span>
+                        </div>
+                        <div class="ehn-prose ehn-comment-text">
+                          <p>Sorting the file on write kills conflicts entirely — the diff stays stable no matter which machine committed last.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ehn-comment">
+                  <div class="ehn-comment-body">
+                    <div class="ehn-comment-head">
+                      <button class="ehn-collapse collapsed">
+                        <svg><use href="#i-chevron" /></svg>
+                      </button>
+                      <a class="ehn-comment-author" href="#">deep_field</a>
+                      <span class="sep">·</span>
+                      <a href="#">33 minutes ago</a>
+                      <span class="ehn-comment-actions">
+                        <button title="Upvote"><svg><use href="#i-up-outline" /></svg></button>
+                        <button title="Reply"><svg><use href="#i-reply" /></svg></button>
+                      </span>
+                    </div>
+                    <div class="ehn-prose ehn-comment-text">
+                      <p>I went the other way and use a tiny SQLite file synced with Litestream.</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
