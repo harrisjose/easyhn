@@ -94,6 +94,18 @@ export function SettingsPanel({
           ))}
         </div>
       </Field>
+
+      <Field label="Links">
+        <label className="ehn-switch-row">
+          <span>Open story links in a new tab</span>
+          <input
+            type="checkbox"
+            className="ehn-switch"
+            checked={settings.openInNewTab}
+            onChange={(e) => update({ openInNewTab: e.target.checked })}
+          />
+        </label>
+      </Field>
     </div>
   );
 }

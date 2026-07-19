@@ -1121,6 +1121,50 @@ body {
   cursor: pointer;
 }
 
+/* Toggle-switch setting row — label left, switch right. */
+.ehn-switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  font-size: 0.9em;
+  color: var(--fg);
+  cursor: pointer;
+}
+.ehn-switch {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 40px;
+  height: 24px;
+  border-radius: var(--r-pill);
+  background: var(--bg-sunken);
+  border: 1px solid var(--border-strong);
+  cursor: pointer;
+  transition: background 0.16s ease, border-color 0.16s ease;
+}
+.ehn-switch::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--fg-faint);
+  transition: transform 0.16s ease, background 0.16s ease;
+}
+.ehn-switch:checked {
+  background: var(--ehn-accent);
+  border-color: var(--ehn-accent);
+}
+.ehn-switch:checked::after {
+  transform: translateY(-50%) translateX(16px);
+  background: #fff;
+}
+
 /* ---- Misc ---- */
 .ehn-empty {
   padding: var(--sp-7) var(--sp-3);
