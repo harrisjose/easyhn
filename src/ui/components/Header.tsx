@@ -5,6 +5,7 @@ import { Settings, UserIcon, YCombinator } from './icons';
 const NAV: { label: string; path: string; list: string }[] = [
   { label: 'Top', path: 'news', list: 'news' },
   { label: 'New', path: 'newest', list: 'newest' },
+  { label: 'Best', path: 'best', list: 'best' },
   { label: 'Ask', path: 'ask', list: 'ask' },
   { label: 'Show', path: 'show', list: 'show' },
   { label: 'Jobs', path: 'jobs', list: 'jobs' },
