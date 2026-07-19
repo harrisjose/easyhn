@@ -37,19 +37,19 @@ export function Header({ route, session }: { route: Route; session: Session }) {
         <div className="ehn-header-right">
           <button
             className="ehn-iconbtn"
-            title={session.loggedIn ? (session.username ?? 'Account') : 'Log in'}
-            aria-label={session.loggedIn ? 'Account' : 'Log in'}
-            onClick={openAccount}
-          >
-            <UserIcon />
-          </button>
-          <button
-            className="ehn-iconbtn"
             title="Settings"
             aria-label="Settings"
             onClick={openSettings}
           >
             <Settings />
+          </button>
+          <button
+            className="ehn-iconbtn"
+            title={session.loggedIn ? (session.username ?? 'Account') : 'Log in'}
+            aria-label={session.loggedIn ? 'Account' : 'Log in'}
+            onClick={openAccount}
+          >
+            <UserIcon />
           </button>
         </div>
       </div>
