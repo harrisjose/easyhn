@@ -8,6 +8,8 @@ export interface Settings {
   /** Base font size in px. */
   fontSize: number;
   width: Width;
+  /** Open story/article title links in a new tab. */
+  openInNewTab: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -15,6 +17,7 @@ export const DEFAULT_SETTINGS: Settings = {
   font: 'sans',
   fontSize: 15,
   width: 'medium',
+  openInNewTab: true,
 };
 
 export const WIDTH_PX: Record<Width, number> = {

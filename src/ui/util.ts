@@ -1,5 +1,10 @@
 import { createContext, useContext } from 'react';
 
+/** Anchor props for opening (or not) a link in a new tab, with a safe rel. */
+export function newTab(enabled: boolean): { target?: '_blank'; rel: string } {
+  return enabled ? { target: '_blank', rel: 'noopener noreferrer' } : { rel: 'noopener' };
+}
+
 export function itemUrl(id: string): string {
   return `https://news.ycombinator.com/item?id=${id}`;
 }

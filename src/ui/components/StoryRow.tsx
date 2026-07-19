@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import type { Story } from '@/src/types';
 import { upvote } from '@/src/actions';
-import { itemUrl, useToast } from '../util';
+import { useSettings } from '@/src/settings/useSettings';
+import { itemUrl, newTab, useToast } from '../util';
 import { UpArrow } from './icons';
 
 export function StoryRow({
@@ -15,10 +16,14 @@ export function StoryRow({
   selected: boolean;
   showJobBadge?: boolean;
 }) {
+  const { settings } = useSettings();
   const toast = useToast();
   const [voted, setVoted] = useState(story.vote.upvoted);
 
   const href = story.url ?? itemUrl(story.id);
+  // Only external article links open in a new tab; self/Ask posts go to the
+  // item page in place.
+  const titleLinkProps = newTab(!!story.url && settings.openInNewTab);
 
   async function handleVote() {
     if (voted || !story.vote.upvoteUrl) return;
@@ -35,7 +40,7 @@ export function StoryRow({
       <span className="ehn-rank">{story.rank ?? ''}</span>
       <div className="ehn-story-main">
         <div className="ehn-story-title">
-          <a href={href} rel="noopener">
+          <a href={href} {...titleLinkProps}>
             {story.title}
           </a>
           {story.isJob && showJobBadge && (

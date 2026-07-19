@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import type { ItemPage } from '@/src/types';
 import { upvote } from '@/src/actions';
-import { userUrl, plural, useToast } from '../util';
+import { userUrl, plural, newTab, useToast } from '../util';
+import { useSettings } from '@/src/settings/useSettings';
 import { CommentNode } from '../components/CommentNode';
 import { Composer } from '../components/Composer';
 import { Prose } from '../components/Prose';
@@ -15,6 +16,7 @@ function totalComments(item: ItemPage): number {
 
 export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) {
   const { story } = item;
+  const { settings } = useSettings();
   const toast = useToast();
   const [voted, setVoted] = useState(story.vote.upvoted);
   const [composing, setComposing] = useState(false);
@@ -35,7 +37,7 @@ export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) 
       <div className="ehn-item-head">
         <h1 className="ehn-item-title">
           {story.url ? (
-            <a href={story.url} rel="noopener">
+            <a href={story.url} {...newTab(settings.openInNewTab)}>
               {story.title}
             </a>
           ) : (
