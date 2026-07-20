@@ -1,13 +1,27 @@
 import { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
-import { browser } from '#imports';
 import { useSettings } from '@/src/settings/useSettings';
 import { applyTheme, watchSystemTheme } from '@/src/settings/applyTheme';
-import { SettingsPanel } from '@/src/ui/components/SettingsPanel';
+import { YCombinator, XLogoIcon, ExternalArrow } from '@/src/ui/components/icons';
 import '@/assets/styles/theme.css';
 
+const LINKS = [
+  {
+    href: 'https://news.ycombinator.com/news',
+    label: 'Hacker News',
+    sub: 'Open the front page',
+    Icon: YCombinator,
+  },
+  {
+    href: 'https://x.com/harrispjose',
+    label: 'Made by @harrispjose',
+    sub: 'Say hi on X',
+    Icon: XLogoIcon,
+  },
+];
+
 function Popup() {
-  const { settings, update } = useSettings();
+  const { settings } = useSettings();
 
   useEffect(() => {
     const el = document.documentElement;
@@ -16,30 +30,30 @@ function Popup() {
   }, [settings]);
 
   return (
-    <div className="ehn-root" style={{ width: 300, padding: 16 }}>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: 16,
-        }}
-      >
-        <span className="ehn-logo" style={{ fontSize: '1.15em' }}>
-          easyhn
+    <div className="ehn-root ehn-popup">
+      <div className="ehn-popup-head">
+        <span className="ehn-logo-mark">
+          <YCombinator />
         </span>
-        <a href="https://news.ycombinator.com/news" target="_blank" rel="noopener">
-          Open HN ↗
-        </a>
+        <div>
+          <div className="ehn-popup-title">easyhn</div>
+          <div className="ehn-popup-tag">A neat, modern UI for Hacker News</div>
+        </div>
       </div>
-      <SettingsPanel settings={settings} update={update} />
-      <button
-        className="ehn-btn secondary"
-        style={{ width: '100%', marginTop: 4 }}
-        onClick={() => browser.runtime.openOptionsPage()}
-      >
-        All settings
-      </button>
+      <div className="ehn-popup-links">
+        {LINKS.map(({ href, label, sub, Icon }) => (
+          <a key={href} className="ehn-popup-link" href={href} target="_blank" rel="noopener">
+            <span className="ehn-popup-link-icon">
+              <Icon />
+            </span>
+            <span className="ehn-popup-link-text">
+              <span className="ehn-popup-link-label">{label}</span>
+              <span className="ehn-popup-link-sub">{sub}</span>
+            </span>
+            <ExternalArrow className="ehn-popup-link-arrow" />
+          </a>
+        ))}
+      </div>
     </div>
   );
 }

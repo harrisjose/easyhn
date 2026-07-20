@@ -9,6 +9,7 @@
 
 import {
   ArrowFatUp,
+  ArrowUpRight,
   CaretDown,
   ChatCircle,
   CircleHalf,
@@ -17,6 +18,7 @@ import {
   Sun,
   UserCircle,
   X,
+  XLogo,
 } from '@phosphor-icons/react';
 
 type IconProps = { className?: string };
@@ -60,6 +62,16 @@ export function ThemeAuto({ className }: IconProps) {
 /** User circle — the logged-out login button. */
 export function UserIcon({ className }: IconProps) {
   return <UserCircle className={className} weight="bold" aria-hidden="true" />;
+}
+
+/** X (formerly Twitter) logo. */
+export function XLogoIcon({ className }: IconProps) {
+  return <XLogo className={className} weight="bold" aria-hidden="true" />;
+}
+
+/** Outward arrow for external / new-tab links. */
+export function ExternalArrow({ className }: IconProps) {
+  return <ArrowUpRight className={className} weight="bold" aria-hidden="true" />;
 }
 
 /** The Y Combinator "Y" letterform for the header logo mark. */
