@@ -75,6 +75,11 @@ pnpm dev            # launch Chrome with the extension + HMR
 pnpm dev:firefox    # launch Firefox
 ```
 
+For a persistent local install (rather than the `pnpm dev` HMR browser), run
+`pnpm install-local`. It builds and copies the extension to `./unpacked` — a stable
+folder to point Chrome's **Load unpacked** at once; after later runs just hit the
+reload icon on the easyhn card.
+
 ### Build & package
 
 ```bash

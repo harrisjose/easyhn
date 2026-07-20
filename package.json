@@ -20,6 +20,7 @@
     "dev:firefox": "wxt -b firefox",
     "build": "wxt build",
     "build:firefox": "wxt build -b firefox",
+    "install-local": "wxt build && node scripts/install-local.mjs",
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "release-patch": "npm version patch && git push --follow-tags",
