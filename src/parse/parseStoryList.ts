@@ -1,5 +1,5 @@
 import type { Story } from '@/src/types';
-import { parseVote, toAbsolute } from './auth';
+import { parseVote, parseAge, parseCommentCount, domainOf, toAbsolute } from './auth';
 
 export interface StoryListResult {
   stories: Story[];
@@ -50,9 +50,7 @@ function parseStoryRow(row: HTMLTableRowElement, titleline: Element): Story | nu
 
   const author = subtext?.querySelector('.hnuser')?.textContent?.trim() || undefined;
 
-  const ageEl = subtext?.querySelector('.age');
-  const ageText = ageEl?.querySelector('a')?.textContent?.trim() || ageEl?.textContent?.trim();
-  const ageTitle = ageEl?.getAttribute('title') ?? undefined;
+  const { ageText, ageTitle } = parseAge(subtext);
 
   const commentCount = parseCommentCount(subtext, id);
 
@@ -68,32 +66,6 @@ function parseStoryRow(row: HTMLTableRowElement, titleline: Element): Story | nu
     ageTitle,
     commentCount,
     isJob: !hasScore && commentCount === undefined,
-    vote: parseVote(id, row.parentElement ?? document),
+    vote: parseVote(id, row),
   };
-}
-
-function parseCommentCount(subtext: Element | undefined, id: string): number | undefined {
-  if (!subtext) return undefined;
-
-  let commentCount: number | undefined;
-  subtext.querySelectorAll<HTMLAnchorElement>('a').forEach((a) => {
-    const text = a.textContent?.trim().toLowerCase() ?? '';
-    const hrefAttr = a.getAttribute('href') ?? '';
-    if (/comment|discuss/.test(text) && hrefAttr.includes(`item?id=${id}`)) {
-      const n = parseInt(text, 10);
-      // "discuss" (no number) means zero comments.
-      commentCount = Number.isNaN(n) ? 0 : n;
-    }
-  });
-
-  return commentCount;
-}
-
-function domainOf(url?: string): string | undefined {
-  if (!url) return undefined;
-  try {
-    return new URL(url).hostname.replace(/^www\./, '');
-  } catch {
-    return undefined;
-  }
 }

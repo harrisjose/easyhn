@@ -10,6 +10,49 @@ export function toAbsolute(href: string | null | undefined): string | undefined 
   }
 }
 
+/** Display domain for an external story URL, e.g. "github.com". */
+export function domainOf(url?: string): string | undefined {
+  if (!url) return undefined;
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return undefined;
+  }
+}
+
+/**
+ * Read the "N minutes ago" age from an `.age` element inside `scope`. HN renders
+ * it as a link with the relative text and an absolute timestamp `title`.
+ */
+export function parseAge(scope: Element | null | undefined): {
+  ageText?: string;
+  ageTitle?: string;
+} {
+  const ageEl = scope?.querySelector('.age');
+  const ageText = ageEl?.querySelector('a')?.textContent?.trim() || ageEl?.textContent?.trim();
+  const ageTitle = ageEl?.getAttribute('title') ?? undefined;
+  return { ageText, ageTitle };
+}
+
+/**
+ * Comment count from a story's `.subtext`. HN links it as "N comments" (or
+ * "discuss" for zero) to the item page; returns undefined when absent (jobs).
+ */
+export function parseCommentCount(subtext: Element | undefined, id: string): number | undefined {
+  if (!subtext) return undefined;
+  let count: number | undefined;
+  subtext.querySelectorAll<HTMLAnchorElement>('a').forEach((a) => {
+    const text = a.textContent?.trim().toLowerCase() ?? '';
+    const hrefAttr = a.getAttribute('href') ?? '';
+    if (/comment|discuss/.test(text) && hrefAttr.includes(`item?id=${id}`)) {
+      const n = parseInt(text, 10);
+      // "discuss" (no number) means zero comments.
+      count = Number.isNaN(n) ? 0 : n;
+    }
+  });
+  return count;
+}
+
 /**
  * Read the logged-in session from the page header.
  * When logged in, HN renders `<a id="me">username</a> (karma)` and a logout link.

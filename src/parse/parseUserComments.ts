@@ -1,5 +1,5 @@
 import type { UserComment } from '@/src/types';
-import { parseVote, toAbsolute } from './auth';
+import { parseVote, parseAge, toAbsolute } from './auth';
 import { stripReply } from './parseItem';
 
 /**
@@ -16,9 +16,7 @@ export function parseUserComments(doc: Document = document): UserComment[] {
     const comhead = row.querySelector('.comhead');
     const author = comhead?.querySelector('.hnuser')?.textContent?.trim() || undefined;
 
-    const ageEl = comhead?.querySelector('.age');
-    const ageText = ageEl?.querySelector('a')?.textContent?.trim() || ageEl?.textContent?.trim();
-    const ageTitle = ageEl?.getAttribute('title') ?? undefined;
+    const { ageText, ageTitle } = parseAge(comhead);
 
     const onStory = comhead?.querySelector<HTMLAnchorElement>('.onstory a');
     const onStoryTitle = onStory?.textContent?.trim() || undefined;
@@ -37,7 +35,7 @@ export function parseUserComments(doc: Document = document): UserComment[] {
       onStoryTitle,
       onStoryUrl,
       dead,
-      vote: parseVote(id, row.parentElement ?? document),
+      vote: parseVote(id, row),
     });
   });
 

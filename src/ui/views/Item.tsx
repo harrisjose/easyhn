@@ -1,8 +1,7 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { ItemPage } from '@/src/types';
-import { upvote } from '@/src/actions';
-import { userUrl, plural, newTab, useToast } from '../util';
-import { useSettings } from '@/src/settings/useSettings';
+import { userUrl, fromSiteUrl, plural, newTab, useAppSettings } from '../util';
+import { useUpvote } from '../useUpvote';
 import { CommentNode } from '../components/CommentNode';
 import { Composer } from '../components/Composer';
 import { Prose } from '../components/Prose';
@@ -16,21 +15,10 @@ function totalComments(item: ItemPage): number {
 
 export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) {
   const { story } = item;
-  const { settings } = useSettings();
-  const toast = useToast();
-  const [voted, setVoted] = useState(story.vote.upvoted);
+  const settings = useAppSettings();
+  const { voted, handleVote } = useUpvote(story.vote);
   const [composing, setComposing] = useState(false);
-  const total = totalComments(item);
-
-  async function handleVote() {
-    if (voted || !story.vote.upvoteUrl) return;
-    setVoted(true);
-    const ok = await upvote(story.vote.upvoteUrl);
-    if (!ok) {
-      setVoted(false);
-      toast('Vote failed — are you logged in?');
-    }
-  }
+  const total = useMemo(() => totalComments(item), [item]);
 
   return (
     <div className="ehn-item">
@@ -46,10 +34,7 @@ export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) 
         </h1>
         <div className="ehn-meta" style={{ marginTop: 10 }}>
           {story.domain && (
-            <a
-              className="ehn-domain"
-              href={`https://news.ycombinator.com/from?site=${story.domain}`}
-            >
+            <a className="ehn-domain" href={fromSiteUrl(story.domain)}>
               {story.domain}
             </a>
           )}

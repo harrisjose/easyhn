@@ -1,5 +1,5 @@
 import type { Route, Session } from '@/src/types';
-import { useOpenSettings, useOpenAccount } from '../util';
+import { HN_ORIGIN, useOpenSettings, useOpenAccount } from '../util';
 import { Settings, UserIcon, YCombinator } from './icons';
 
 const NAV: { label: string; path: string; list: string }[] = [
@@ -17,7 +17,7 @@ export function Header({ route, session }: { route: Route; session: Session }) {
   return (
     <header className="ehn-header">
       <div className="ehn-header-inner">
-        <a className="ehn-logo" href="https://news.ycombinator.com/news">
+        <a className="ehn-logo" href={`${HN_ORIGIN}/news`}>
           <span className="ehn-logo-mark">
             <YCombinator />
           </span>
@@ -27,7 +27,7 @@ export function Header({ route, session }: { route: Route; session: Session }) {
           {NAV.map((n) => (
             <a
               key={n.path}
-              href={`https://news.ycombinator.com/${n.path}`}
+              href={`${HN_ORIGIN}/${n.path}`}
               className={route.kind === 'storylist' && route.list === n.list ? 'active' : ''}
             >
               {n.label}

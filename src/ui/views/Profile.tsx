@@ -1,27 +1,17 @@
 import { useEffect, useState } from 'react';
 import type { ProfilePage, ProfileTab } from '@/src/types';
 import { parseUser } from '@/src/parse/parseUser';
+import { fetchDoc } from '@/src/actions';
+import { PROFILE_TABS, userUrl } from '../util';
 import { Prose } from '../components/Prose';
 import { UserCommentList } from '../components/UserCommentList';
 import { StoryList } from './StoryList';
 
-const HN = 'https://news.ycombinator.com';
-
 const STORY_TABS: ProfileTab[] = ['stories', 'favorites', 'upvoted', 'hidden'];
 
-export function Profile({ profile }: { profile: ProfilePage; loggedIn: boolean }) {
+export function Profile({ profile }: { profile: ProfilePage }) {
   const stats = useProfileStats(profile);
-  const q = encodeURIComponent(profile.id);
-
-  const allTabs: { tab: ProfileTab; label: string; href: string; selfOnly?: boolean }[] = [
-    { tab: 'about', label: 'About', href: `${HN}/user?id=${q}` },
-    { tab: 'stories', label: 'Stories', href: `${HN}/submitted?id=${q}` },
-    { tab: 'comments', label: 'Comments', href: `${HN}/threads?id=${q}` },
-    { tab: 'favorites', label: 'Favorites', href: `${HN}/favorites?id=${q}` },
-    { tab: 'upvoted', label: 'Upvoted', href: `${HN}/upvoted?id=${q}`, selfOnly: true },
-    { tab: 'hidden', label: 'Hidden', href: `${HN}/hidden`, selfOnly: true },
-  ];
-  const tabs = allTabs.filter((t) => !t.selfOnly || profile.isSelf);
+  const tabs = PROFILE_TABS.filter((t) => !t.selfOnly || profile.isSelf);
 
   // About and comments have no rank column, so indent them to share the
   // story-list titles' (and the nav's) left edge; the story tabs align via
@@ -38,7 +28,7 @@ export function Profile({ profile }: { profile: ProfilePage; loggedIn: boolean }
         </div>
         <nav className="ehn-tabbar">
           {tabs.map((t) => (
-            <a key={t.tab} href={t.href} className={t.tab === profile.tab ? 'active' : ''}>
+            <a key={t.tab} href={t.href(profile.id)} className={t.tab === profile.tab ? 'active' : ''}>
               {t.label}
             </a>
           ))}
@@ -89,15 +79,11 @@ function useProfileStats(profile: ProfilePage) {
   useEffect(() => {
     if (profile.tab === 'about' || profile.karma != null || profile.created) return;
     let cancelled = false;
-    fetch(`${HN}/user?id=${encodeURIComponent(profile.id)}`, { credentials: 'include' })
-      .then((r) => r.text())
-      .then((html) => {
-        if (cancelled) return;
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        const p = parseUser(profile.id, doc);
-        if (p) setStats({ karma: p.karma, created: p.created });
-      })
-      .catch(() => {});
+    fetchDoc(userUrl(profile.id)).then((doc) => {
+      if (cancelled || !doc) return;
+      const p = parseUser(profile.id, doc);
+      if (p) setStats({ karma: p.karma, created: p.created });
+    });
     return () => {
       cancelled = true;
     };

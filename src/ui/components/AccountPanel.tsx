@@ -1,8 +1,6 @@
 import type { Session } from '@/src/types';
-import { userUrl } from '../util';
+import { HN_ORIGIN, PROFILE_TABS, userUrl } from '../util';
 import { Close } from './icons';
-
-const HN = 'https://news.ycombinator.com';
 
 /** The header user button opens this: an account menu when signed in, or a
  *  login modal when signed out. */
@@ -16,14 +14,8 @@ export function AccountPanel({ session, onClose }: { session: Session; onClose: 
 
 function UserMenu({ session, onClose }: { session: Session; onClose: () => void }) {
   const u = session.username ?? '';
-  const q = encodeURIComponent(u);
-  const links = [
-    { label: 'Stories', href: `${HN}/submitted?id=${q}` },
-    { label: 'Comments', href: `${HN}/threads?id=${q}` },
-    { label: 'Favorites', href: `${HN}/favorites?id=${q}` },
-    { label: 'Upvoted', href: `${HN}/upvoted?id=${q}` },
-    { label: 'Hidden', href: `${HN}/hidden` },
-  ];
+  // Every profile tab except About (the header link already goes there).
+  const links = PROFILE_TABS.filter((t) => t.tab !== 'about');
   return (
     <div className="ehn-overlay bare" onClick={onClose}>
       <div className="ehn-menu" onClick={(e) => e.stopPropagation()}>
@@ -33,7 +25,7 @@ function UserMenu({ session, onClose }: { session: Session; onClose: () => void 
         </a>
         <div className="ehn-menu-sep" />
         {links.map((l) => (
-          <a key={l.label} className="ehn-menu-item" href={l.href}>
+          <a key={l.tab} className="ehn-menu-item" href={l.href(u)}>
             {l.label}
           </a>
         ))}
@@ -66,7 +58,7 @@ function LoginModal({ onClose }: { onClose: () => void }) {
         {/* Native POST to HN's real login endpoint — the browser submits the
             password directly to Hacker News and sets the session cookie; our
             code never reads or forwards it. */}
-        <form action={`${HN}/login`} method="post" autoComplete="on">
+        <form action={`${HN_ORIGIN}/login`} method="post" autoComplete="on">
           <div className="ehn-modal-body">
             <input type="hidden" name="goto" value={goto} />
             <label className="ehn-login-row" htmlFor="ehn-login-acct">
@@ -92,7 +84,7 @@ function LoginModal({ onClose }: { onClose: () => void }) {
             </label>
           </div>
           <div className="ehn-modal-foot">
-            <a className="ehn-login-create" href={`${HN}/login?goto=${encodeURIComponent(goto)}`}>
+            <a className="ehn-login-create" href={`${HN_ORIGIN}/login?goto=${encodeURIComponent(goto)}`}>
               Create account
             </a>
             <button type="submit" className="ehn-btn secondary">

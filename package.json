@@ -4,6 +4,16 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "author": "Harris Jose (https://x.com/harrispjose)",
+  "license": "MIT",
+  "homepage": "https://github.com/harrisjose/easyhn#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/harrisjose/easyhn.git"
+  },
+  "bugs": {
+    "url": "https://github.com/harrisjose/easyhn/issues"
+  },
   "scripts": {
     "predev": "node -e \"require('fs').mkdirSync('.wxt/chrome-profile',{recursive:true})\"",
     "dev": "wxt",
