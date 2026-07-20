@@ -936,11 +936,10 @@ body {
   border-radius: var(--r-sm);
   color: var(--fg-dim);
   font-size: 0.95em;
-  transition: color 0.14s ease, background 0.14s ease;
+  transition: color 0.14s ease;
 }
 .ehn-root .ehn-menu-item:hover {
   color: var(--fg);
-  background: var(--bg-sunken);
 }
 
 /* ---- Login modal (signed out) ---- */
