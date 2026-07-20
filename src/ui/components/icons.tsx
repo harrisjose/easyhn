@@ -74,6 +74,34 @@ export function ExternalArrow({ className }: IconProps) {
   return <ArrowUpRight className={className} weight="bold" aria-hidden="true" />;
 }
 
+/** The easyhn app mark — a bold "e" beside a three-line feed, on the brand
+ *  orange rounded square. Used in the popup and mirrored by the extension /
+ *  toolbar icons (public/icon/*.png, rendered from this same geometry).
+ *  Deliberately distinct from the header's YCombinator "Y". */
+export function EasyhnMark({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 32 32" aria-hidden="true">
+      <rect width="32" height="32" rx="7" fill="#ff6600" />
+      <text
+        x="10.5"
+        y="21.7"
+        textAnchor="middle"
+        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
+        fontSize="22"
+        fontWeight="700"
+        fill="#fff"
+      >
+        e
+      </text>
+      <g fill="#fff">
+        <rect x="18.9" y="9.4" width="7.1" height="2.4" rx="1.2" />
+        <rect x="18.9" y="14.8" width="7.1" height="2.4" rx="1.2" />
+        <rect x="18.9" y="20.2" width="4.3" height="2.4" rx="1.2" />
+      </g>
+    </svg>
+  );
+}
+
 /** The Y Combinator "Y" letterform for the header logo mark. */
 export function YCombinator({ className }: IconProps) {
   return (
