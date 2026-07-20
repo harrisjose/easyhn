@@ -14,6 +14,8 @@
   --ehn-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --ehn-font-size: 15px;
   --ehn-width: 820px;
+  /* Vertical-whitespace multiplier for lists/threads (see DENSITY_SCALE). */
+  --ehn-density: 1;
 
   /* Derived accent tints (kept in one place so the whole UI moves together). */
   --accent-soft: color-mix(in srgb, var(--ehn-accent) 12%, transparent);
@@ -278,7 +280,8 @@ body {
 .ehn-story {
   display: flex;
   gap: var(--sp-3);
-  padding: var(--sp-3) var(--sp-3);
+  /* Vertical padding scales with density; horizontal stays fixed. */
+  padding: calc(var(--sp-3) * var(--ehn-density)) var(--sp-3);
   border-radius: var(--r-md);
   align-items: baseline;
   transition: background 0.14s ease, box-shadow 0.14s ease;
@@ -493,7 +496,7 @@ body {
   margin-top: 2px;
 }
 .ehn-comment-body {
-  padding: 14px 0;
+  padding: calc(14px * var(--ehn-density)) 0;
   border-top: 1px solid var(--border);
 }
 /* No divider between the "N comments" heading and the first comment — the
@@ -760,7 +763,9 @@ body {
    Placed after the base rules so its link styling overrides the global
    "no underline". HN emits a small markup subset; we cover the extras. */
 .ehn-prose {
-  line-height: 1.62;
+  /* Line spacing tracks density gently around the 1.62 base so Compact stays
+     readable (~1.54) and Comfortable opens up (~1.72). */
+  line-height: calc(1.62 + (var(--ehn-density) - 1) * 0.2);
   overflow-wrap: anywhere;
   word-break: break-word;
 }
@@ -771,7 +776,7 @@ body {
   margin-bottom: 0;
 }
 .ehn-prose p {
-  margin: 0 0 0.85em;
+  margin: 0 0 calc(0.85em * var(--ehn-density));
 }
 .ehn-prose a {
   color: var(--ehn-accent);
