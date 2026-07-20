@@ -84,9 +84,18 @@ pnpm zip            # store-ready chrome zip
 pnpm zip:firefox    # store-ready firefox zip + sources zip
 ```
 
-Pushing a `v*` tag builds both zips and publishes them to
-[GitHub Releases](https://github.com/harrisjose/easyhn/releases) automatically —
-see [`.github/workflows/release.yml`](.github/workflows/release.yml).
+### Releasing
+
+Cut a release with a version script — each bumps the version in `package.json`,
+commits and tags it, and pushes, which triggers
+[`.github/workflows/release.yml`](.github/workflows/release.yml) to build both zips
+and publish them to [GitHub Releases](https://github.com/harrisjose/easyhn/releases):
+
+```bash
+pnpm release-patch   # 0.1.0 -> 0.1.1
+pnpm release-minor   # 0.1.0 -> 0.2.0
+pnpm release-major   # 0.1.0 -> 1.0.0
+```
 
 ### Tests
 
