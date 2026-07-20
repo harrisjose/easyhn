@@ -1,6 +1,7 @@
 node_modules
 .wxt
 .output
+unpacked
 stats.html
 *.log
 .DS_Store
