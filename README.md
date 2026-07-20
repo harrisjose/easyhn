@@ -6,22 +6,55 @@ themeable, distraction-free interface — no separate app, no accounts, no pro t
 
 ## Features
 
-- **Redesigned story lists** — Top / New / Ask / Show / Jobs, with domains,
+- **Redesigned story lists** — Top / New / Best / Ask / Show / Jobs, with domains,
   score, author, age and comment counts.
 - **Readable comment threads** with one-click collapse/expand.
 - **Account features** — sign in / out and, when logged in, upvote and reply
   (inline composer), wired straight through to HN using your existing session.
 - **User profiles** — a tabbed profile (About, Stories, Comments, Favorites, plus
   Upvoted / Hidden on your own account) rendered in place.
-- **Customization** — theme (Light / Dark / Auto), font (sans/serif),
-  font size, content width. Synced across your browsers and applied
-  live to every open tab.
-- **Keyboard navigation** — `j`/`k` to move, `o`/Enter to open, `c` for comments.
+- **Customization** — theme (Light / Dark / Auto), font (sans / serif), font size,
+  content width, and density. Synced across your browsers and applied live to
+  every open tab.
+- **Keyboard navigation** — `j` / `k` to move, `o` / Enter to open, `c` for comments.
 
-It works by parsing HN's own server-rendered HTML (not the JSON API), so all the
-auth tokens HN needs for voting/replying stay intact and nothing leaves your browser.
+It works by parsing HN's own server-rendered HTML (not the JSON API), so the auth
+tokens HN needs for voting and replying stay intact and nothing leaves your browser.
 
-## Tech
+## Install
+
+Download the latest build from the [**Releases**](https://github.com/harrisjose/easyhn/releases)
+page, then load it into your browser. easyhn isn't on the Chrome Web Store or
+Firefox Add-ons yet, so it installs as an unpacked / temporary extension for now.
+
+- **Chrome:** download `easyhn-<version>-chrome.zip`, unzip it, then open
+  `chrome://extensions`, enable **Developer mode**, click **Load unpacked**, and
+  select the unzipped folder.
+- **Firefox:** download `easyhn-<version>-firefox.zip`, open
+  `about:debugging#/runtime/this-firefox`, click **Load Temporary Add-on**, and
+  select the zip (Firefox drops temporary add-ons when it restarts).
+
+Then open [news.ycombinator.com](https://news.ycombinator.com). Prefer to build it
+yourself? See [Development](#development).
+
+## Using easyhn
+
+Just open [news.ycombinator.com](https://news.ycombinator.com) — easyhn replaces the
+page automatically. Pages it doesn't redesign are left untouched, so the rest of HN
+still works as usual.
+
+- **Browse** — use the top nav (Top / New / Best / Ask / Show / Jobs), or the
+  keyboard: `j` / `k` to move the selection, `o` or Enter to open a story, `c` to
+  jump to its comments.
+- **Read threads** — click any comment's chevron to collapse or expand it.
+- **Vote & reply** — sign in from the account button in the header. Once logged in,
+  the upvote arrows and an inline reply box become active on stories and comments.
+- **Settings** — click the gear in the easyhn header (or open the extension's
+  options page) to change theme, font, size, width, and density. Changes apply
+  instantly and sync to your other browsers.
+- **Toolbar icon** — opens a small card with quick links (HN front page + author).
+
+## Development
 
 Built with [WXT](https://wxt.dev) + React + TypeScript. One codebase targets
 Chrome (MV3) and Firefox (MV2).
@@ -36,15 +69,13 @@ src/ui                   React views & components
 src/settings             schema, storage.sync store, theming
 ```
 
-## Develop
-
 ```bash
 pnpm install
-pnpm dev            # launches Chrome with the extension + HMR
-pnpm dev:firefox    # launches Firefox
+pnpm dev            # launch Chrome with the extension + HMR
+pnpm dev:firefox    # launch Firefox
 ```
 
-## Build & package
+### Build & package
 
 ```bash
 pnpm build          # .output/chrome-mv3
@@ -53,16 +84,11 @@ pnpm zip            # store-ready chrome zip
 pnpm zip:firefox    # store-ready firefox zip + sources zip
 ```
 
-### Load manually (without the dev server)
+Pushing a `v*` tag builds both zips and publishes them to
+[GitHub Releases](https://github.com/harrisjose/easyhn/releases) automatically —
+see [`.github/workflows/release.yml`](.github/workflows/release.yml).
 
-- **Chrome:** `chrome://extensions` → enable Developer mode → *Load unpacked* →
-  select `.output/chrome-mv3`.
-- **Firefox:** `about:debugging#/runtime/this-firefox` → *Load Temporary Add-on* →
-  select `.output/firefox-mv2/manifest.json`.
-
-Then open https://news.ycombinator.com.
-
-## Tests
+### Tests
 
 The DOM parsers are the fragile part (HN markup can change), so they're covered by
 tests that run against captured real HN HTML:
