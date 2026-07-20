@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client';
 import { useSettings } from '@/src/settings/useSettings';
 import { useApplyTheme } from '@/src/settings/useApplyTheme';
-import { YCombinator, XLogoIcon, ExternalArrow } from '@/src/ui/components/icons';
+import { EasyhnMark, YCombinator, XLogoIcon, ExternalArrow } from '@/src/ui/components/icons';
 import '@/assets/styles/theme.css';
 
 const LINKS = [
@@ -26,9 +26,7 @@ function Popup() {
   return (
     <div className="ehn-root ehn-popup">
       <div className="ehn-popup-head">
-        <span className="ehn-logo-mark">
-          <YCombinator />
-        </span>
+        <EasyhnMark className="ehn-popup-mark" />
         <div>
           <div className="ehn-popup-title">easyhn</div>
           <div className="ehn-popup-tag">A clean, readable UI for Hacker News</div>

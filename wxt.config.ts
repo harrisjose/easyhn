@@ -24,8 +24,20 @@ export default defineConfig({
     // Needed so the content script can POST votes/replies to HN on the
     // user's behalf using their existing session cookies.
     host_permissions: ['*://news.ycombinator.com/*'],
+    // Icons live in public/icon/ (copied to the output root); generated from
+    // the same geometry as the EasyhnMark component.
+    icons: {
+      16: 'icon/16.png',
+      32: 'icon/32.png',
+      48: 'icon/48.png',
+      128: 'icon/128.png',
+    },
     action: {
       default_title: 'easyhn',
+      default_icon: {
+        16: 'icon/16.png',
+        32: 'icon/32.png',
+      },
     },
     // Firefox needs a stable extension id for storage.sync to work, and (for
     // new listings) an explicit data-collection declaration — we collect none.

@@ -1256,6 +1256,13 @@ body:has(.ehn-popup) {
   gap: var(--sp-3);
   margin-bottom: var(--sp-4);
 }
+/* Self-contained brand mark (its own orange tile) — no .ehn-logo-mark wrapper. */
+.ehn-popup-mark {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  display: block;
+}
 .ehn-popup-title {
   font-weight: 700;
   font-size: 1.05em;
@@ -1281,6 +1288,11 @@ body:has(.ehn-popup) {
   color: var(--fg);
   text-decoration: none;
   transition: background 0.12s ease;
+}
+/* Keep the label steady on hover — the global `a:hover` accent would otherwise
+   flood the whole row orange. Hover affordance is the icon + arrow only. */
+.ehn-root a.ehn-popup-link:hover {
+  color: var(--fg);
 }
 .ehn-popup-link-icon {
   display: grid;
