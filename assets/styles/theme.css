@@ -36,8 +36,8 @@
   --r-lg: 14px;
   --r-pill: 999px;
 
-  /* Light palette — warm paper, not clinical white. A faint warmth in the
-     neutrals reads as "designed" where pure cold grays read as templated. */
+  /* Light palette — warm paper, not clinical white: a faint warmth in the
+     neutrals so it never reads as a cold gray template. */
   --bg: #fcfcfa;
   --bg-elev: #ffffff;
   --bg-sunken: #f1f0ec;
@@ -55,8 +55,8 @@
 
 :host([data-theme="dark"]),
 :root[data-theme="dark"] {
-  /* Cool near-black, matching Modern — a faint blue lean (blue > red) so it
-     never reads brown, with text dimmed off pure white. */
+  /* Cool near-black — a faint blue lean (blue > red) so it never reads brown,
+     with text dimmed off pure white. */
   --bg: #181a1e;
   --bg-elev: #212429;
   --bg-sunken: #121316;
@@ -298,7 +298,7 @@ body {
   font-weight: 500;
 }
 /* Vote arrow stays out of the way on the list, fading in right-aligned on
-   hover/selection the way Modern does it. */
+   hover/selection. */
 .ehn-vote {
   display: grid;
   place-items: center;
@@ -348,7 +348,7 @@ body {
   min-width: 0;
 }
 /* Titles are regular weight — hierarchy comes from size and the dim meta
-   line below, the way Modern keeps the list calm. */
+   line below. */
 .ehn-story-title {
   font-size: 1.08em;
   font-weight: 400;
@@ -358,7 +358,7 @@ body {
 .ehn-story-title a {
   color: var(--fg);
 }
-/* Already-opened stories dim, the way Modern marks what you've read. This uses
+/* Already-opened stories dim to mark what you've read. This uses
    the browser's :visited history — no tracking, no storage — and browsers
    restrict :visited to colour changes, which is all we need. (Ordered
    link→visited→hover so hover still wins.) */
@@ -389,7 +389,7 @@ body {
 .ehn-meta a:hover {
   color: var(--ehn-accent);
 }
-/* Domain leads the meta line in the accent color, the way Modern does it.
+/* Domain leads the meta line in the accent color.
    (Two classes so it outranks the `.ehn-meta a` dim color above.) */
 .ehn-meta .ehn-domain,
 .ehn-domain {
@@ -482,7 +482,6 @@ body {
   margin-top: var(--sp-3);
   font-size: 1.0em;
 }
-/* A proper heading, the way Modern leads its comment section. */
 .ehn-comments-count {
   margin: var(--sp-5) 0 var(--sp-3);
   font-weight: 600;
@@ -500,7 +499,7 @@ body {
   border-top: 1px solid var(--border);
 }
 /* No divider between the "N comments" heading and the first comment — the
-   heading already separates them (matching Modern). */
+   heading already separates them. */
 .ehn-comments-count + .ehn-comment > .ehn-comment-body {
   border-top: none;
   padding-top: var(--sp-2);
@@ -524,9 +523,8 @@ body {
   color: var(--fg-faint);
 }
 /* The collapse toggle floats into the left gutter (out of the flow) so the
-   author line sits flush with the comment body text below it — the way Modern
-   aligns the two. It reveals on hover; when collapsed it stays put as an
-   accent count pill. */
+   author line sits flush with the comment body text below it. It reveals on
+   hover; when collapsed it stays put as an accent count pill. */
 .ehn-collapse {
   position: absolute;
   right: 100%;
@@ -571,7 +569,7 @@ body {
   margin: var(--sp-1) 0 0;
 }
 /* Upvote / reply live at the right end of the comment head, revealed on
-   hover — like Modern. */
+   hover. */
 .ehn-comment-actions {
   margin-left: auto;
   display: inline-flex;
@@ -609,7 +607,7 @@ body {
   color: var(--ehn-accent);
 }
 /* Nesting is pure indentation — no spine lines. The per-comment top borders
-   plus the indent carry the structure, the way Modern keeps threads clean. */
+   plus the indent carry the structure. */
 .ehn-children {
   margin-left: 32px;
 }
@@ -1210,8 +1208,7 @@ body {
   padding: 1px 5px;
 }
 
-/* Staggered reveal on first paint — one orchestrated load beats scattered
-   fidgeting. Capped so long lists don't crawl in. */
+/* Staggered reveal on first paint, capped so long lists don't crawl in. */
 @media (prefers-reduced-motion: no-preference) {
   .ehn-story {
     animation: ehn-rise 0.34s ease both;
@@ -1234,8 +1231,7 @@ body {
 }
 
 /* ── Browser-action popup ─────────────────────────────────────────────────
-   A small "about + links" card shown when the toolbar icon is clicked.
-   Settings live in-page now, so the popup stays intentionally minimal. */
+   A small "about + links" card shown when the toolbar icon is clicked. */
 
 /* Size the popup document to hug the card. Without this Chrome gives the
    popup an arbitrarily wide/tall window with empty space around the content,

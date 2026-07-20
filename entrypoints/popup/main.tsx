@@ -31,7 +31,7 @@ function Popup() {
         </span>
         <div>
           <div className="ehn-popup-title">easyhn</div>
-          <div className="ehn-popup-tag">A neat, modern UI for Hacker News</div>
+          <div className="ehn-popup-tag">A clean, readable UI for Hacker News</div>
         </div>
       </div>
       <div className="ehn-popup-links">
