@@ -1,8 +1,8 @@
 # easyhn
 
-A neat, modern, cross-browser UI for [Hacker News](https://news.ycombinator.com).
-Open `news.ycombinator.com` and easyhn takes over the page in place with a clean,
-themeable interface — no separate app, no accounts, no pro tier.
+A clean, readable, cross-browser UI for [Hacker News](https://news.ycombinator.com).
+Open `news.ycombinator.com` and easyhn takes over the page in place with a
+themeable, distraction-free interface — no separate app, no accounts, no pro tier.
 
 ## Features
 

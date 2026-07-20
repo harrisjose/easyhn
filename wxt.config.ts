@@ -19,7 +19,7 @@ export default defineConfig({
   },
   manifest: ({ browser }) => ({
     name: 'easyhn',
-    description: 'A neat, modern UI for Hacker News.',
+    description: 'A clean, readable UI for Hacker News.',
     permissions: ['storage'],
     // Needed so the content script can POST votes/replies to HN on the
     // user's behalf using their existing session cookies.

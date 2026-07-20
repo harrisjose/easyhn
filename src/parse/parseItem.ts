@@ -63,7 +63,8 @@ function parseSelfText(fatitem: Element | null): string | undefined {
 function parseComments(doc: Document): Comment[] {
   const rows = Array.from(doc.querySelectorAll<HTMLTableRowElement>('tr.comtr'));
   const roots: Comment[] = [];
-  // Stack of [depth, comment] used to attach each row under its parent.
+  // Open ancestors, deepest last: pop until the top is shallower than this
+  // row, then attach the row under it (HN flattens the tree, depth in .ind).
   const stack: Comment[] = [];
 
   for (const row of rows) {

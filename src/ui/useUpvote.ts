@@ -14,7 +14,7 @@ export function useUpvote(vote: VoteState) {
 
   async function handleVote() {
     if (voted || !vote.upvoteUrl) return;
-    setVoted(true); // optimistic
+    setVoted(true);
     const ok = await upvote(vote.upvoteUrl);
     if (!ok) {
       setVoted(false);

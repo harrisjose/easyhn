@@ -15,7 +15,7 @@ function Options() {
           easyhn
         </h1>
         <p style={{ color: 'var(--fg-dim)', marginTop: 0, marginBottom: 28 }}>
-          A neat, modern interface for Hacker News. Open{' '}
+          A clean, readable interface for Hacker News. Open{' '}
           <a href="https://news.ycombinator.com/news">news.ycombinator.com</a> to see it in action.
         </p>
 
