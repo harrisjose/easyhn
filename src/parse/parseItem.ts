@@ -1,5 +1,5 @@
 import type { Comment, ItemPage, Story } from '@/src/types';
-import { parseVote, parseReplyForm, toAbsolute } from './auth';
+import { parseVote, parseReplyForm, parseAge, parseCommentCount, domainOf, toAbsolute } from './auth';
 
 /** Parse an /item page: the story header + its full comment tree. */
 export function parseItem(itemId: string, doc: Document = document): ItemPage | null {
@@ -34,18 +34,8 @@ function parseHeader(row: HTMLTableRowElement, id: string): Story {
   const scoreText = subtext?.querySelector('.score')?.textContent ?? '';
   const hasScore = !!subtext?.querySelector('.score');
   const author = subtext?.querySelector('.hnuser')?.textContent?.trim() || undefined;
-  const ageEl = subtext?.querySelector('.age');
-  const ageText = ageEl?.querySelector('a')?.textContent?.trim() || ageEl?.textContent?.trim();
-  const ageTitle = ageEl?.getAttribute('title') ?? undefined;
-
-  let commentCount: number | undefined;
-  subtext?.querySelectorAll<HTMLAnchorElement>('a').forEach((a) => {
-    const text = a.textContent?.trim().toLowerCase() ?? '';
-    const hrefAttr = a.getAttribute('href') ?? '';
-    if (/comment/.test(text) && hrefAttr.includes(`item?id=${id}`)) {
-      commentCount = parseInt(text, 10) || 0;
-    }
-  });
+  const { ageText, ageTitle } = parseAge(subtext);
+  const commentCount = parseCommentCount(subtext, id);
 
   return {
     id,
@@ -58,7 +48,7 @@ function parseHeader(row: HTMLTableRowElement, id: string): Story {
     ageTitle,
     commentCount,
     isJob: !hasScore,
-    vote: parseVote(id, row.parentElement ?? document),
+    vote: parseVote(id, row),
   };
 }
 
@@ -104,9 +94,7 @@ function parseCommentRow(row: HTMLTableRowElement): Comment | null {
     Math.round(Number(ind?.querySelector('img')?.getAttribute('width') ?? 0) / 40);
 
   const author = row.querySelector('.hnuser')?.textContent?.trim() || undefined;
-  const ageEl = row.querySelector('.age');
-  const ageText = ageEl?.querySelector('a')?.textContent?.trim() || ageEl?.textContent?.trim();
-  const ageTitle = ageEl?.getAttribute('title') ?? undefined;
+  const { ageText, ageTitle } = parseAge(row);
 
   const commtext = row.querySelector('.commtext');
   const dead = !commtext;
@@ -135,13 +123,4 @@ export function stripReply(commtext: Element): string {
   const clone = commtext.cloneNode(true) as Element;
   clone.querySelector('.reply')?.remove();
   return clone.innerHTML.trim();
-}
-
-function domainOf(url?: string): string | undefined {
-  if (!url) return undefined;
-  try {
-    return new URL(url).hostname.replace(/^www\./, '');
-  } catch {
-    return undefined;
-  }
 }

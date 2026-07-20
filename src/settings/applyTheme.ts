@@ -25,8 +25,12 @@ export function applyTheme(el: HTMLElement, s: Settings): void {
   css.setProperty('--ehn-width', `${WIDTH_PX[s.width]}px`);
 }
 
-/** Page color behind the flush UI — keep in sync with --bg. */
-const PAGE_BG: Record<'light' | 'dark', string> = {
+/**
+ * Page color behind the flush UI — the single source for the raw hex the page
+ * <html> needs (it sits outside the shadow root and can't read `--bg`). Keep in
+ * sync with `--bg` in theme.css.
+ */
+export const PAGE_BG: Record<'light' | 'dark', string> = {
   light: '#fcfcfa',
   dark: '#181a1e',
 };

@@ -7,6 +7,7 @@ import { parseStoryList } from '@/src/parse/parseStoryList';
 import { parseItem } from '@/src/parse/parseItem';
 import { parseUser } from '@/src/parse/parseUser';
 import { parseUserComments } from '@/src/parse/parseUserComments';
+import { PAGE_BG } from '@/src/settings/applyTheme';
 import { App, type AppPayload } from '@/src/ui/App';
 import '@/assets/styles/theme.css';
 
@@ -111,8 +112,8 @@ function injectHideStyle(): HTMLStyleElement {
     #hnmain, body > center, body > br { display: none !important; }
     html, body { margin: 0 !important; padding: 0 !important; }
     body { background: transparent !important; }
-    html { background: #fcfcfa; }
-    @media (prefers-color-scheme: dark) { html { background: #181a1e; } }
+    html { background: ${PAGE_BG.light}; }
+    @media (prefers-color-scheme: dark) { html { background: ${PAGE_BG.dark}; } }
   `;
   (document.head ?? document.documentElement).append(style);
   return style;

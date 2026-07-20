@@ -28,7 +28,7 @@ Chrome (MV3) and Firefox (MV2).
 
 ```
 entrypoints/hn.content   in-place takeover content script (parse → mount React)
-entrypoints/popup        toolbar quick-settings
+entrypoints/popup        toolbar about / links card
 entrypoints/options      full settings page
 src/parse                HN DOM → typed model (the core; covered by tests)
 src/actions              vote / reply write-backs

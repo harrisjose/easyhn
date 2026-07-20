@@ -8,15 +8,10 @@ import { getSettings, patchSettings, watchSettings } from './store';
  */
 export function useSettings() {
   const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
-  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     let active = true;
-    getSettings().then((s) => {
-      if (!active) return;
-      setSettings(s);
-      setLoaded(true);
-    });
+    getSettings().then((s) => active && setSettings(s));
     const unwatch = watchSettings((s) => active && setSettings(s));
     return () => {
       active = false;
@@ -30,5 +25,5 @@ export function useSettings() {
     void patchSettings(patch);
   }, []);
 
-  return { settings, update, loaded };
+  return { settings, update };
 }

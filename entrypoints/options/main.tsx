@@ -1,18 +1,12 @@
-import { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useSettings } from '@/src/settings/useSettings';
-import { applyTheme, watchSystemTheme } from '@/src/settings/applyTheme';
+import { useApplyTheme } from '@/src/settings/useApplyTheme';
 import { SettingsPanel } from '@/src/ui/components/SettingsPanel';
 import '@/assets/styles/theme.css';
 
 function Options() {
   const { settings, update } = useSettings();
-
-  useEffect(() => {
-    const el = document.documentElement;
-    applyTheme(el, settings);
-    return watchSystemTheme(() => applyTheme(el, settings));
-  }, [settings]);
+  useApplyTheme(settings);
 
   return (
     <div className="ehn-root" style={{ minHeight: '100vh' }}>

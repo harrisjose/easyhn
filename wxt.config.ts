@@ -32,7 +32,7 @@ export default defineConfig({
     ...(browser === 'firefox'
       ? {
           browser_specific_settings: {
-            gecko: { id: 'easyhn@harrispanakal', strict_min_version: '109.0' },
+            gecko: { id: 'easyhn@harrispjose', strict_min_version: '109.0' },
           },
           // Firefox-only manifest field.
           data_collection_permissions: { required: ['none'] },

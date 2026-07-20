@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import { useSettings } from '@/src/settings/useSettings';
-import { applyTheme, watchSystemTheme } from '@/src/settings/applyTheme';
+import { useApplyTheme } from '@/src/settings/useApplyTheme';
 import { YCombinator, XLogoIcon, ExternalArrow } from '@/src/ui/components/icons';
 import '@/assets/styles/theme.css';
 
@@ -22,12 +21,7 @@ const LINKS = [
 
 function Popup() {
   const { settings } = useSettings();
-
-  useEffect(() => {
-    const el = document.documentElement;
-    applyTheme(el, settings);
-    return watchSystemTheme(() => applyTheme(el, settings));
-  }, [settings]);
+  useApplyTheme(settings);
 
   return (
     <div className="ehn-root ehn-popup">

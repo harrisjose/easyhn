@@ -6,6 +6,9 @@ import { StoryRow } from '../components/StoryRow';
 export function StoryList({ stories, moreUrl }: { stories: Story[]; moreUrl?: string }) {
   const [selected, setSelected] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
+  // Read inside the keydown handler without re-binding the listener each move.
+  const selectedRef = useRef(selected);
+  selectedRef.current = selected;
 
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
@@ -19,12 +22,12 @@ export function StoryList({ stories, moreUrl }: { stories: Story[]; moreUrl?: st
           break;
         case 'o':
         case 'Enter': {
-          const s = stories[selected];
+          const s = stories[selectedRef.current];
           if (s) window.location.href = s.url ?? itemUrl(s.id);
           break;
         }
         case 'c': {
-          const s = stories[selected];
+          const s = stories[selectedRef.current];
           if (s) window.location.href = itemUrl(s.id);
           break;
         }
@@ -35,7 +38,7 @@ export function StoryList({ stories, moreUrl }: { stories: Story[]; moreUrl?: st
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [stories, selected]);
+  }, [stories]);
 
   useEffect(() => {
     if (selected < 0) return;

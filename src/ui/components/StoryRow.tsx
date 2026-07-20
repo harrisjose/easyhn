@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import type { Story } from '@/src/types';
-import { upvote } from '@/src/actions';
-import { useSettings } from '@/src/settings/useSettings';
-import { itemUrl, newTab, useToast } from '../util';
+import { itemUrl, userUrl, fromSiteUrl, plural, newTab, useAppSettings } from '../util';
+import { useUpvote } from '../useUpvote';
 import { UpArrow } from './icons';
 
 export function StoryRow({
@@ -16,24 +14,13 @@ export function StoryRow({
   selected: boolean;
   showJobBadge?: boolean;
 }) {
-  const { settings } = useSettings();
-  const toast = useToast();
-  const [voted, setVoted] = useState(story.vote.upvoted);
+  const settings = useAppSettings();
+  const { voted, handleVote } = useUpvote(story.vote);
 
   const href = story.url ?? itemUrl(story.id);
   // Only external article links open in a new tab; self/Ask posts go to the
   // item page in place.
   const titleLinkProps = newTab(!!story.url && settings.openInNewTab);
-
-  async function handleVote() {
-    if (voted || !story.vote.upvoteUrl) return;
-    setVoted(true); // optimistic
-    const ok = await upvote(story.vote.upvoteUrl);
-    if (!ok) {
-      setVoted(false);
-      toast('Vote failed — are you logged in?');
-    }
-  }
 
   return (
     <article className={`ehn-story${selected ? ' selected' : ''}`} data-index={index}>
@@ -52,14 +39,12 @@ export function StoryRow({
         </div>
         <div className="ehn-meta">
           {story.domain && (
-            <a className="ehn-domain" href={`https://news.ycombinator.com/from?site=${story.domain}`}>
+            <a className="ehn-domain" href={fromSiteUrl(story.domain)}>
               {story.domain}
             </a>
           )}
           {story.score != null && <span>{story.score} points</span>}
-          {story.author && (
-            <a href={`https://news.ycombinator.com/user?id=${story.author}`}>{story.author}</a>
-          )}
+          {story.author && <a href={userUrl(story.author)}>{story.author}</a>}
           {story.ageText && (
             <a href={itemUrl(story.id)} title={story.ageTitle}>
               {story.ageText}
@@ -67,9 +52,7 @@ export function StoryRow({
           )}
           {!story.isJob && (
             <a href={itemUrl(story.id)}>
-              {story.commentCount != null
-                ? `${story.commentCount} comment${story.commentCount === 1 ? '' : 's'}`
-                : 'discuss'}
+              {story.commentCount != null ? plural(story.commentCount, 'comment') : 'discuss'}
             </a>
           )}
         </div>

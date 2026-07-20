@@ -1,10 +1,22 @@
 import type { ReplyForm } from '@/src/types';
+import { parseReplyForm } from '@/src/parse/auth';
 
 /**
  * All write actions reuse the user's existing HN session cookies. We hit the
  * very same endpoints HN's own UI does, so logged-in users keep full account
  * features without us ever handling credentials ourselves.
  */
+
+/** Fetch an HN page (with the user's cookies) and parse it into a Document. */
+export async function fetchDoc(url: string): Promise<Document | null> {
+  try {
+    const res = await fetch(url, { credentials: 'include' });
+    if (!res.ok) return null;
+    return new DOMParser().parseFromString(await res.text(), 'text/html');
+  } catch {
+    return null;
+  }
+}
 
 /** Upvote by firing HN's vote link (it carries the auth token). */
 export async function upvote(url: string): Promise<boolean> {
@@ -51,19 +63,7 @@ export async function postComment(form: ReplyForm, text: string): Promise<boolea
  * form for that comment.
  */
 export async function fetchReplyForm(replyUrl: string): Promise<ReplyForm | null> {
-  try {
-    const res = await fetch(replyUrl, { credentials: 'include' });
-    if (!res.ok) return null;
-    const html = await res.text();
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    const form = doc.querySelector('form[action="comment"]');
-    const get = (name: string) =>
-      form?.querySelector<HTMLInputElement>(`input[name="${name}"]`)?.value;
-    const parent = get('parent');
-    const hmac = get('hmac');
-    if (!parent || !hmac) return null;
-    return { parent, goto: get('goto') ?? '', hmac };
-  } catch {
-    return null;
-  }
+  const doc = await fetchDoc(replyUrl);
+  if (!doc) return null;
+  return parseReplyForm(doc.querySelector<HTMLFormElement>('form[action="comment"]')) ?? null;
 }

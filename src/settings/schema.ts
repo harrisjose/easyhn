@@ -26,8 +26,8 @@ export const WIDTH_PX: Record<Width, number> = {
   wide: 1040,
 };
 
-// Font stacks mirror Modern for HN's own design tokens (Inter / Source Serif
-// Pro), degrading to the platform defaults when those faces aren't installed.
+// Inter for sans and Source Serif Pro for serif, degrading to the platform
+// defaults when those faces aren't installed.
 export const FONT_STACK: Record<FontFamily, string> = {
   sans: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, 'Helvetica Neue', Arial, sans-serif",
   serif: "'Source Serif Pro', 'Iowan Old Style', 'Sitka Text', Palatino, 'Book Antiqua', Georgia, serif",

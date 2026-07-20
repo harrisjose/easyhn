@@ -3,7 +3,7 @@ import type { ItemPage, ProfilePage, Route, Session } from '@/src/types';
 import type { StoryListResult } from '@/src/parse/parseStoryList';
 import { useSettings } from '@/src/settings/useSettings';
 import { applyTheme, applyPageBackground, watchSystemTheme } from '@/src/settings/applyTheme';
-import { ToastContext, SettingsUIContext, AccountUIContext } from './util';
+import { ToastContext, SettingsContext, SettingsUIContext, AccountUIContext } from './util';
 import { Header } from './components/Header';
 import { SettingsPanel } from './components/SettingsPanel';
 import { AccountPanel } from './components/AccountPanel';
@@ -57,26 +57,26 @@ export function App({
 
   return (
     <ToastContext.Provider value={notify}>
-      <SettingsUIContext.Provider value={openSettings}>
-        <AccountUIContext.Provider value={openAccount}>
-          <Header route={route} session={session} />
-          <main className="ehn-container">
-            {payload.kind === 'storylist' && (
-              <StoryList stories={payload.list.stories} moreUrl={payload.list.moreUrl} />
-            )}
-            {payload.kind === 'item' && <Item item={payload.item} loggedIn={session.loggedIn} />}
-            {payload.kind === 'profile' && (
-              <Profile profile={payload.profile} loggedIn={session.loggedIn} />
-            )}
-          </main>
+      <SettingsContext.Provider value={settings}>
+        <SettingsUIContext.Provider value={openSettings}>
+          <AccountUIContext.Provider value={openAccount}>
+            <Header route={route} session={session} />
+            <main className="ehn-container">
+              {payload.kind === 'storylist' && (
+                <StoryList stories={payload.list.stories} moreUrl={payload.list.moreUrl} />
+              )}
+              {payload.kind === 'item' && <Item item={payload.item} loggedIn={session.loggedIn} />}
+              {payload.kind === 'profile' && <Profile profile={payload.profile} />}
+            </main>
 
-          {settingsOpen && <SettingsPopover onClose={() => setSettingsOpen(false)} />}
-          {accountOpen && (
-            <AccountPanel session={session} onClose={() => setAccountOpen(false)} />
-          )}
-          {toast && <div className="ehn-toast">{toast}</div>}
-        </AccountUIContext.Provider>
-      </SettingsUIContext.Provider>
+            {settingsOpen && <SettingsPopover onClose={() => setSettingsOpen(false)} />}
+            {accountOpen && (
+              <AccountPanel session={session} onClose={() => setAccountOpen(false)} />
+            )}
+            {toast && <div className="ehn-toast">{toast}</div>}
+          </AccountUIContext.Provider>
+        </SettingsUIContext.Provider>
+      </SettingsContext.Provider>
     </ToastContext.Provider>
   );
 }

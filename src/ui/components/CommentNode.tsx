@@ -1,28 +1,19 @@
 import { useState } from 'react';
 import type { Comment, ReplyForm } from '@/src/types';
-import { upvote, fetchReplyForm } from '@/src/actions';
+import { fetchReplyForm } from '@/src/actions';
 import { userUrl, itemUrl, useToast } from '../util';
+import { useUpvote } from '../useUpvote';
 import { Composer } from './Composer';
 import { Prose } from './Prose';
 import { UpArrow, Chevron, Reply } from './icons';
 
 export function CommentNode({ comment, loggedIn }: { comment: Comment; loggedIn: boolean }) {
   const toast = useToast();
+  const { voted, canUpvote, handleVote } = useUpvote(comment.vote);
   const [collapsed, setCollapsed] = useState(false);
-  const [voted, setVoted] = useState(comment.vote.upvoted);
   const [replyForm, setReplyForm] = useState<ReplyForm | null>(comment.replyForm ?? null);
   const [replying, setReplying] = useState(false);
   const [loadingForm, setLoadingForm] = useState(false);
-
-  async function handleVote() {
-    if (voted || !comment.vote.upvoteUrl) return;
-    setVoted(true);
-    const ok = await upvote(comment.vote.upvoteUrl);
-    if (!ok) {
-      setVoted(false);
-      toast('Vote failed — are you logged in?');
-    }
-  }
 
   async function openReply() {
     setReplying(true);
@@ -65,7 +56,7 @@ export function CommentNode({ comment, loggedIn }: { comment: Comment; loggedIn:
             </>
           )}
           <span className="ehn-comment-actions">
-            {(comment.vote.canUpvote || voted) && (
+            {(canUpvote || voted) && (
               <button
                 onClick={handleVote}
                 className={voted ? 'voted' : ''}
