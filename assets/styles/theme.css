@@ -1228,3 +1228,97 @@ body {
     to { opacity: 1; transform: translateY(0); }
   }
 }
+
+/* ── Browser-action popup ─────────────────────────────────────────────────
+   A small "about + links" card shown when the toolbar icon is clicked.
+   Settings live in-page now, so the popup stays intentionally minimal. */
+
+/* Size the popup document to hug the card. Without this Chrome gives the
+   popup an arbitrarily wide/tall window with empty space around the content,
+   and the bare page background shows through. Scoped via :has so the options
+   page (also .ehn-root, no .ehn-popup) is untouched. */
+html:has(.ehn-popup),
+body:has(.ehn-popup) {
+  width: fit-content;
+  background: var(--bg);
+}
+.ehn-popup {
+  width: 288px;
+  /* Override .ehn-root's min-height:100vh so the popup hugs its content. */
+  min-height: 0;
+  background: var(--bg);
+  color: var(--fg);
+  padding: var(--sp-4);
+}
+.ehn-popup-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+.ehn-popup-title {
+  font-weight: 700;
+  font-size: 1.05em;
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+}
+.ehn-popup-tag {
+  color: var(--fg-dim);
+  font-size: 0.82em;
+  line-height: 1.25;
+}
+.ehn-popup-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.ehn-root .ehn-popup-link {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: 8px;
+  color: var(--fg);
+  text-decoration: none;
+  transition: background 0.12s ease;
+}
+.ehn-popup-link-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 7px;
+  background: var(--bg-sunken);
+  color: var(--fg-dim);
+}
+.ehn-popup-link:hover .ehn-popup-link-icon {
+  color: var(--fg);
+}
+.ehn-popup-link-icon svg {
+  width: 17px;
+  height: 17px;
+}
+.ehn-popup-link-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.ehn-popup-link-label {
+  font-weight: 600;
+  font-size: 0.92em;
+}
+.ehn-popup-link-sub {
+  color: var(--fg-dim);
+  font-size: 0.78em;
+}
+.ehn-popup-link-arrow {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  color: var(--fg-faint);
+}
+.ehn-popup-link:hover .ehn-popup-link-arrow {
+  color: var(--ehn-accent);
+}
