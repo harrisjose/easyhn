@@ -4,6 +4,7 @@ import {
   type Theme,
   type FontFamily,
   type Width,
+  type Density,
   FONT_STACK,
 } from '@/src/settings/schema';
 import { ThemeLight, ThemeDark, ThemeAuto } from './icons';
@@ -15,6 +16,7 @@ const THEMES: { value: Theme; label: string; Icon: ComponentType<{ className?: s
 ];
 const FONTS: FontFamily[] = ['sans', 'serif'];
 const WIDTHS: Width[] = ['narrow', 'medium', 'wide'];
+const DENSITIES: Density[] = ['compact', 'default', 'comfortable'];
 
 /** The shared settings controls — reused by the popup, options page and the
  *  in-page settings popover. Pure presentational; persistence is the caller's. */
@@ -77,6 +79,21 @@ export function SettingsPanel({
           <span className="ehn-slider-cap" style={{ fontSize: '1.3em' }}>
             A
           </span>
+        </div>
+      </Field>
+
+      <Field label="Density">
+        <div className="ehn-seg">
+          {DENSITIES.map((d) => (
+            <button
+              key={d}
+              className={`ehn-seg-btn${settings.density === d ? ' active' : ''}`}
+              onClick={() => update({ density: d })}
+              aria-pressed={settings.density === d}
+            >
+              {cap(d)}
+            </button>
+          ))}
         </div>
       </Field>
 

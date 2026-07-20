@@ -1,6 +1,7 @@
 export type Theme = 'light' | 'dark' | 'auto';
 export type FontFamily = 'sans' | 'serif';
 export type Width = 'narrow' | 'medium' | 'wide';
+export type Density = 'compact' | 'default' | 'comfortable';
 
 export interface Settings {
   theme: Theme;
@@ -8,6 +9,8 @@ export interface Settings {
   /** Base font size in px. */
   fontSize: number;
   width: Width;
+  /** Vertical whitespace in lists and comment threads, independent of size. */
+  density: Density;
   /** Open story/article title links in a new tab. */
   openInNewTab: boolean;
 }
@@ -17,6 +20,7 @@ export const DEFAULT_SETTINGS: Settings = {
   font: 'sans',
   fontSize: 15,
   width: 'medium',
+  density: 'default',
   openInNewTab: true,
 };
 
@@ -24,6 +28,13 @@ export const WIDTH_PX: Record<Width, number> = {
   narrow: 640,
   medium: 820,
   wide: 1040,
+};
+
+/** Multiplier applied to list/comment vertical padding via `--ehn-density`. */
+export const DENSITY_SCALE: Record<Density, number> = {
+  compact: 0.6,
+  default: 1,
+  comfortable: 1.5,
 };
 
 // Inter for sans and Source Serif Pro for serif, degrading to the platform
