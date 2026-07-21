@@ -149,8 +149,10 @@ body {
   top: 0;
   z-index: 10;
   background: var(--header-bg);
+  /* Only author the unprefixed property — the CSS minifier's prefixer adds
+     -webkit- itself. Hand-writing both made it drop the unprefixed one and keep
+     a -webkit--only value, which Chrome ignores → the blur silently vanished. */
   backdrop-filter: saturate(180%) blur(14px);
-  -webkit-backdrop-filter: saturate(180%) blur(14px);
   border-bottom: 1px solid var(--border);
 }
 .ehn-header-inner {
@@ -1208,10 +1210,13 @@ body {
   padding: 1px 5px;
 }
 
-/* Staggered reveal on first paint, capped so long lists don't crawl in. */
+/* Staggered reveal on first paint, capped so long lists don't crawl in.
+   `backwards` (not `both`): the rows must NOT retain a transform layer after the
+   reveal, or the sticky header's backdrop-filter can't blur them (Chromium won't
+   sample composited content) and they'd bleed through the glass sharply. */
 @media (prefers-reduced-motion: no-preference) {
   .ehn-story {
-    animation: ehn-rise 0.34s ease both;
+    animation: ehn-rise 0.34s ease backwards;
   }
   .ehn-story:nth-child(1) { animation-delay: 0.01s; }
   .ehn-story:nth-child(2) { animation-delay: 0.02s; }
