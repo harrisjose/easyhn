@@ -1,0 +1,63 @@
+/* easyhn landing · design tokens
+ * Direction: dark editorial. A cool near-black canvas (borrowed from the
+ * extension's own dark theme), an editorial serif for display, a system sans
+ * for body, and a monospace utility face for labels/metadata/keys — a nod to
+ * Hacker News' own monospace heritage and easyhn's tabular-figure detailing.
+ * HN orange is the single accent, used with restraint. */
+:root {
+  /* ---- Color: cool near-black, blue-leaning neutrals (matches the app) ---- */
+  --paper:    #15171b;   /* page */
+  --paper-2:  #1b1e23;   /* elevated surfaces: window frame, cards */
+  --paper-3:  #23262c;   /* insets, keycaps */
+  --ink:      #edeef1;   /* headlines — a touch brighter than the app for pop */
+  --ink-soft: #a5a9b2;   /* body */
+  --ink-faint:#6a6e78;   /* captions, metadata */
+
+  --hairline:        rgba(255, 255, 255, 0.07);
+  --hairline-strong: rgba(255, 255, 255, 0.13);
+
+  --accent:      #ff6600;              /* HN orange */
+  --accent-ink:  #1a0e00;              /* text sitting on the orange fill */
+  --accent-soft: rgba(255, 102, 0, 0.14);
+  --accent-line: rgba(255, 102, 0, 0.42);
+  --accent-glow: rgba(255, 102, 0, 0.20);
+  --select:      rgba(255, 102, 0, 0.30);
+  --focus:       #ff8534;
+
+  /* ---- Type ---- */
+  /* Display: the extension's own serif stack (its "serif" reading mode),
+     so the page speaks in the product's voice. */
+  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
+  --font-body:    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono:    ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, "Cascadia Code", "Roboto Mono", monospace;
+
+  --text-display: clamp(2.75rem, 8.5vw, 5rem);
+  --text-lg:      1.25rem;
+  --text-base:    1.0625rem;
+  --text-sm:      0.9375rem;
+  --text-xs:      0.8125rem;
+  --text-label:   0.75rem;    /* mono eyebrows / labels */
+
+  /* ---- Space: 4pt scale ---- */
+  --space-2xs: 0.25rem;
+  --space-xs:  0.5rem;
+  --space-sm:  0.75rem;
+  --space-md:  1rem;
+  --space-lg:  1.5rem;
+  --space-xl:  2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6.5rem;
+  --space-4xl: 9rem;
+
+  /* ---- Radius ---- */
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-full: 999px;
+
+  /* ---- Motion ---- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 160ms;
+  --dur-mid:  420ms;
+  --dur-slow: 720ms;
+}

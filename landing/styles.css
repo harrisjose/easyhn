@@ -1,0 +1,396 @@
+/* easyhn landing · dark editorial
+ * Macrostructure: centered narrative column with two full-width "browser
+ * window" showcases as the breakout moments. Signature: the window chrome
+ * whose address bar reads news.ycombinator.com — the exact page easyhn
+ * transforms in place. */
+@import url("tokens.css");
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { overscroll-behavior: none; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+html, body { overflow-x: clip; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  background: var(--paper);
+  /* A faint orange aurora bleeding from the top, fading out by the first
+     screenful — the accent's ambient presence without a hard band. */
+  background-image:
+    radial-gradient(120% 70% at 50% -12%, var(--accent-soft), transparent 60%);
+  background-repeat: no-repeat;
+  text-wrap: pretty;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "kern", "liga";
+}
+
+main { flex: 1 0 auto; }
+
+h1, h2, h3 { margin: 0; }
+p { margin: 0; }
+a { color: inherit; }
+img { display: block; max-width: 100%; }
+em { font-style: italic; }
+
+::selection { background: var(--select); }
+.nowrap { white-space: nowrap; }
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: 640px;
+  margin-inline: auto;
+  padding-inline: var(--space-lg);
+}
+
+/* ---- Eyebrow / label ---- */
+.eyebrow {
+  font-family: var(--font-body);
+  font-size: var(--text-label);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.eyebrow--rule {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  color: var(--accent);
+}
+.eyebrow--rule::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--hairline);
+}
+
+/* ============ Buttons & links ============ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6875rem 1.375rem;
+  border-radius: var(--radius-full);
+  border: 1px solid transparent;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 650;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out),
+              filter var(--dur-fast) var(--ease-out),
+              box-shadow var(--dur-mid) var(--ease-out);
+}
+.btn:hover { filter: brightness(1.08); box-shadow: 0 10px 30px -12px var(--accent-glow); }
+.btn:active { transform: translateY(1px); }
+
+.btn--lg { padding: 0.9375rem 1.75rem; font-size: var(--text-base); }
+.btn--lg:hover { transform: translateY(-1px); box-shadow: 0 18px 44px -16px var(--accent-glow); }
+.btn--lg:active { transform: translateY(0); }
+
+.link-arrow {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 550;
+  letter-spacing: -0.005em;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.link-arrow:hover { color: var(--accent); }
+
+/* Fixed corner CTA — desktop only; the closing CTA covers phones */
+.cta-corner {
+  position: fixed;
+  top: var(--space-md);
+  right: var(--space-md);
+  z-index: 10;
+  padding: 0.4375rem 0.9375rem;
+  font-size: var(--text-xs);
+  box-shadow: 0 8px 22px -12px rgba(0, 0, 0, 0.7);
+}
+@media (max-width: 620px) { .cta-corner { display: none; } }
+
+/* ============ Hero ============ */
+.hero {
+  text-align: center;
+  padding-top: clamp(2.5rem, 9svh, 5rem);
+  padding-bottom: var(--space-2xl);
+}
+
+
+.hero__title {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-display);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.hero__title em { color: var(--accent); }
+
+.lede {
+  margin: var(--space-lg) auto 0;
+  max-width: 32rem;
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: var(--ink-soft);
+  text-align: left;     /* natural paragraph block — no centred funnel */
+  text-wrap: pretty;
+}
+/* Inline links in body copy: subtle underline, accent on hover. */
+.lede a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--hairline-strong);
+  text-underline-offset: 2px;
+  transition: color var(--dur-fast) var(--ease-out),
+              text-decoration-color var(--dur-fast) var(--ease-out);
+}
+.lede a:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent-line);
+}
+.lede em { color: var(--accent); font-style: italic; }
+
+.actions {
+  margin-top: var(--space-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+}
+
+/* ============ Showcase (MacBook) ============ */
+.showcase {
+  position: relative;
+  padding-inline: var(--space-lg);
+  padding-bottom: var(--space-2xl);
+}
+/* Soft orange glow pooling behind the top of the frame */
+.showcase::before {
+  content: "";
+  position: absolute;
+  top: -4%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(760px, 82%);
+  height: 60%;
+  background: radial-gradient(60% 60% at 50% 40%, var(--accent-glow), transparent 70%);
+  filter: blur(30px);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.mac {
+  position: relative;
+  margin: 0 auto;
+  /* Sized so the 1180-px-wide shot renders at ~1:1 on 2× displays — no
+     upscaling, so it stays crisp. The screen captures at 1× (not retina), so
+     ~1180px is the resolution ceiling; a bigger frame would soften it. */
+  max-width: 640px;
+}
+
+/* The lid: a black bezel around the display, with the camera dot up top. */
+.mac__screen {
+  position: relative;
+  padding: 11px;
+  border-radius: 20px;
+  background: #0b0c0e;
+  border: 1px solid var(--hairline-strong);
+  box-shadow:
+    0 2px 0 0 rgba(255, 255, 255, 0.04) inset,
+    0 40px 90px -45px rgba(0, 0, 0, 0.85),
+    0 12px 34px -22px rgba(0, 0, 0, 0.7);
+}
+.mac__screen::before {           /* camera */
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.13);
+}
+.mac__display {
+  aspect-ratio: 16 / 10;
+  border-radius: 9px;
+  overflow: hidden;
+  background: #181a1e;
+}
+/* The shot is pre-cropped to a 16:10 1200×750 region (the story column), so it
+   fills the screen with no scaling — displayed at native size for a crisp image. */
+.mac__shot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The deck: a shallow bar a touch wider than the lid, with a center notch. */
+.mac__base {
+  position: relative;
+  width: 111%;
+  left: -5.5%;
+  height: 15px;
+  border-radius: 0 0 11px 11px;
+  background: linear-gradient(#31343a 0%, #1c1e23 55%, #0e1013 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.14) inset,
+    0 24px 30px -20px rgba(0, 0, 0, 0.8);
+}
+.mac__base::after {              /* opening groove */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88px;
+  height: 8px;
+  border-radius: 0 0 8px 8px;
+  background: linear-gradient(#15171b, #0b0d10);
+}
+
+/* ============ Features (editorial list) ============ */
+.features { padding-block: var(--space-3xl) var(--space-2xl); }
+.features .eyebrow--rule { margin-bottom: var(--space-xl); }
+
+.flist { list-style: none; margin: 0; padding: 0; }
+.feat { padding-block: var(--space-lg); border-top: 1px solid var(--hairline); }
+.feat:first-child { border-top: 0; padding-top: 0; }
+
+.feat h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.35rem, 3.2vw, 1.7rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: var(--space-xs);
+}
+.feat p { font-size: var(--text-base); line-height: 1.6; color: var(--ink-soft); }
+
+/* Keyboard caps */
+.keys {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-left: 0.25rem;
+}
+.keys__sep { color: var(--ink-faint); font-size: var(--text-sm); margin-right: 0.3rem; }
+kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.6em;
+  height: 1.6em;
+  padding: 0 0.35em;
+  border-radius: var(--radius-sm);
+  background: var(--paper-3);
+  border: 1px solid var(--hairline-strong);
+  border-bottom-width: 2px;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--ink);
+}
+
+/* ============ Closing ============ */
+.closing {
+  text-align: center;
+  padding-block: var(--space-2xl) var(--space-3xl);
+}
+.closing__note {
+  margin-top: var(--space-md);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+
+/* ============ Footer ============ */
+.footer {
+  border-top: 1px solid var(--hairline);
+  padding-block: var(--space-xl);
+}
+.footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem 0.7rem;
+  font-size: var(--text-sm);
+  color: var(--ink-faint);
+}
+.footer__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.footer__brand img { border-radius: 5px; }
+.footer__inner a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease-out);
+}
+.footer__inner a:hover { color: var(--accent); }
+.dot { color: var(--hairline-strong); }
+
+/* ============ Motion ============ */
+.reveal--armed { opacity: 0; transform: translateY(18px) scale(0.99); }
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--dur-slow) var(--ease-out),
+              transform var(--dur-slow) var(--ease-out);
+}
+
+/* Hero load-in */
+@media (prefers-reduced-motion: no-preference) {
+  .hero > * { animation: rise var(--dur-slow) var(--ease-out) both; }
+  .hero__title { animation-delay: 0.04s; }
+  .lede        { animation-delay: 0.12s; }
+  .actions     { animation-delay: 0.20s; }
+}
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ============ Responsive ============ */
+@media (max-width: 620px) {
+  .actions { flex-direction: column; gap: var(--space-md); }
+  .actions .btn { width: min(100%, 20rem); }
+  .showcase { padding-inline: var(--space-md); }
+  .features { padding-top: var(--space-2xl); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal--armed { opacity: 1; transform: none; }
+  * { animation: none !important; }
+}
