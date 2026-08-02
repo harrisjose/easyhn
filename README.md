@@ -132,7 +132,7 @@ shouldn't call a third party to render its headline.
 `landing/public/mockup-easyhn.jpg` is a composite: a stock photo of a MacBook with a
 real easyhn screenshot perspective-mapped onto the screen.
 
-**`landing/public/mockup.svg` is the source template — keep it.** It's a Figma export
+**`design/mockup.svg` is the source template — keep it.** It's a Figma export
 containing two embedded PNGs: the photo plate, and a pre-warped placeholder whose alpha
 channel defines the screen quad (including the notch cutout). That placeholder is what
 makes the perspective correct — the screen is a true 4-corner projection (top edge
@@ -153,6 +153,7 @@ To regenerate the hero after a UI change:
 The plate's blank screen is a flat synthetic fill, so it carries no real reflections to
 reuse — the sheen and edge falloff have to be synthesised (light source is upper-left).
 
-`mockup.svg` is listed in `landing/.assetsignore`, so it stays in the repo without
-shipping 6MB to production. (Wrangler's assets directory is `landing/` itself, so
-anything sitting there is uploaded unless it's ignored.)
+`mockup.svg` lives in `design/` rather than under `landing/` so it can't ship the 6MB
+to production. Wrangler's assets directory is `landing/` itself, so anything sitting
+there is uploaded unless it's named in `landing/.assetsignore` — keeping build-time
+source art outside that tree means there's no ignore rule to forget.
