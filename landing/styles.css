@@ -256,10 +256,12 @@ em { font-style: normal; }
 .hero-shot img { width: 100%; height: auto; }
 
 /* ============ Section headings ============ */
+/* The 28px floor keeps this a clear step above the 20px card headings, which
+   don't scale; both still set on one line at 342px of measure. */
 .section-title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(1.5rem, 3.4vw, 2rem);
+  font-size: clamp(1.75rem, 3.4vw, 2rem);
   line-height: 1.1;
   letter-spacing: -0.002em;
   color: var(--ink);
@@ -505,7 +507,11 @@ kbd {
 
 /* ============ Responsive ============ */
 @media (max-width: 560px) {
-  .cards { grid-template-columns: 1fr; gap: var(--space-xl); }
+  /* With one column, proximity alone does the grouping the two columns do
+     above: keep the gap between cards far larger than the one inside a card,
+     or a caption reads as belonging to either screenshot it sits between. */
+  .cards { grid-template-columns: 1fr; gap: 3.5rem; }
+  .card__shot { margin-bottom: var(--space-sm); }
 }
 
 @media (max-width: 620px) {
