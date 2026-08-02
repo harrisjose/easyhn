@@ -6,6 +6,3 @@ wrangler.jsonc
 .gitignore
 .wrangler
 .DS_Store
-
-# Source template for the hero composite — see README, "The hero image".
-public/mockup.svg
