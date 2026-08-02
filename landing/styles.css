@@ -211,8 +211,8 @@ em { font-style: normal; }
   color: var(--accent-text);
   text-decoration-color: var(--accent-line);
 }
-/* Stacked, not side by side: the button's label is a full phrase now, and set
-   beside it the source link competed with it for the same horizontal line. */
+/* Stacked: the button's label is a full phrase, and the source link can't share
+   a line with it without competing. */
 .actions {
   margin-top: var(--space-lg);
   display: flex;
@@ -222,9 +222,6 @@ em { font-style: normal; }
 }
 
 /* ============ Hero showcase ============ */
-/* Was a MacBook drawn in CSS wrapping a flat screenshot. Now a photograph of
-   the thing actually being used, so the frame is real and the perspective with
-   it. */
 .showcase {
   position: relative;
   padding-bottom: var(--space-2xl);
@@ -301,10 +298,9 @@ em { font-style: normal; }
   gap: var(--space-xl) var(--space-lg);
 }
 
-/* The screenshot sits inset on a tinted plate, so the dark UI reads as a
-   specimen rather than a hole in the page. The plate carries no border of its
-   own — the tint and the shadow give it enough edge, and a second rule 10px
-   outside the screenshot's own only read as a frame around a frame. */
+/* The screenshot sits inset on a tinted plate so it reads as a specimen rather
+   than a hole in the page. No border here: the image carries its own 10px in,
+   and two rules that close together read as a frame around a frame. */
 .card__shot {
   margin: 0 0 var(--space-md);
   padding: var(--space-sm);

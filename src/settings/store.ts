@@ -2,11 +2,9 @@ import { storage } from '#imports';
 import { DEFAULT_SETTINGS, type Settings } from './schema';
 
 /**
- * Settings live in `storage.sync` so a change made in one place reaches every
- * open HN tab. Note that this is the browser's own sync area, not a sync layer
- * of ours: it does not carry settings between Chrome and Firefox, so don't
- * promise that anywhere user-facing. WXT's storage API gives us typed get/set
- * plus a change watcher used by the React hook.
+ * Settings live in `storage.sync` so a change in one place reaches every open HN
+ * tab. This is the browser's own sync area, not a sync layer of ours: it carries
+ * nothing between Chrome and Firefox, so don't promise that in user-facing copy.
  */
 export const settingsItem = storage.defineItem<Settings>('sync:settings', {
   fallback: DEFAULT_SETTINGS,

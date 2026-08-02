@@ -24,8 +24,8 @@ export default defineConfig({
     // Needed so the content script can POST votes/replies to HN on the
     // user's behalf using their existing session cookies.
     host_permissions: ['*://news.ycombinator.com/*'],
-    // Icons live in public/icon/ (copied to the output root); generated from
-    // the same geometry as the EasyhnMark component.
+    // public/icon/ is copied to the output root. Regenerate with
+    // `node scripts/gen-icons.mjs`, never by hand.
     icons: {
       16: 'icon/16.png',
       32: 'icon/32.png',

@@ -1,15 +1,13 @@
 // Generates every raster the ghost mark needs, from one path definition.
 //
-// The mark is a sheet-ghost: a cloth thrown over something that's already
-// there, which is what easyhn is to news.ycombinator.com. Three things keep it
-// reading as cloth rather than as an arcade ghost — a bell taper instead of
-// parallel sides, a hem of two *unequal* lobes instead of even scallops, and
-// small flat eyes. Resist symmetrising any of them.
-//
 //   node scripts/gen-icons.mjs
 //
 // Writes public/icon/{16,32,48,128}.png (the extension icons declared in
 // wxt.config.ts) and landing/public/icon.{svg,png}.
+//
+// The ghost reads as cloth rather than as an arcade ghost because of a bell
+// taper, unequal hem folds and small flat eyes. Symmetrise any of the three and
+// it turns into Pac-Man.
 
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -18,8 +16,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
-// sharp is not a root dependency: the landing site already pulls it in, and a
-// one-off icon build doesn't justify adding it to the extension's tree.
+// sharp is a landing/ devDependency, not a root one — resolve it from there.
 const require = createRequire(resolve(root, 'landing/package.json'));
 let sharp;
 try {
@@ -30,14 +27,14 @@ try {
 }
 
 /* ---- Geometry -------------------------------------------------------------
- * Authored in a 0–64 box. The body sits at x9–57.8 / y4–55, which is off
- * centre, so everything is drawn inside a group that nudges it back to the
- * middle of the viewBox — icons get cropped to their bounding box by some
- * surfaces and centred by others, and this way both look right.
+ * Authored in a 0–64 box. The body sits at x9–57.8 / y4–55, off centre, so it
+ * is drawn inside a group that nudges it back to the middle: some surfaces crop
+ * an icon to its bounding box and others centre it, and this way both look
+ * right. Re-derive NUDGE if the path changes.
  *
- * Every hem segment puts its control points directly above/below its endpoints,
- * so each tip and notch has a horizontal tangent. That's what makes the folds
- * flow into one another instead of reading as scalloped trim. */
+ * Hem control points sit directly above/below their endpoints, giving every tip
+ * and notch a horizontal tangent. Lose that and the folds read as scalloped
+ * trim. */
 const NUDGE = 'translate(-1.4 2.5)';
 
 const BODY = [
@@ -94,8 +91,8 @@ mkdirSync(resolve(root, 'landing/public'), { recursive: true });
 writeFileSync(resolve(root, 'landing/public/icon.svg'), master);
 console.log('landing/public/icon.svg');
 
-// Rasterise from a size-matched SVG rather than scaling one big render — it
-// lets the rasteriser hint the curves for the pixel grid it's actually hitting.
+// Each PNG comes from an SVG already carrying its target width/height, so the
+// rasteriser hints the curves for the pixel grid it actually lands on.
 async function png(path, size) {
   const buf = await sharp(Buffer.from(ghostSvg({ size })), { density: 384 })
     .resize(size, size)

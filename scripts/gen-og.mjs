@@ -1,15 +1,14 @@
-// Renders landing/public/og.jpg — the 1200×630 card that shows when the site
-// is shared.
+// Renders landing/public/og.png — the 1200×630 card shown when the site is
+// shared.
 //
 //   node scripts/gen-og.mjs
 //
-// Composed with Satori (layout → SVG, text converted to outlines) and
-// rasterised with sharp. No browser involved, so this runs the same way on a
-// laptop and in CI.
+// Satori lays the card out and outlines the text, sharp rasterises. No browser,
+// so it runs the same on a laptop and in CI.
 //
-// The card is defined here rather than as an HTML file. That means it can't
-// literally share the site's stylesheet, so the handful of values it does
-// borrow are pinned in TOKENS below — keep them in step with landing/tokens.css.
+// Being JS rather than HTML, the card can't read the site's stylesheet; the
+// values it borrows are pinned in TOKENS below. Keep them in step with
+// landing/tokens.css.
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
@@ -22,9 +21,9 @@ const require = createRequire(resolve(landing, 'package.json'));
 
 let satori, sharp, wawoff2;
 try {
-  // Resolved out of landing/node_modules rather than imported by name: this
-  // script sits at the repo root, where those packages aren't installed.
-  // satori's CJS build puts the function on .default.
+  // Resolved from landing/node_modules, not imported by name: this script lives
+  // at the repo root where these aren't installed. satori's CJS build puts the
+  // function on .default.
   satori = require('satori').default;
   sharp = require('sharp');
   wawoff2 = require('wawoff2');
@@ -43,8 +42,7 @@ const TOKENS = {
   accentLine: 'rgba(255, 102, 0, 0.45)',
 };
 
-/* Satori reads TTF/OTF/WOFF but not WOFF2, which is all the site ships.
-   Decompressing at build time beats committing a second copy of each face. */
+/* Satori reads TTF/OTF/WOFF but not WOFF2, which is all the site ships. */
 async function face(file, name, weight = 400) {
   const woff2 = readFileSync(resolve(landing, 'public/fonts', file));
   return { name, weight, style: 'normal', data: Buffer.from(await wawoff2.decompress(woff2)) };
@@ -55,24 +53,23 @@ const fonts = [
   await face('jetbrains-mono-400.woff2', 'JetBrains Mono'),
 ];
 
-// The ghost goes in as an <img>. Satori rasterises SVG data URIs itself, so
-// the mark stays vector all the way to the final resize.
+// Satori rasterises SVG data URIs itself, so the mark stays vector until the
+// final resize.
 const ghost = `data:image/svg+xml;base64,${readFileSync(
   resolve(landing, 'public/icon.svg'),
 ).toString('base64')}`;
 
-/* ---- Card ---------------------------------------------------------------
- * Satori is flexbox-only: every element holding more than one child needs an
- * explicit display:flex, and there is no font-synthesis, so the accent line is
- * distinguished by colour alone rather than the page's synthesised italic. */
+/* ---- Card ----------------------------------------------------------------
+ * Satori is flexbox-only: anything holding more than one child needs an
+ * explicit display:flex. */
 const h = (style, children) => ({ type: 'div', props: { style, children } });
 
 const serif = { fontFamily: 'Instrument Serif', color: TOKENS.ink };
 
 const card = h(
   {
-    // Fills whatever canvas satori is given — the size lives in one place, at
-    // the satori() call below.
+    // Fills whatever canvas satori is given; the size is set once, at the
+    // satori() call. Pinning px here leaves the rest of the canvas transparent.
     width: '100%',
     height: '100%',
     display: 'flex',
@@ -81,8 +78,8 @@ const card = h(
     justifyContent: 'space-between',
     padding: '76px 88px 66px',
     backgroundColor: TOKENS.paper,
-    // The page's warm top wash, a shade stronger — it has to survive JPEG and
-    // a ~500px-wide timeline thumbnail.
+    // The page's warm top wash, a shade stronger: it has to still register in a
+    // ~500px-wide timeline thumbnail.
     backgroundImage:
       'radial-gradient(120% 68% at 50% 0%, rgba(255, 102, 0, 0.10), rgba(255, 102, 0, 0) 64%)',
   },
@@ -135,13 +132,12 @@ const card = h(
 );
 
 /* ---- Emit ----------------------------------------------------------------
- * PNG, not JPEG. The card is flat colour plus one very gradual wash — exactly
- * the case JPEG puts visible contour rings through, and which PNG happens to
- * pack smaller anyway, losslessly. */
+ * PNG, not JPEG: flat colour plus one very gradual wash is the case JPEG puts
+ * visible contour rings through, and PNG encodes it smaller here regardless. */
 const svg = await satori(card, { width: 1200, height: 630, fonts });
 
-// Rasterised at 2× (density 144 against satori's 72dpi output) and downsampled,
-// because the serif's thin strokes break up if they go straight to final size.
+// 2x (density 144 against satori's 72dpi) then downsampled: the serif's thin
+// strokes break up if rasterised straight to final size.
 const buf = await sharp(Buffer.from(svg), { density: 144 })
   .resize(1200, 630)
   .flatten({ background: TOKENS.paper }) // the card's own padding is transparent otherwise
