@@ -298,12 +298,13 @@ em { font-style: normal; }
 }
 
 /* The screenshot sits inset on a tinted plate, so the dark UI reads as a
-   specimen rather than a hole in the page. */
+   specimen rather than a hole in the page. The plate carries no border of its
+   own — the tint and the shadow give it enough edge, and a second rule 10px
+   outside the screenshot's own only read as a frame around a frame. */
 .card__shot {
   margin: 0 0 var(--space-md);
   padding: var(--space-sm);
   border-radius: var(--radius-md);
-  border: 1px solid var(--hairline);
   background: linear-gradient(160deg, rgba(255, 102, 0, 0.10), rgba(0, 0, 0, 0.035));
   box-shadow: 0 12px 30px -22px rgba(0, 0, 0, 0.3);
 }
