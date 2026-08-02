@@ -111,3 +111,48 @@ tests that run against captured real HN HTML:
 pnpm test           # run parser tests against tests/fixtures
 pnpm test:fixtures  # re-capture fixtures from live HN
 ```
+
+## Landing page
+
+The marketing site lives in `landing/` and deploys to
+[easyhn.harrisjose.com](https://easyhn.harrisjose.com) via Cloudflare.
+
+```bash
+cd landing
+npm run dev      # serve on http://localhost:4600
+npm run deploy   # wrangler deploy
+```
+
+Type is self-hosted in `landing/public/fonts/` (latin subsets, ~83KB) rather than
+loaded from a CDN — the page's own pitch is that nothing leaves your browser, so it
+shouldn't call a third party to render its headline.
+
+### The hero image
+
+`landing/public/mockup-easyhn.jpg` is a composite: a stock photo of a MacBook with a
+real easyhn screenshot perspective-mapped onto the screen.
+
+**`landing/public/mockup.svg` is the source template — keep it.** It's a Figma export
+containing two embedded PNGs: the photo plate, and a pre-warped placeholder whose alpha
+channel defines the screen quad (including the notch cutout). That placeholder is what
+makes the perspective correct — the screen is a true 4-corner projection (top edge
++17.6°, bottom +20.9°, right edge 7% longer than left), not a shear, so the corners have
+to be read from it rather than eyeballed.
+
+To regenerate the hero after a UI change:
+
+1. Extract the corners from the placeholder's alpha and map them into photo space.
+2. Capture the new screenshot at 16:10 — stitch two scrolled captures if one is too
+   short, recovering the offset by correlation and putting the seam on a flat row.
+3. Grade it like a photographed screen: lift blacks to the panel's own black level, cap
+   highlights well below 255, add grain matching the plate (sigma ~3.4) — without the
+   grain it reads as pasted.
+4. Warp at 2x and downsample with Lanczos. Warping straight to final size minifies
+   through point sampling and aliases the text.
+
+The plate's blank screen is a flat synthetic fill, so it carries no real reflections to
+reuse — the sheen and edge falloff have to be synthesised (light source is upper-left).
+
+`mockup.svg` is listed in `landing/.assetsignore`, so it stays in the repo without
+shipping 6MB to production. (Wrangler's assets directory is `landing/` itself, so
+anything sitting there is uploaded unless it's ignored.)

@@ -1,53 +1,94 @@
 /* easyhn landing · design tokens
  * Direction: dark editorial. A cool near-black canvas (borrowed from the
- * extension's own dark theme), an editorial serif for display, a system sans
- * for body, and a monospace utility face for labels/metadata/keys — a nod to
+ * extension's own dark theme), a high-contrast display serif, a grotesk for
+ * body, and a monospace utility face for labels/metadata/keys — a nod to
  * Hacker News' own monospace heritage and easyhn's tabular-figure detailing.
- * HN orange is the single accent, used with restraint. */
+ * HN orange is the single accent, used with restraint.
+ *
+ * Type is self-hosted (latin subsets, ~83KB total) rather than pulled from a
+ * CDN — the page's whole pitch is that nothing leaves your browser, so it
+ * shouldn't phone a third party to render its own headline. */
+
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("public/fonts/instrument-serif-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 300 800;          /* variable — covers body 400 through btn 650 */
+  font-display: swap;
+  src: url("public/fonts/inter-var.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("public/fonts/jetbrains-mono-400.woff2") format("woff2");
+}
+
 :root {
-  /* ---- Color: cool near-black, blue-leaning neutrals (matches the app) ---- */
-  --paper:    #15171b;   /* page */
-  --paper-2:  #1b1e23;   /* elevated surfaces: window frame, cards */
-  --paper-3:  #23262c;   /* insets, keycaps */
-  --ink:      #edeef1;   /* headlines — a touch brighter than the app for pop */
-  --ink-soft: #a5a9b2;   /* body */
-  --ink-faint:#6a6e78;   /* captions, metadata */
+  /* ---- Color: warm off-white paper, near-black ink ---- */
+  --paper:    #faf9f7;   /* page */
+  --paper-2:  #ffffff;   /* elevated surfaces: cards, panels */
+  --paper-3:  #f0eeea;   /* insets, keycaps */
+  --ink:      #17181a;   /* headlines */
+  --ink-soft: #55575c;   /* body */
+  --ink-faint:#8a8c92;   /* captions, metadata */
 
-  --hairline:        rgba(255, 255, 255, 0.07);
-  --hairline-strong: rgba(255, 255, 255, 0.13);
+  --hairline:        rgba(0, 0, 0, 0.09);
+  --hairline-strong: rgba(0, 0, 0, 0.15);
 
-  --accent:      #ff6600;              /* HN orange */
-  --accent-ink:  #1a0e00;              /* text sitting on the orange fill */
-  --accent-soft: rgba(255, 102, 0, 0.14);
-  --accent-line: rgba(255, 102, 0, 0.42);
-  --accent-glow: rgba(255, 102, 0, 0.20);
-  --select:      rgba(255, 102, 0, 0.30);
-  --focus:       #ff8534;
+  /* HN orange needs darkening in two directions. As *text* on near-white it
+     only reaches 2.9:1, so accent text uses -strong (3.6:1) or -text (5.3:1).
+     And as a *button fill* under white text it is also 2.9:1, so buttons use
+     -fill — bright #ff6600 simply cannot carry white type. -fill is the
+     lightest exact shade of #ff6600 that still clears AA (4.54:1); one step
+     lighter, #ca5100, drops to 4.48 and fails. */
+  --accent:        #ff6600;            /* the brand orange — tints and washes */
+  --accent-fill:   #c95000;            /* solid buttons: 4.54:1 against white text */
+  --accent-strong: #e35400;            /* display-size accent text */
+  --accent-text:   #b34700;            /* small accent text, links */
+  --accent-ink:    #ffffff;            /* text sitting on the button fill */
+  --accent-soft: rgba(255, 102, 0, 0.12);
+  --accent-line: rgba(255, 102, 0, 0.45);
+  --accent-glow: rgba(255, 102, 0, 0.18);
+  --select:      rgba(255, 102, 0, 0.22);
+  --focus:       #b34700;
 
   /* ---- Type ---- */
-  /* Display: the extension's own serif stack (its "serif" reading mode),
-     so the page speaks in the product's voice. */
-  --font-display: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
-  --font-body:    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-mono:    ui-monospace, "SF Mono", SFMono-Regular, Menlo, Monaco, "Cascadia Code", "Roboto Mono", monospace;
+  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, monospace;
 
-  --text-display: clamp(2.75rem, 8.5vw, 5rem);
-  --text-lg:      1.25rem;
-  --text-base:    1.0625rem;
-  --text-sm:      0.9375rem;
-  --text-xs:      0.8125rem;
-  --text-label:   0.75rem;    /* mono eyebrows / labels */
+  /* Scale anchored to a 13px base. The display clamp reaches its 42px max at
+     ~941px of viewport, the same crossover the previous scale used. */
+  --text-display: clamp(1.4375rem, 4.46vw, 2.625rem);  /* 23 → 42 */
+  --text-h3:      1.25rem;     /* 20 — feature headings */
+  --text-lg:      1rem;        /* 16 — lede */
+  --text-md:      0.9375rem;   /* 15 — feature body copy */
+  --text-base:    0.8125rem;   /* 13 — also the eyebrow/label size */
+  --text-sm:      0.75rem;     /* 12 */
+  --text-xs:      0.6875rem;   /* 11 */
 
-  /* ---- Space: 4pt scale ---- */
-  --space-2xs: 0.25rem;
-  --space-xs:  0.5rem;
-  --space-sm:  0.75rem;
-  --space-md:  1rem;
-  --space-lg:  1.5rem;
-  --space-xl:  2.5rem;
-  --space-2xl: 4rem;
-  --space-3xl: 6.5rem;
-  --space-4xl: 9rem;
+  /* ---- Space ----
+   * Anchored to the 13px base and its 19.5px line box, ~1.5 between steps
+   * (perfect fifth). The scale this replaced was built for 17px type and left
+   * xs/sm/4xl unused while forcing every section gap onto its top two values —
+   * which is how the showcase ended up 168px clear of the features list. */
+  --space-3xs: 0.125rem;   /*  2 */
+  --space-2xs: 0.25rem;    /*  4 */
+  --space-xs:  0.375rem;   /*  6 */
+  --space-sm:  0.625rem;   /* 10 */
+  --space-md:  1rem;       /* 16 */
+  --space-lg:  1.5rem;     /* 24 */
+  --space-xl:  2.25rem;    /* 36 */
+  --space-2xl: 3.25rem;    /* 52 */
+  --space-3xl: 5rem;       /* 80 */
 
   /* ---- Radius ---- */
   --radius-sm:   6px;

@@ -3,117 +3,187 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>easyhn — Hacker News, just better</title>
+  <title>easyhn — Hacker News, without the squint</title>
   <meta name="description" content="easyhn is a browser extension that redesigns Hacker News right on news.ycombinator.com. No separate app, no account, and nothing you read leaves your browser. Chrome and Firefox." />
   <link rel="canonical" href="https://easyhn.harrisjose.com/" />
-  <meta name="theme-color" content="#15171b" />
-  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#faf9f7" />
+  <meta name="color-scheme" content="light" />
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="easyhn" />
   <meta property="og:url" content="https://easyhn.harrisjose.com/" />
-  <meta property="og:title" content="easyhn — Hacker News, just better" />
+  <meta property="og:title" content="easyhn — Hacker News, without the squint" />
   <meta property="og:description" content="A cleaner, more readable Hacker News, right on news.ycombinator.com. No separate app, no account, and nothing you read leaves your browser." />
   <meta property="og:image" content="https://easyhn.harrisjose.com/public/og.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="The easyhn reading interface on the Hacker News front page, in dark mode." />
+  <meta property="og:image:alt" content="The easyhn reading interface on the Hacker News front page." />
   <meta property="og:locale" content="en_US" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@harrispjose" />
   <meta name="twitter:creator" content="@harrispjose" />
-  <meta name="twitter:title" content="easyhn — Hacker News, just better" />
+  <meta name="twitter:title" content="easyhn — Hacker News, without the squint" />
   <meta name="twitter:description" content="A cleaner, more readable Hacker News, right on news.ycombinator.com. No separate app, no account, and nothing you read leaves your browser." />
   <meta name="twitter:image" content="https://easyhn.harrisjose.com/public/og.jpg" />
 
-  <link rel="icon" href="public/icon.png" />
+  <link rel="icon" href="public/icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="public/icon.png" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <a class="btn cta-corner" href="https://github.com/harrisjose/easyhn/releases">Install</a>
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <span class="brand">
+        <img src="public/icon.svg" alt="" width="20" height="20" />
+        <span>easy<span class="brand__hn">hn</span></span>
+      </span>
+      <a class="btn btn--sm" href="https://github.com/harrisjose/easyhn/releases">Download</a>
+    </div>
+  </header>
 
   <main id="top">
     <!-- ============ Hero ============ -->
     <section class="hero wrap">
-      <h1 class="hero__title">Hacker&nbsp;News,<br /><em>just&nbsp;better.</em></h1>
+      <h1 class="hero__title">Hacker&nbsp;News,<br /><em>without&nbsp;the&nbsp;squint.</em></h1>
       <p class="lede">
         I got frustrated with <a href="https://www.modernhn.com/">modern's</a> lack of
         maintenance and decided to build my own. Open
-        <span class="nowrap">news.ycombinator.com</span> and <em>easyhn</em> takes over the
+        <span class="nowrap">news.ycombinator.com</span> and easyhn takes over the
         page.
       </p>
       <div class="actions">
-        <a class="btn" href="https://github.com/harrisjose/easyhn/releases">Install</a>
+        <a class="btn" href="https://github.com/harrisjose/easyhn/releases">Download easyhn</a>
         <a class="link-arrow" href="https://github.com/harrisjose/easyhn">View&nbsp;source&nbsp;→</a>
       </div>
     </section>
 
-    <!-- ============ Showcase: the front page ============ -->
-    <section class="showcase">
-      <figure class="mac reveal">
-        <div class="mac__screen">
-          <div class="mac__display">
-            <img class="mac__shot" src="public/shot-list.jpg" width="1180" height="737"
-                 alt="The Hacker News front page rendered by easyhn: a ranked story list with the url, points, author, age and comment counts, in dark mode." />
-          </div>
-        </div>
-        <div class="mac__base" aria-hidden="true"></div>
+    <!-- ============ Hero showcase: the real thing, in use ============ -->
+    <section class="showcase wrap">
+      <figure class="hero-shot reveal">
+        <img src="public/mockup-easyhn.jpg" width="1360" height="1020"
+             alt="Someone reading the Hacker News front page through easyhn on a MacBook, showing the redesigned story list in dark mode." />
       </figure>
     </section>
 
-    <!-- ============ Features ============ -->
+    <!-- ============ What changes ============ -->
     <section class="features wrap">
       <p class="eyebrow eyebrow--rule">What changes</p>
-      <ul class="flist">
-        <li class="feat">
-          <h3>Lists you can actually scan</h3>
-          <p>The url, score, author, age and comment count on every story, laid out so the
-             page is easy to read.</p>
+      <h2 class="section-title">Four things you'll notice</h2>
+      <p class="section-sub">
+        All easyhn does is restyle the page Hacker News already sends you. Same
+        stories, same account — a different reading experience.
+      </p>
+
+      <ul class="cards">
+        <li class="card">
+          <figure class="card__shot">
+            <img src="public/card-list.jpg" width="500" height="330" loading="lazy"
+                 alt="Story rows in easyhn, each with the domain, points, author, age and comment count." />
+          </figure>
+          <h3>Scannable lists</h3>
+          <p>Domain, score, author, age and comment count on every row, in one place.</p>
         </li>
-        <li class="feat">
-          <h3>Threads without the squint</h3>
-          <p>Readable line lengths, nesting you can follow, and collapsible comments
-             so you can fold up the parts you're done with.</p>
+
+        <li class="card">
+          <figure class="card__shot">
+            <img src="public/card-thread.jpg" width="500" height="330" loading="lazy"
+                 alt="A Hacker News thread in easyhn: a comment with two levels of replies nested beneath it, each step indented and separated by a rule." />
+          </figure>
+          <h3>Readable comments</h3>
+          <p>Sane line lengths, nesting you can follow, and one-click collapse.</p>
         </li>
-        <li class="feat">
-          <h3>Built for the keyboard</h3>
-          <p>Move around and read without touching the mouse.
-             <span class="keys">
-               <kbd>j</kbd><kbd>k</kbd> <span class="keys__sep">move</span>
-               <kbd>o</kbd> <span class="keys__sep">open</span>
-               <kbd>c</kbd> <span class="keys__sep">comments</span>
-             </span>
-          </p>
+
+        <li class="card">
+          <figure class="card__shot">
+            <img src="public/card-keys.jpg" width="500" height="330" loading="lazy"
+                 alt="The easyhn story list with one row selected by keyboard, marked with an orange rule." />
+          </figure>
+          <h3>Keyboard navigation</h3>
+          <p><kbd>j</kbd><kbd>k</kbd> to move, <kbd>o</kbd> to open, <kbd>c</kbd> for comments.</p>
         </li>
-        <li class="feat">
-          <h3>Nothing leaves your browser</h3>
-          <p>easyhn restyles the HTML Hacker News already sends you. There's no API and
-             no server in between. No account, no tracking, no pro tier.</p>
-        </li>
-        <li class="feat">
-          <h3>Open source</h3>
-          <p>easyhn is MIT-licensed and lives on GitHub. Spot a bug or want something
-             done differently? Send a PR.</p>
+
+        <li class="card">
+          <figure class="card__shot">
+            <img src="public/card-settings.jpg" width="500" height="330" loading="lazy"
+                 alt="The easyhn settings drawer, with theme, font, font size, density and width controls." />
+          </figure>
+          <h3>Customizable everything</h3>
+          <p>Theme, font, size, density and width — synced across your browsers.</p>
         </li>
       </ul>
+
+      <div class="claim">
+        <h3>And nothing leaves your browser</h3>
+        <p>Under the hood, easyhn restyles the HTML Hacker News already sends you.
+           <span class="mark">There's no API and no server in between</span>, and no
+           account to create. Your HN session stays yours — which is exactly why
+           upvoting and replying still work.</p>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="faq wrap">
+      <h2 class="section-title">Frequently asked questions</h2>
+
+      <div class="faq__list">
+      <details class="qa">
+        <summary>How do I install it?</summary>
+        <p>It isn't on the Chrome Web Store or Firefox Add-ons yet, so it installs
+           manually for now. Download the latest zip from
+           <a href="https://github.com/harrisjose/easyhn/releases">Releases</a>, then in
+           Chrome open <code>chrome://extensions</code>, turn on Developer mode and choose
+           <em>Load unpacked</em>. In Firefox, open
+           <code>about:debugging#/runtime/this-firefox</code> and choose
+           <em>Load Temporary Add-on</em> — note that Firefox drops temporary add-ons when
+           it restarts.</p>
+      </details>
+
+      <details class="qa">
+        <summary>Does anything I read leave my browser?</summary>
+        <p>No — easyhn restyles the markup Hacker News already sent to your browser. There's
+           no API, no server in between, no tracking and no account.</p>
+      </details>
+
+      <details class="qa">
+        <summary>Can I still upvote and reply?</summary>
+        <p>Yes. Sign in from the account button in the easyhn header and the upvote arrows
+           and an inline reply box become active, wired straight through your existing
+           Hacker News session.</p>
+      </details>
+
+      <details class="qa">
+        <summary>Does it break the rest of Hacker News?</summary>
+        <p>No. Pages easyhn doesn't redesign are left untouched, so everything else on the
+           site works as usual.</p>
+      </details>
+
+      <details class="qa">
+        <summary>What happens if Hacker News changes their HTML?</summary>
+        <p>Because easyhn reads HN's own server-rendered markup, a significant change there
+           can break it. That's the trade for needing no API and no server. It's
+           MIT-licensed on <a href="https://github.com/harrisjose/easyhn">GitHub</a> —
+           issues and pull requests welcome.</p>
+      </details>
+      </div>
     </section>
 
     <!-- ============ Closing CTA ============ -->
     <section class="closing wrap">
-      <a class="btn btn--lg" href="https://github.com/harrisjose/easyhn/releases">Install for Chrome &amp; Firefox</a>
-      <p class="closing__note">Free &amp; open source · MIT</p>
+      <p class="closing__sub">Free and open source, MIT-licensed, and it never asks you
+        to sign up for anything.</p>
+      <a class="btn btn--lg" href="https://github.com/harrisjose/easyhn/releases">Download for Chrome &amp; Firefox</a>
+      <p class="closing__note">Loads as an unpacked extension — see the FAQ above.</p>
     </section>
   </main>
 
   <footer class="footer">
     <div class="wrap footer__inner">
-      <span class="footer__brand">
-        <img src="public/icon.png" alt="" width="20" height="20" />
-        easyhn
+      <span class="brand">
+        <img src="public/icon.svg" alt="" width="20" height="20" />
+        <span>easy<span class="brand__hn">hn</span></span>
       </span>
       <span class="dot" aria-hidden="true">·</span>
       <a href="https://github.com/harrisjose/easyhn/releases">Releases</a>
@@ -131,7 +201,7 @@
         for (const e of entries) {
           if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
         }
-      }, { threshold: 0.18 });
+      }, { threshold: 0.12 });
       for (const el of document.querySelectorAll('.reveal')) {
         el.classList.add('reveal--armed');
         io.observe(el);

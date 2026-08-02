@@ -1,8 +1,6 @@
-/* easyhn landing · dark editorial
- * Macrostructure: centered narrative column with two full-width "browser
- * window" showcases as the breakout moments. Signature: the window chrome
- * whose address bar reads news.ycombinator.com — the exact page easyhn
- * transforms in place. */
+/* easyhn landing · light editorial
+ * A centred narrative column: hero, a photograph of easyhn actually in use,
+ * then a 2x2 grid of UI details, a short FAQ and a closing call to action. */
 @import url("tokens.css");
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -19,13 +17,14 @@ body {
   flex-direction: column;
   font-family: var(--font-body);
   font-size: var(--text-base);
-  line-height: 1.6;
+  line-height: 1.5;
+  letter-spacing: -0.006em;
   color: var(--ink-soft);
   background: var(--paper);
-  /* A faint orange aurora bleeding from the top, fading out by the first
-     screenful — the accent's ambient presence without a hard band. */
+  /* A barely-there warm wash from the top. On off-white this has to be far
+     lighter than it was on near-black or it reads as a stain. */
   background-image:
-    radial-gradient(120% 70% at 50% -12%, var(--accent-soft), transparent 60%);
+    radial-gradient(120% 60% at 50% -14%, rgba(255, 102, 0, 0.055), transparent 62%);
   background-repeat: no-repeat;
   text-wrap: pretty;
   -webkit-font-smoothing: antialiased;
@@ -40,7 +39,9 @@ h1, h2, h3 { margin: 0; }
 p { margin: 0; }
 a { color: inherit; }
 img { display: block; max-width: 100%; }
-em { font-style: italic; }
+/* Emphasis is carried by the accent colour, not by slant — Instrument Serif's
+   italic is lovely but reads as decoration at this scale. */
+em { font-style: normal; }
 
 ::selection { background: var(--select); }
 .nowrap { white-space: nowrap; }
@@ -51,9 +52,12 @@ em { font-style: italic; }
   border-radius: 4px;
 }
 
+/* One measure for the entire page, set by the hero. 624px of content is a
+   comfortable reading width and still fits a 2x2 grid of UI details at a
+   legible size — so no section needs its own width. */
 .wrap {
   width: 100%;
-  max-width: 640px;
+  max-width: 672px;
   margin-inline: auto;
   padding-inline: var(--space-lg);
 }
@@ -61,7 +65,7 @@ em { font-style: italic; }
 /* ---- Eyebrow / label ---- */
 .eyebrow {
   font-family: var(--font-body);
-  font-size: var(--text-label);
+  font-size: var(--text-base);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-faint);
@@ -70,7 +74,7 @@ em { font-style: italic; }
   display: flex;
   align-items: center;
   gap: var(--space-md);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .eyebrow--rule::after {
   content: "";
@@ -88,7 +92,7 @@ em { font-style: italic; }
   padding: 0.6875rem 1.375rem;
   border-radius: var(--radius-full);
   border: 1px solid transparent;
-  background: var(--accent);
+  background: var(--accent-fill);
   color: var(--accent-ink);
   font-family: var(--font-body);
   font-size: var(--text-sm);
@@ -101,7 +105,7 @@ em { font-style: italic; }
               filter var(--dur-fast) var(--ease-out),
               box-shadow var(--dur-mid) var(--ease-out);
 }
-.btn:hover { filter: brightness(1.08); box-shadow: 0 10px 30px -12px var(--accent-glow); }
+.btn:hover { filter: brightness(0.92); box-shadow: 0 10px 30px -12px var(--accent-glow); }
 .btn:active { transform: translateY(1px); }
 
 .btn--lg { padding: 0.9375rem 1.75rem; font-size: var(--text-base); }
@@ -117,25 +121,59 @@ em { font-style: italic; }
   text-decoration: none;
   transition: color var(--dur-fast) var(--ease-out);
 }
-.link-arrow:hover { color: var(--accent); }
+.link-arrow:hover { color: var(--accent-text); }
 
-/* Fixed corner CTA — desktop only; the closing CTA covers phones */
-.cta-corner {
-  position: fixed;
-  top: var(--space-md);
-  right: var(--space-md);
-  z-index: 10;
+.btn--sm {
   padding: 0.4375rem 0.9375rem;
   font-size: var(--text-xs);
-  box-shadow: 0 8px 22px -12px rgba(0, 0, 0, 0.7);
 }
-@media (max-width: 620px) { .cta-corner { display: none; } }
+
+/* ============ Topbar ============ */
+/* Sticky but bare — no panel, no rule. Just the wordmark and the download link
+   riding over the page. With nothing behind it the wordmark can land on top of
+   body copy, so it carries a paper-coloured halo to stay legible; the download
+   pill is already opaque. */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.topbar .brand {
+  text-shadow:
+    0 0 6px var(--paper), 0 0 6px var(--paper),
+    0 0 14px var(--paper), 0 0 22px var(--paper);
+}
+
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-block: var(--space-sm);
+}
+
+/* ---- Brand lockup (topbar + footer) ---- */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-display);
+  font-size: 1.125rem;     /* 18 — pinned, so it doesn't ride the lede token */
+  font-weight: 400;        /* Instrument Serif ships one weight — 500 synthesises */
+  letter-spacing: 0.006em;
+  color: var(--ink);
+}
+.brand img { border-radius: 5px; }
+/* "hn" picks up the accent so the name reads as easy + HN. Uses --accent-text,
+   not the brand orange: at 18px this is body-size type, and #ff6600 manages
+   only 2.8:1 on paper against this 5.2:1. */
+.brand__hn { color: var(--accent-text); }
 
 /* ============ Hero ============ */
 .hero {
   text-align: center;
-  padding-top: clamp(2.5rem, 9svh, 5rem);
-  padding-bottom: var(--space-2xl);
+  padding-top: clamp(2rem, 7svh, 3.25rem);
+  padding-bottom: var(--space-xl);
 }
 
 
@@ -143,18 +181,19 @@ em { font-style: italic; }
   font-family: var(--font-display);
   font-weight: 400;
   font-size: var(--text-display);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
+  line-height: 0.98;
+  letter-spacing: 0.002em;
   color: var(--ink);
   text-wrap: balance;
 }
-.hero__title em { color: var(--accent); }
+.hero__title em { color: var(--accent-strong); }
 
 .lede {
-  margin: var(--space-lg) auto 0;
+  margin: var(--space-md) auto 0;
   max-width: 32rem;
   font-size: var(--text-lg);
-  line-height: 1.6;
+  line-height: 1.55;
+  letter-spacing: -0.012em;
   color: var(--ink-soft);
   text-align: left;     /* natural paragraph block — no centred funnel */
   text-wrap: pretty;
@@ -169,129 +208,208 @@ em { font-style: italic; }
               text-decoration-color var(--dur-fast) var(--ease-out);
 }
 .lede a:hover {
-  color: var(--accent);
+  color: var(--accent-text);
   text-decoration-color: var(--accent-line);
 }
-.lede em { color: var(--accent); font-style: italic; }
-
 .actions {
-  margin-top: var(--space-xl);
+  margin-top: var(--space-lg);
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-lg);
 }
 
-/* ============ Showcase (MacBook) ============ */
+/* ============ Hero showcase ============ */
+/* Was a MacBook drawn in CSS wrapping a flat screenshot. Now a photograph of
+   the thing actually being used, so the frame is real and the perspective with
+   it. */
 .showcase {
   position: relative;
-  padding-inline: var(--space-lg);
   padding-bottom: var(--space-2xl);
 }
-/* Soft orange glow pooling behind the top of the frame */
+/* Soft orange glow pooling behind the top of the image */
 .showcase::before {
   content: "";
   position: absolute;
   top: -4%;
   left: 50%;
   transform: translateX(-50%);
-  width: min(760px, 82%);
-  height: 60%;
+  width: min(560px, 84%);
+  height: 58%;
   background: radial-gradient(60% 60% at 50% 40%, var(--accent-glow), transparent 70%);
-  filter: blur(30px);
+  filter: blur(34px);
   z-index: -1;
   pointer-events: none;
 }
 
-.mac {
-  position: relative;
+.hero-shot {
   margin: 0 auto;
-  /* Sized so the 1180-px-wide shot renders at ~1:1 on 2× displays — no
-     upscaling, so it stays crisp. The screen captures at 1× (not retina), so
-     ~1180px is the resolution ceiling; a bigger frame would soften it. */
-  max-width: 640px;
-}
-
-/* The lid: a black bezel around the display, with the camera dot up top. */
-.mac__screen {
-  position: relative;
-  padding: 11px;
-  border-radius: 20px;
-  background: #0b0c0e;
-  border: 1px solid var(--hairline-strong);
-  box-shadow:
-    0 2px 0 0 rgba(255, 255, 255, 0.04) inset,
-    0 40px 90px -45px rgba(0, 0, 0, 0.85),
-    0 12px 34px -22px rgba(0, 0, 0, 0.7);
-}
-.mac__screen::before {           /* camera */
-  content: "";
-  position: absolute;
-  top: 5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.13);
-}
-.mac__display {
-  aspect-ratio: 16 / 10;
-  border-radius: 9px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
-  background: #181a1e;
-}
-/* The shot is pre-cropped to a 16:10 1200×750 region (the story column), so it
-   fills the screen with no scaling — displayed at native size for a crisp image. */
-.mac__shot {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* The deck: a shallow bar a touch wider than the lid, with a center notch. */
-.mac__base {
-  position: relative;
-  width: 111%;
-  left: -5.5%;
-  height: 15px;
-  border-radius: 0 0 11px 11px;
-  background: linear-gradient(#31343a 0%, #1c1e23 55%, #0e1013 100%);
+  border: 1px solid var(--hairline);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.14) inset,
-    0 24px 30px -20px rgba(0, 0, 0, 0.8);
+    0 30px 70px -40px rgba(0, 0, 0, 0.28),
+    0 8px 24px -18px rgba(0, 0, 0, 0.18);
 }
-.mac__base::after {              /* opening groove */
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 88px;
-  height: 8px;
-  border-radius: 0 0 8px 8px;
-  background: linear-gradient(#15171b, #0b0d10);
-}
+.hero-shot img { width: 100%; height: auto; }
 
-/* ============ Features (editorial list) ============ */
-.features { padding-block: var(--space-3xl) var(--space-2xl); }
-.features .eyebrow--rule { margin-bottom: var(--space-xl); }
-
-.flist { list-style: none; margin: 0; padding: 0; }
-.feat { padding-block: var(--space-lg); border-top: 1px solid var(--hairline); }
-.feat:first-child { border-top: 0; padding-top: 0; }
-
-.feat h3 {
+/* ============ Section headings ============ */
+.section-title {
   font-family: var(--font-display);
   font-weight: 400;
-  font-size: clamp(1.35rem, 3.2vw, 1.7rem);
-  line-height: 1.15;
-  letter-spacing: -0.015em;
+  font-size: clamp(1.5rem, 3.4vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.002em;
+  color: var(--ink);
+  text-wrap: balance;
+}
+.section-sub {
+  margin-top: var(--space-sm);
+  max-width: 34rem;
+  font-size: var(--text-lg);
+  line-height: 1.55;
+  letter-spacing: -0.012em;
+  color: var(--ink-soft);
+}
+
+/* Accent highlight for the phrases that carry the pitch. Padding rather than a
+   spread shadow — the shadow rendered as a hard-edged block. Body copy only;
+   behind a display-serif heading it reads as a bug. */
+.mark {
+  background: rgba(255, 102, 0, 0.16);
+  padding: 0.08em 0.2em;
+  margin-inline: -0.14em;   /* claws back most of the padding so punctuation sits tight */
+  border-radius: 3px;
+  color: var(--ink);
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+/* ============ Cards: a horizontal grid of UI details ============ */
+/* Four points in a 2x2, each showing only the slice of interface it's about —
+   no window chrome, no nav bar. */
+.cards {
+  list-style: none;
+  margin: var(--space-xl) 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-xl) var(--space-lg);
+}
+
+/* The screenshot sits inset on a tinted plate, so the dark UI reads as a
+   specimen rather than a hole in the page. */
+.card__shot {
+  margin: 0 0 var(--space-md);
+  padding: var(--space-sm);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--hairline);
+  background: linear-gradient(160deg, rgba(255, 102, 0, 0.10), rgba(0, 0, 0, 0.035));
+  box-shadow: 0 12px 30px -22px rgba(0, 0, 0, 0.3);
+}
+.card__shot img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 500 / 330;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  /* The captures are light-on-light against the plate now, so the specimen
+     needs its own edge to read as a screenshot. */
+  border: 1px solid var(--hairline);
+}
+
+.card h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h3);
+  line-height: 1.25;
+  letter-spacing: 0.004em;
+  color: var(--ink);
+}
+.card > p {
+  margin-top: var(--space-xs);
+  font-size: var(--text-md);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+/* ============ Closing claim of the features section ============ */
+/* The privacy point has no UI to show, so it sits under the grid as a plain
+   statement rather than pretending to be a fourth screenshot. */
+.claim {
+  margin-top: var(--space-3xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--hairline);
+}
+.claim h3 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--text-h3);
+  line-height: 1.3;
+  letter-spacing: 0.004em;
   color: var(--ink);
   margin-bottom: var(--space-xs);
 }
-.feat p { font-size: var(--text-base); line-height: 1.6; color: var(--ink-soft); }
+.claim p {
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* ============ FAQ ============ */
+.faq { padding-block: var(--space-3xl) 0; }
+.faq .section-title { margin-bottom: var(--space-lg); }
+
+.qa {
+  border-top: 1px solid var(--hairline);
+  padding-block: var(--space-md);
+}
+.qa:last-of-type { border-bottom: 1px solid var(--hairline); }
+.qa summary {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-md);
+  cursor: pointer;
+  list-style: none;
+  font-size: var(--text-md);
+  color: var(--ink);
+}
+.qa summary::-webkit-details-marker { display: none; }
+.qa summary::after {
+  content: "+";
+  flex: none;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  color: var(--ink-faint);
+  transition: color var(--dur-fast) var(--ease-out);
+}
+/* The only hover feedback left is the marker darkening — the row itself no
+   longer changes colour. */
+.qa summary:hover::after { color: var(--ink); }
+.qa[open] summary::after { content: "\2013"; color: var(--accent-text); }
+.qa > p {
+  margin-top: var(--space-sm);
+  max-width: 40rem;
+  font-size: var(--text-md);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.qa em { color: var(--ink); font-weight: 550; }
+.qa a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--hairline-strong); text-underline-offset: 2px; }
+.qa a:hover { color: var(--accent-text); text-decoration-color: var(--accent-line); }
+.qa code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  padding: 0.1em 0.35em;
+  border-radius: var(--radius-sm);
+  background: var(--paper-3);
+  color: var(--ink);
+}
+
+/* ============ Features ============ */
+.features { padding-block: var(--space-2xl) 0; }
+.features .eyebrow--rule { margin-bottom: var(--space-md); }
 
 /* Keyboard caps */
 .keys {
@@ -301,7 +419,8 @@ em { font-style: italic; }
   gap: 0.4rem;
   margin-left: 0.25rem;
 }
-.keys__sep { color: var(--ink-faint); font-size: var(--text-sm); margin-right: 0.3rem; }
+/* em-relative so the caps track whatever size the surrounding copy is set to */
+.keys__sep { color: var(--ink-faint); font-size: 0.8em; margin-right: 0.3rem; }
 kbd {
   display: inline-grid;
   place-items: center;
@@ -313,17 +432,27 @@ kbd {
   border: 1px solid var(--hairline-strong);
   border-bottom-width: 2px;
   font-family: var(--font-mono);
-  font-size: var(--text-sm);
+  font-size: 0.8em;
   color: var(--ink);
 }
 
 /* ============ Closing ============ */
+/* No panel and no heading — the page has already made its case by here, so the
+   line and the button carry it alone. */
 .closing {
   text-align: center;
-  padding-block: var(--space-2xl) var(--space-3xl);
+  padding-block: var(--space-3xl);
 }
+.closing__sub {
+  margin: 0 auto;
+  max-width: 30rem;
+  font-size: var(--text-md);
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.closing .btn--lg { margin-top: var(--space-lg); }
 .closing__note {
-  margin-top: var(--space-md);
+  margin-top: var(--space-sm);
   font-size: var(--text-xs);
   color: var(--ink-faint);
 }
@@ -331,7 +460,7 @@ kbd {
 /* ============ Footer ============ */
 .footer {
   border-top: 1px solid var(--hairline);
-  padding-block: var(--space-xl);
+  padding-block: var(--space-lg);
 }
 .footer__inner {
   display: flex;
@@ -342,23 +471,12 @@ kbd {
   font-size: var(--text-sm);
   color: var(--ink-faint);
 }
-.footer__brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-}
-.footer__brand img { border-radius: 5px; }
 .footer__inner a {
   color: var(--ink-soft);
   text-decoration: none;
   transition: color var(--dur-fast) var(--ease-out);
 }
-.footer__inner a:hover { color: var(--accent); }
+.footer__inner a:hover { color: var(--accent-text); }
 .dot { color: var(--hairline-strong); }
 
 /* ============ Motion ============ */
@@ -383,11 +501,14 @@ kbd {
 }
 
 /* ============ Responsive ============ */
+@media (max-width: 560px) {
+  .cards { grid-template-columns: 1fr; gap: var(--space-xl); }
+}
+
 @media (max-width: 620px) {
   .actions { flex-direction: column; gap: var(--space-md); }
   .actions .btn { width: min(100%, 20rem); }
-  .showcase { padding-inline: var(--space-md); }
-  .features { padding-top: var(--space-2xl); }
+  .features { padding-top: var(--space-xl); }
 }
 
 @media (prefers-reduced-motion: reduce) {
