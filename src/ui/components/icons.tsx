@@ -74,17 +74,13 @@ export function ExternalArrow({ className }: IconProps) {
   return <ArrowUpRight className={className} weight="bold" aria-hidden="true" />;
 }
 
-/** The easyhn app mark — a bold "e" beside a three-line feed, on the brand
- *  orange rounded square. Used in the popup and mirrored by the extension /
- *  toolbar icons (public/icon/*.png, rendered from this same geometry).
- *  Deliberately distinct from the header's YCombinator "Y". */
 /**
- * The ghost mark. Kept byte-identical to the geometry in scripts/gen-icons.mjs,
- * which renders the same path out to the extension's PNG icons — edit there and
- * mirror the change here, or the popup and the toolbar drift apart.
+ * The easyhn app mark. Geometry is duplicated from scripts/gen-icons.mjs, which
+ * renders the same path out to public/icon/*.png — edit both or the popup and
+ * the toolbar icon drift apart.
  *
- * The gradient id is namespaced because this renders inside news.ycombinator.com's
- * own document, where a bare id="lit" could collide with anything.
+ * The gradient id is namespaced: this renders inside news.ycombinator.com's own
+ * document, where a bare id="lit" could collide.
  */
 export function EasyhnMark({ className }: IconProps) {
   return (

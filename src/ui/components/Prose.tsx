@@ -1,8 +1,7 @@
 /**
- * Renders HN's server-rendered, sanitised HTML (comment bodies, story text,
- * profile "about") with consistent typographic defaults via the `.ehn-prose`
- * style block. HN only emits a small markup subset — paragraphs, links,
- * <i>, and <pre><code> — but we style the common extras defensively too.
+ * Renders HN's own sanitised HTML (comment bodies, story text, profile "about");
+ * typography lives in the `.ehn-prose` block. HN emits only paragraphs, links,
+ * <i> and <pre><code>, but the stylesheet covers common extras defensively.
  */
 export function Prose({
   html,

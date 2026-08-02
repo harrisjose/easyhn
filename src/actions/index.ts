@@ -1,13 +1,10 @@
 import type { ReplyForm } from '@/src/types';
 import { parseReplyForm } from '@/src/parse/auth';
 
-/**
- * All write actions reuse the user's existing HN session cookies. We hit the
- * very same endpoints HN's own UI does, so logged-in users keep full account
- * features without us ever handling credentials ourselves.
- */
+// Every action here posts to the same endpoints HN's own UI does, carrying the
+// user's existing session cookies. That is why voting and replying work without
+// this extension ever seeing credentials.
 
-/** Fetch an HN page (with the user's cookies) and parse it into a Document. */
 export async function fetchDoc(url: string): Promise<Document | null> {
   try {
     const res = await fetch(url, { credentials: 'include' });
@@ -18,7 +15,7 @@ export async function fetchDoc(url: string): Promise<Document | null> {
   }
 }
 
-/** Upvote by firing HN's vote link (it carries the auth token). */
+/** The vote href carries HN's auth token, so fetching it is the whole action. */
 export async function upvote(url: string): Promise<boolean> {
   try {
     const res = await fetch(url, {
@@ -32,10 +29,7 @@ export async function upvote(url: string): Promise<boolean> {
   }
 }
 
-/**
- * Post a comment/reply. HN's /comment endpoint expects a urlencoded body with
- * the hidden `parent`, `goto`, `hmac` fields plus the comment `text`.
- */
+/** `parent`/`goto`/`hmac` come from HN's own hidden form fields — see ReplyForm. */
 export async function postComment(form: ReplyForm, text: string): Promise<boolean> {
   const body = new URLSearchParams({
     parent: form.parent,
@@ -57,11 +51,7 @@ export async function postComment(form: ReplyForm, text: string): Promise<boolea
   }
 }
 
-/**
- * Fetch HN's reply page for a comment and extract its hidden form fields.
- * Used to enable inline replies when the list/item DOM didn't already expose a
- * form for that comment.
- */
+/** Fallback for comments whose DOM didn't already carry a reply form. */
 export async function fetchReplyForm(replyUrl: string): Promise<ReplyForm | null> {
   const doc = await fetchDoc(replyUrl);
   if (!doc) return null;

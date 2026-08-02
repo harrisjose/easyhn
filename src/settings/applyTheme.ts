@@ -12,9 +12,9 @@ export function effectiveTheme(s: Settings): 'light' | 'dark' {
 }
 
 /**
- * Apply settings as CSS custom properties + a `data-theme` attribute on the
- * given element (the shadow host for the content script, or <html> for the
- * popup/options pages). Cheap enough to call on every change — no re-parse.
+ * Writes settings as custom properties and a `data-theme` attribute onto `el` —
+ * the shadow host in the content script, <html> in the popup and options pages.
+ * Cheap enough to call on every change.
  */
 export function applyTheme(el: HTMLElement, s: Settings): void {
   el.dataset.theme = effectiveTheme(s);
@@ -27,28 +27,19 @@ export function applyTheme(el: HTMLElement, s: Settings): void {
 }
 
 /**
- * Page color behind the flush UI — the single source for the raw hex the page
- * <html> needs (it sits outside the shadow root and can't read `--bg`). Keep in
- * sync with `--bg` in theme.css.
+ * The page <html> sits outside our shadow root and can't read `--bg`, so it
+ * needs the literal hex. Keep in sync with `--bg` in theme.css.
  */
 export const PAGE_BG: Record<'light' | 'dark', string> = {
   light: '#fcfcfa',
   dark: '#181a1e',
 };
 
-/**
- * Color the host page to match the UI, so overscroll/rubber-banding never
- * flashes a different shade. The page <html> sits outside our shadow root, so
- * it can't read the theme's CSS variables — it gets the literal color for the
- * effective theme instead. Content-script only.
- */
+/** Content-script only: stops overscroll rubber-banding flashing a bare page. */
 export function applyPageBackground(s: Settings): void {
   document.documentElement.style.background = PAGE_BG[effectiveTheme(s)];
 }
 
-/**
- * Re-apply when the OS theme flips while set to "auto". Returns a cleanup fn.
- */
 export function watchSystemTheme(cb: () => void): () => void {
   if (typeof window === 'undefined' || !window.matchMedia) return () => {};
   const mq = window.matchMedia('(prefers-color-scheme: dark)');
