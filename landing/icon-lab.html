@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>easyhn · icon lab</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  body {
+    margin: 0; padding: 48px 32px 96px;
+    background: var(--paper); color: var(--ink);
+    font-family: var(--font-body); font-size: 13px;
+  }
+  .wrap { max-width: 1100px; margin: 0 auto; }
+  h1 { font-family: var(--font-display); font-size: 34px; font-weight: 400; margin: 0 0 6px; }
+  h2 {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 400;
+    text-transform: uppercase; letter-spacing: .1em; color: var(--ink-faint);
+    margin: 54px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--hairline);
+  }
+  .sub { color: var(--ink-soft); margin: 0 0 10px; max-width: 66ch; line-height: 1.6; }
+  code { font-family: var(--font-mono); font-size: .92em; background: var(--paper-3); padding: 1px 4px; border-radius: 3px; }
+  .row { display: flex; flex-wrap: wrap; gap: 34px; align-items: flex-end; }
+  .cell { text-align: center; }
+  .cap {
+    font-family: var(--font-mono); font-size: 10px; color: var(--ink-faint);
+    margin-top: 10px; letter-spacing: .04em;
+  }
+  .pick { color: var(--accent-text); }
+  .dark { background: #17181a; padding: 26px 32px; border-radius: var(--radius-lg); }
+  .dark .cap { color: #8a8c92; }
+  .chrome {
+    background: #f0eeea; border: 1px solid var(--hairline);
+    border-radius: var(--radius-md); padding: 9px 14px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .chrome--dark { background: #2b2c2f; border-color: rgba(255,255,255,.1); }
+  .lockup { display: flex; align-items: center; gap: 9px; }
+  .lockup span { font-family: var(--font-display); font-size: 21px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Sheet-ghost</h1>
+  <p class="sub">A cloth thrown over something that's already there — which is what easyhn is.
+  The brief: bell taper (not parallel sides), an <em>irregular</em> shallow hem (not even
+  scallops), and small flat eyes. Those three things are the difference between a draped
+  sheet and a Pac-Man ghost.</p>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="g-lit" x1="0.1" y1="0" x2="0.85" y2="1">
+      <stop offset="0"    stop-color="#ff6600" />
+      <stop offset="0.55" stop-color="#dd5a00" />
+      <stop offset="1"    stop-color="#c95000" />
+    </linearGradient>
+
+    <!-- A · bell + three irregular lobes, no wisp.
+         Hem segments use horizontal tangents at every tip and notch, which is
+         what keeps it reading as cloth rather than as scalloped trim. -->
+    <path id="ghost-a" d="M32 4
+      C44.4 4 54.2 15.6 55.4 30.4
+      C56 37.4 57.4 43 57.8 47.6
+      C53.65 47.6 53.65 54.2 49.5 54.2
+      C45.5 54.2 45.5 48.8 41.5 48.8
+      C36.75 48.8 36.75 55 32 55
+      C27.5 55 27.5 48.4 23 48.4
+      C19.25 48.4 19.25 53.4 15.5 53.4
+      C13.15 53.4 13.15 48.2 10.8 48.2
+      C10.2 42.4 9.2 36.6 9 30.4
+      C10.2 15.6 19.6 4 32 4Z" />
+
+    <!-- B · three lobes, and the sheet's bottom-left corner trailing outward.
+         The wisp is part of the hem's own sweep, not a spur bolted onto the side —
+         that's what stops it reading as a little arm. -->
+    <path id="ghost-b" d="M32 4
+      C44.4 4 54.2 15.6 55.4 30.4
+      C56 37.4 57.4 43 57.8 47.6
+      C53.65 47.6 53.65 54.4 49.5 54.4
+      C45.5 54.4 45.5 48.6 41 48.6
+      C36.25 48.6 36.25 55.2 31.5 55.2
+      C27.5 55.2 27.5 49 23.5 49
+      C20.25 49 20.25 54 17 54
+      C13.5 54 12 52 10 50
+      C7 47.4 3.6 45.6 2.2 42.4
+      C1 39.9 2 37.2 4.6 36.6
+      C6.8 36.1 9 35.4 10.6 34.2
+      C10.2 26.4 11 17.4 14.7 11.4
+      C18.5 5.6 24.8 4 32 4Z" />
+
+    <!-- C · two wide lobes + the same trailing corner. Fewer, softer folds survive 16px. -->
+    <path id="ghost-c" d="M32 4
+      C44.4 4 54.2 15.6 55.4 30.4
+      C56 37.4 57.4 43 57.8 47.6
+      C51.9 47.6 51.9 54.8 46 54.8
+      C40 54.8 40 48.4 34 48.4
+      C28.25 48.4 28.25 54.5 22.5 54.5
+      C18.5 55 16 53.5 13 51.5
+      C9 48.8 4.2 46.6 2.6 42.5
+      C1.2 40.4 1.8 37.6 4.4 36.8
+      C6.6 36.1 9.2 35.6 11 34.6
+      C10.2 26.4 11 17.4 14.7 11.4
+      C18.5 5.6 24.8 4 32 4Z" />
+
+    <!-- ---- Wisp scale study, all on the two-lobe body ----
+         Only the bottom-left run changes: how far the trailing corner reaches
+         past the body edge (which sits at about x9.6) and how tall the flare is. -->
+
+    <!-- w0 · none — straight bell, for the baseline -->
+    <path id="ghost-w0" d="M32 4
+      C44.4 4 54.2 15.6 55.4 30.4
+      C56 37.4 57.4 43 57.8 47.6
+      C51.9 47.6 51.9 54.8 46 54.8
+      C40 54.8 40 48.4 34 48.4
+      C28.25 48.4 28.25 54.5 22.5 54.5
+      C17.5 54.5 17.5 48 12.5 48
+      C11.4 42 9.8 36.4 9.6 30.4
+      C10.4 15.6 19.6 4 32 4Z" />
+
+    <!-- w1 · slight — reaches to x8, barely past the edge -->
+    <path id="ghost-w1" d="M32 4
+      C44.4 4 54.2 15.6 55.4 30.4
+      C56 37.4 57.4 43 57.8 47.6
+      C51.9 47.6 51.9 54.8 46 54.8
+      C40 54.8 40 48.4 34 48.4
+      C28.25 48.4 28.25 54.5 22.5 54.5
+      C19.8 55 18.2 54 16.4 52.6
+      C13.8 50.6 9.6 49.2 8.6 46.4
+      C7.9 44.5 8.9 42.8 10.8 42.8
+      C11.4 40.2 10.6 34 10.3 30.4
+      C10.9 15.6 19.6 4 32 4Z" />
+
+    <!-- w2 · small — reaches to x6.6 -->
+    <path id="ghost-w2" d="M32 4
+      C44.4 4 54.2 15.6 55.4 30.4
+      C56 37.4 57.4 43 57.8 47.6
+      C51.9 47.6 51.9 54.8 46 54.8
+      C40 54.8 40 48.4 34 48.4
+      C28.25 48.4 28.25 54.5 22.5 54.5
+      C19.4 55 17.6 53.8 15.6 52.2
+      C12.6 50 7.9 48.4 6.9 45.4
+      C6.1 43.4 7.2 41.4 9.4 41.2
+      C10.8 39 10.4 34 10.2 30.4
+      C10.8 15.6 19.6 4 32 4Z" />
+
+    <!-- w3 · medium — reaches to x4.8 -->
+    <path id="ghost-w3" d="M32 4
+      C44.4 4 54.2 15.6 55.4 30.4
+      C56 37.4 57.4 43 57.8 47.6
+      C51.9 47.6 51.9 54.8 46 54.8
+      C40 54.8 40 48.4 34 48.4
+      C28.25 48.4 28.25 54.5 22.5 54.5
+      C19 55 17 53.6 14.6 51.8
+      C11.2 49.4 4.9 47.4 4.1 43.8
+      C3.5 41.2 5.8 39.2 8.4 39
+      C10.2 37 10.4 33.4 10.2 30
+      C10.8 15.4 19.6 4 32 4Z" />
+
+    <!-- Eyes: small, flat, tilted a few degrees outward. Centred on the head
+         (~x33), not on the bounding box, so the wisp reads as overflow. -->
+    <g id="eyes">
+      <ellipse cx="26.4" cy="27.6" rx="3.5" ry="4.7" transform="rotate(-8 26.4 27.6)" />
+      <ellipse cx="39.9" cy="27.6" rx="3.5" ry="4.7" transform="rotate(8 39.9 27.6)" />
+    </g>
+    <g id="eyes-c">
+      <ellipse cx="26.6" cy="28" rx="3.5" ry="4.7" transform="rotate(-8 26.6 28)" />
+      <ellipse cx="40.1" cy="28" rx="3.5" ry="4.7" transform="rotate(8 40.1 28)" />
+    </g>
+  </defs>
+</svg>
+
+<!-- ============================================================= -->
+<h2>0 · Wisp scale — how far the trailing corner reaches</h2>
+<p class="sub">Same two-lobe body throughout; only the bottom-left run changes. The body's own
+edge sits at about <code>x9.6</code>, so <em>slight</em> protrudes ~1.5 units and <em>full</em>
+~8. Watch the 16px row underneath — that's where a big wisp starts to look like a limb and a
+small one disappears entirely.</p>
+<div class="row">
+  <div class="cell">
+    <svg width="120" height="120" viewBox="0 0 64 64"><use href="#ghost-w0" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+    <div class="cap">none</div>
+  </div>
+  <div class="cell">
+    <svg width="120" height="120" viewBox="0 0 64 64"><use href="#ghost-w1" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+    <div class="cap">slight</div>
+  </div>
+  <div class="cell">
+    <svg width="120" height="120" viewBox="0 0 64 64"><use href="#ghost-w2" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+    <div class="cap">small</div>
+  </div>
+  <div class="cell">
+    <svg width="120" height="120" viewBox="0 0 64 64"><use href="#ghost-w3" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+    <div class="cap">medium</div>
+  </div>
+  <div class="cell">
+    <svg width="120" height="120" viewBox="0 0 64 64"><use href="#ghost-c" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+    <div class="cap">full (was C)</div>
+  </div>
+</div>
+
+<div class="row" style="margin-top:26px">
+  <div class="cell">
+    <div class="chrome">
+      <svg width="32" height="32" viewBox="0 0 64 64"><use href="#ghost-w0" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+      <svg width="16" height="16" viewBox="0 0 64 64"><use href="#ghost-w0" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+    </div>
+    <div class="cap">none</div>
+  </div>
+  <div class="cell">
+    <div class="chrome">
+      <svg width="32" height="32" viewBox="0 0 64 64"><use href="#ghost-w1" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+      <svg width="16" height="16" viewBox="0 0 64 64"><use href="#ghost-w1" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+    </div>
+    <div class="cap">slight</div>
+  </div>
+  <div class="cell">
+    <div class="chrome">
+      <svg width="32" height="32" viewBox="0 0 64 64"><use href="#ghost-w2" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+      <svg width="16" height="16" viewBox="0 0 64 64"><use href="#ghost-w2" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+    </div>
+    <div class="cap">small</div>
+  </div>
+  <div class="cell">
+    <div class="chrome">
+      <svg width="32" height="32" viewBox="0 0 64 64"><use href="#ghost-w3" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+      <svg width="16" height="16" viewBox="0 0 64 64"><use href="#ghost-w3" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+    </div>
+    <div class="cap">medium</div>
+  </div>
+  <div class="cell">
+    <div class="chrome">
+      <svg width="32" height="32" viewBox="0 0 64 64"><use href="#ghost-c" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+      <svg width="16" height="16" viewBox="0 0 64 64"><use href="#ghost-c" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+    </div>
+    <div class="cap">full</div>
+  </div>
+</div>
+
+<div class="row" style="margin-top:26px; gap:40px">
+  <div class="cell">
+    <div class="lockup">
+      <svg width="22" height="22" viewBox="0 0 64 64"><use href="#ghost-w1" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+      <span>easyhn</span>
+    </div>
+    <div class="cap">slight</div>
+  </div>
+  <div class="cell">
+    <div class="lockup">
+      <svg width="22" height="22" viewBox="0 0 64 64"><use href="#ghost-w2" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+      <span>easyhn</span>
+    </div>
+    <div class="cap">small</div>
+  </div>
+  <div class="cell">
+    <div class="lockup">
+      <svg width="22" height="22" viewBox="0 0 64 64"><use href="#ghost-w3" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+      <span>easyhn</span>
+    </div>
+    <div class="cap">medium</div>
+  </div>
+  <div class="cell">
+    <div class="lockup">
+      <svg width="22" height="22" viewBox="0 0 64 64"><use href="#ghost-c" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+      <span>easyhn</span>
+    </div>
+    <div class="cap">full</div>
+  </div>
+</div>
+
+<!-- ============================================================= -->
+<h2>1 · Silhouette — pick the body first, colour later</h2>
+<div class="row">
+  <div class="cell">
+    <svg width="132" height="132" viewBox="0 0 64 64"><use href="#ghost-a" fill="#c95000"/><use href="#eyes" fill="#faf9f7"/></svg>
+    <div class="cap">A · no wisp</div>
+  </div>
+  <div class="cell">
+    <svg width="132" height="132" viewBox="0 0 64 64"><use href="#ghost-b" fill="#c95000"/><use href="#eyes" fill="#faf9f7"/></svg>
+    <div class="cap pick">B · 3 lobes + wisp</div>
+  </div>
+  <div class="cell">
+    <svg width="132" height="132" viewBox="0 0 64 64"><use href="#ghost-c" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+    <div class="cap">C · 2 lobes + wisp</div>
+  </div>
+  <div class="cell">
+    <svg width="132" height="132" viewBox="0 0 64 64">
+      <use href="#ghost-c" fill="#c95000" transform="translate(64 0) scale(-1 1)"/>
+      <g transform="translate(-2.5 0)"><use href="#eyes-c" fill="#faf9f7"/></g>
+    </svg>
+    <div class="cap">D · C, wisp mirrored</div>
+  </div>
+</div>
+
+<h2>2 · The same three, small — where detail goes to die</h2>
+<div class="row">
+  <div class="cell">
+    <div class="chrome">
+      <svg width="32" height="32" viewBox="0 0 64 64"><use href="#ghost-a" fill="#c95000"/><use href="#eyes" fill="#faf9f7"/></svg>
+      <svg width="20" height="20" viewBox="0 0 64 64"><use href="#ghost-a" fill="#c95000"/><use href="#eyes" fill="#faf9f7"/></svg>
+      <svg width="16" height="16" viewBox="0 0 64 64"><use href="#ghost-a" fill="#c95000"/><use href="#eyes" fill="#faf9f7"/></svg>
+    </div>
+    <div class="cap">A</div>
+  </div>
+  <div class="cell">
+    <div class="chrome">
+      <svg width="32" height="32" viewBox="0 0 64 64"><use href="#ghost-b" fill="#c95000"/><use href="#eyes" fill="#faf9f7"/></svg>
+      <svg width="20" height="20" viewBox="0 0 64 64"><use href="#ghost-b" fill="#c95000"/><use href="#eyes" fill="#faf9f7"/></svg>
+      <svg width="16" height="16" viewBox="0 0 64 64"><use href="#ghost-b" fill="#c95000"/><use href="#eyes" fill="#faf9f7"/></svg>
+    </div>
+    <div class="cap pick">B</div>
+  </div>
+  <div class="cell">
+    <div class="chrome">
+      <svg width="32" height="32" viewBox="0 0 64 64"><use href="#ghost-c" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+      <svg width="20" height="20" viewBox="0 0 64 64"><use href="#ghost-c" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+      <svg width="16" height="16" viewBox="0 0 64 64"><use href="#ghost-c" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+    </div>
+    <div class="cap">C</div>
+  </div>
+</div>
+
+<!-- ============================================================= -->
+<h2>3 · Colour — flat #c95000 vs lit</h2>
+<div class="row">
+  <div class="cell">
+    <svg width="112" height="112" viewBox="0 0 64 64"><use href="#ghost-b" fill="#c95000"/><use href="#eyes" fill="#faf9f7"/></svg>
+    <div class="cap">flat c95000</div>
+  </div>
+  <div class="cell">
+    <svg width="112" height="112" viewBox="0 0 64 64"><use href="#ghost-b" fill="url(#g-lit)"/><use href="#eyes" fill="#faf9f7"/></svg>
+    <div class="cap">lit · ff6600 → c95000</div>
+  </div>
+  <div class="cell">
+    <svg width="112" height="112" viewBox="0 0 64 64"><use href="#ghost-b" fill="#ff6600"/><use href="#eyes" fill="#faf9f7"/></svg>
+    <div class="cap">flat ff6600</div>
+  </div>
+  <div class="cell">
+    <svg width="112" height="112" viewBox="0 0 64 64">
+      <rect width="64" height="64" rx="14" fill="url(#g-lit)"/>
+      <g transform="translate(32 33.5) scale(0.7) translate(-32 -32)">
+        <use href="#ghost-b" fill="#faf9f7"/><use href="#eyes" fill="#c95000"/>
+      </g>
+    </svg>
+    <div class="cap">tile (today's container)</div>
+  </div>
+</div>
+
+<h2>4 · On dark</h2>
+<p class="sub">A solid <code>#c95000</code> muddies against dark chrome. The lit fill holds because
+its top edge is <code>#ff6600</code>. Worth shipping a dark variant of the toolbar icon.</p>
+<div class="row dark">
+  <div class="cell">
+    <svg width="84" height="84" viewBox="0 0 64 64"><use href="#ghost-b" fill="#c95000"/><use href="#eyes" fill="#17181a"/></svg>
+    <div class="cap">flat c95000</div>
+  </div>
+  <div class="cell">
+    <svg width="84" height="84" viewBox="0 0 64 64"><use href="#ghost-b" fill="url(#g-lit)"/><use href="#eyes" fill="#17181a"/></svg>
+    <div class="cap">lit</div>
+  </div>
+  <div class="cell">
+    <svg width="84" height="84" viewBox="0 0 64 64"><use href="#ghost-b" fill="#ff6600"/><use href="#eyes" fill="#17181a"/></svg>
+    <div class="cap">flat ff6600</div>
+  </div>
+  <div class="cell">
+    <div class="chrome chrome--dark">
+      <svg width="16" height="16" viewBox="0 0 64 64"><use href="#ghost-b" fill="#c95000"/><use href="#eyes" fill="#2b2c2f"/></svg>
+      <svg width="16" height="16" viewBox="0 0 64 64"><use href="#ghost-b" fill="url(#g-lit)"/><use href="#eyes" fill="#2b2c2f"/></svg>
+      <svg width="16" height="16" viewBox="0 0 64 64"><use href="#ghost-b" fill="#ff6600"/><use href="#eyes" fill="#2b2c2f"/></svg>
+    </div>
+    <div class="cap">toolbar · 16px</div>
+  </div>
+</div>
+
+<!-- ============================================================= -->
+<h2>5 · Lockup — against Instrument Serif, header size</h2>
+<div class="row" style="gap:46px">
+  <div class="cell">
+    <div class="lockup">
+      <svg width="22" height="22" viewBox="0 0 64 64"><use href="#ghost-b" fill="url(#g-lit)"/><use href="#eyes" fill="#faf9f7"/></svg>
+      <span>easyhn</span>
+    </div>
+    <div class="cap">B · lit</div>
+  </div>
+  <div class="cell">
+    <div class="lockup">
+      <svg width="22" height="22" viewBox="0 0 64 64"><use href="#ghost-b" fill="#c95000"/><use href="#eyes" fill="#faf9f7"/></svg>
+      <span>easyhn</span>
+    </div>
+    <div class="cap">B · flat</div>
+  </div>
+  <div class="cell">
+    <div class="lockup">
+      <svg width="22" height="22" viewBox="0 0 64 64"><use href="#ghost-c" fill="#c95000"/><use href="#eyes-c" fill="#faf9f7"/></svg>
+      <span>easyhn</span>
+    </div>
+    <div class="cap">C · flat</div>
+  </div>
+  <div class="cell">
+    <div class="lockup">
+      <img src="public/icon.png" width="22" height="22" alt="" />
+      <span>easyhn</span>
+    </div>
+    <div class="cap">today</div>
+  </div>
+</div>
+
+<!-- ============================================================= -->
+<h2>6 · Eye study — B at 84px</h2>
+<div class="row">
+  <div class="cell">
+    <svg width="84" height="84" viewBox="0 0 64 64">
+      <use href="#ghost-b" fill="url(#g-lit)"/><use href="#eyes" fill="#faf9f7"/>
+    </svg>
+    <div class="cap pick">tilted ovals</div>
+  </div>
+  <div class="cell">
+    <svg width="84" height="84" viewBox="0 0 64 64">
+      <use href="#ghost-b" fill="url(#g-lit)"/>
+      <ellipse cx="25.6" cy="27.6" rx="3.6" ry="4.6" fill="#faf9f7"/>
+      <ellipse cx="39.4" cy="27.6" rx="3.6" ry="4.6" fill="#faf9f7"/>
+    </svg>
+    <div class="cap">upright ovals</div>
+  </div>
+  <div class="cell">
+    <svg width="84" height="84" viewBox="0 0 64 64">
+      <use href="#ghost-b" fill="url(#g-lit)"/>
+      <circle cx="25.6" cy="27.8" r="3.7" fill="#faf9f7"/>
+      <circle cx="39.4" cy="27.8" r="3.7" fill="#faf9f7"/>
+    </svg>
+    <div class="cap">round dots</div>
+  </div>
+  <div class="cell">
+    <svg width="84" height="84" viewBox="0 0 64 64">
+      <use href="#ghost-b" fill="url(#g-lit)"/><use href="#eyes" fill="#faf9f7"/>
+      <path d="M28.8 37.6c2 1.9 5.2 1.9 7.2 0" stroke="#faf9f7" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div class="cap">+ mouth</div>
+  </div>
+  <div class="cell">
+    <svg width="84" height="84" viewBox="0 0 64 64">
+      <use href="#ghost-b" fill="url(#g-lit)"/>
+      <ellipse cx="25.6" cy="28.4" rx="3.6" ry="2.9" transform="rotate(-8 25.6 28.4)" fill="#faf9f7"/>
+      <ellipse cx="39.4" cy="28.4" rx="3.6" ry="2.9" transform="rotate(8 39.4 28.4)" fill="#faf9f7"/>
+    </svg>
+    <div class="cap">squinting (…the joke)</div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>
