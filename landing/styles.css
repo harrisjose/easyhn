@@ -27,6 +27,13 @@ body {
     radial-gradient(120% 60% at 50% -14%, rgba(255, 102, 0, 0.055), transparent 62%);
   background-repeat: no-repeat;
   text-wrap: pretty;
+  /* Safari inflates text when a phone turns landscape unless this is pinned. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Tap flash in the brand tint rather than the UA's grey block. Not
+     `transparent`: buttons have an :active transform but links have nothing
+     else to acknowledge the touch. */
+  -webkit-tap-highlight-color: var(--select);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -38,7 +45,16 @@ main { flex: 1 0 auto; }
 h1, h2, h3 { margin: 0; }
 p { margin: 0; }
 a { color: inherit; }
-img { display: block; max-width: 100%; }
+/* -webkit-user-drag covers Chrome and Safari; Firefox only honours the
+   draggable attribute, which the markup also sets. -webkit-touch-callout stops
+   iOS opening its save/copy sheet on a long press, which otherwise fires
+   whenever a scroll gesture starts on a screenshot. */
+img {
+  display: block;
+  max-width: 100%;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+}
 /* Emphasis is carried by the accent colour, not by slant — Instrument Serif's
    italic is lovely but reads as decoration at this scale. */
 em { font-style: normal; }
@@ -54,12 +70,18 @@ em { font-style: normal; }
 
 /* One measure for the entire page, set by the hero. 624px of content is a
    comfortable reading width and still fits a 2x2 grid of UI details at a
-   legible size — so no section needs its own width. */
+   legible size — so no section needs its own width.
+
+   The gutters take the safe-area inset when it is larger: the viewport meta
+   sets viewport-fit=cover, so on a notched phone held sideways the display
+   cutout and the rounded corners both eat into the edges. */
 .wrap {
   width: 100%;
   max-width: 672px;
   margin-inline: auto;
   padding-inline: var(--space-lg);
+  padding-inline: max(var(--space-lg), env(safe-area-inset-left))
+                  max(var(--space-lg), env(safe-area-inset-right));
 }
 
 /* ---- Eyebrow / label ---- */
@@ -366,7 +388,12 @@ em { font-style: normal; }
   padding-block: var(--space-md);
 }
 .qa:last-of-type { border-bottom: 1px solid var(--hairline); }
+/* The row's padding belongs to <details>, so the summary's own box was just the
+   23px text line. Padding plus an equal negative margin stretches the hit area
+   across the whole 55px band and leaves the layout exactly where it was. */
 .qa summary {
+  padding-block: var(--space-md);
+  margin-block: calc(var(--space-md) * -1);
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -462,6 +489,7 @@ kbd {
 .footer {
   border-top: 1px solid var(--hairline);
   padding-block: var(--space-lg);
+  padding-bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
 }
 .footer__inner {
   display: flex;
@@ -499,6 +527,25 @@ kbd {
 @keyframes rise {
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: none; }
+}
+
+/* ============ Touch ============ */
+/* Keyed off pointer type, not viewport width — a narrow desktop window has no
+   reason to grow its controls, and a large touch screen does. Links that sit in
+   running text are left alone: WCAG exempts them, and padding them would break
+   the line box they live in. */
+@media (pointer: coarse) {
+  .btn, .btn--sm, .btn--lg { min-height: 44px; }
+
+  /* Standalone links, so they get a real target. Negative margins keep the
+     measured layout identical to the fine-pointer case. */
+  .link-arrow,
+  .footer__inner a {
+    display: inline-flex;
+    align-items: center;
+    padding-block: 13px;
+    margin-block: -13px;
+  }
 }
 
 /* ============ Responsive ============ */
