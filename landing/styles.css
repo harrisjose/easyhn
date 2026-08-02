@@ -211,12 +211,14 @@ em { font-style: normal; }
   color: var(--accent-text);
   text-decoration-color: var(--accent-line);
 }
+/* Stacked, not side by side: the button's label is a full phrase now, and set
+   beside it the source link competed with it for the same horizontal line. */
 .actions {
   margin-top: var(--space-lg);
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: var(--space-lg);
+  gap: var(--space-md);
 }
 
 /* ============ Hero showcase ============ */
