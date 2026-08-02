@@ -78,25 +78,31 @@ export function ExternalArrow({ className }: IconProps) {
  *  orange rounded square. Used in the popup and mirrored by the extension /
  *  toolbar icons (public/icon/*.png, rendered from this same geometry).
  *  Deliberately distinct from the header's YCombinator "Y". */
+/**
+ * The ghost mark. Kept byte-identical to the geometry in scripts/gen-icons.mjs,
+ * which renders the same path out to the extension's PNG icons — edit there and
+ * mirror the change here, or the popup and the toolbar drift apart.
+ *
+ * The gradient id is namespaced because this renders inside news.ycombinator.com's
+ * own document, where a bare id="lit" could collide with anything.
+ */
 export function EasyhnMark({ className }: IconProps) {
   return (
-    <svg className={className} viewBox="0 0 32 32" aria-hidden="true">
-      <rect width="32" height="32" rx="7" fill="#ff6600" />
-      <text
-        x="10.5"
-        y="21.7"
-        textAnchor="middle"
-        fontFamily="'Helvetica Neue', Helvetica, Arial, sans-serif"
-        fontSize="22"
-        fontWeight="700"
-        fill="#fff"
-      >
-        e
-      </text>
-      <g fill="#fff">
-        <rect x="18.9" y="9.4" width="7.1" height="2.4" rx="1.2" />
-        <rect x="18.9" y="14.8" width="7.1" height="2.4" rx="1.2" />
-        <rect x="18.9" y="20.2" width="4.3" height="2.4" rx="1.2" />
+    <svg className={className} viewBox="0 0 64 64" aria-hidden="true">
+      <defs>
+        <linearGradient id="ehn-mark-lit" x1="0.1" y1="0" x2="0.85" y2="1">
+          <stop offset="0" stopColor="#ff6600" />
+          <stop offset="0.55" stopColor="#dd5a00" />
+          <stop offset="1" stopColor="#c95000" />
+        </linearGradient>
+      </defs>
+      <g transform="translate(-1.4 2.5)">
+        <path
+          d="M32 4C44.4 4 54.2 15.6 55.4 30.4C56 37.4 57.4 43 57.8 47.6C53.65 47.6 53.65 54.2 49.5 54.2C45.5 54.2 45.5 48.8 41.5 48.8C36.75 48.8 36.75 55 32 55C27.5 55 27.5 48.4 23 48.4C19.25 48.4 19.25 53.4 15.5 53.4C13.15 53.4 13.15 48.2 10.8 48.2C10.2 42.4 9.2 36.6 9 30.4C10.2 15.6 19.6 4 32 4Z"
+          fill="url(#ehn-mark-lit)"
+        />
+        <ellipse cx="26.7" cy="27.6" rx="3.5" ry="4.7" transform="rotate(-8 26.7 27.6)" fill="#faf9f7" />
+        <ellipse cx="40.2" cy="27.6" rx="3.5" ry="4.7" transform="rotate(8 40.2 27.6)" fill="#faf9f7" />
       </g>
     </svg>
   );

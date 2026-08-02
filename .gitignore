@@ -5,3 +5,13 @@ unpacked
 stats.html
 *.log
 .DS_Store
+
+# Installed agent skills and their lockfile — tooling, not part of the
+# extension. .claude/skills holds symlinks into .agents/skills.
+.agents/skills/
+.claude/skills/
+skills-lock.json
+
+# Personal editor/agent settings. A shared .claude/settings.json is still
+# committable if we ever want one.
+.claude/settings.local.json
