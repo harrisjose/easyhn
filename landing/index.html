@@ -73,8 +73,8 @@
       <p class="eyebrow eyebrow--rule">What changes</p>
       <h2 class="section-title">Four things you'll notice</h2>
       <p class="section-sub">
-        All easyhn does is restyle the page Hacker News already sends you. Same
-        stories, same account — a different reading experience.
+        All easyhn does is restyle the page Hacker News already sends you. You get the
+        same stories and the same account, just easier to read.
       </p>
 
       <ul class="cards">
@@ -84,7 +84,7 @@
                  alt="Story rows in easyhn, each with the domain, points, author, age and comment count." />
           </figure>
           <h3>Scannable lists</h3>
-          <p>Domain, score, author, age and comment count on every row, in one place.</p>
+          <p>Domain, score, author, age and comment count on every row.</p>
         </li>
 
         <li class="card">
@@ -93,7 +93,7 @@
                  alt="A Hacker News thread in easyhn: a comment with two levels of replies nested beneath it, each step indented and separated by a rule." />
           </figure>
           <h3>Readable comments</h3>
-          <p>Sane line lengths, nesting you can follow, and one-click collapse.</p>
+          <p>Comfortable line lengths, nesting you can follow, and one-click collapse.</p>
         </li>
 
         <li class="card">
@@ -111,16 +111,16 @@
                  alt="The easyhn settings drawer, with theme, font, font size, density and width controls." />
           </figure>
           <h3>Customizable everything</h3>
-          <p>Theme, font, size, density and width — synced across your browsers.</p>
+          <p>Theme, font, font size, density and width. Change one and every open Hacker
+             News tab updates with it.</p>
         </li>
       </ul>
 
       <div class="claim">
         <h3>And nothing leaves your browser</h3>
-        <p>Under the hood, easyhn restyles the HTML Hacker News already sends you.
-           <span class="mark">There's no API and no server in between</span>, and no
-           account to create. Your HN session stays yours — which is exactly why
-           upvoting and replying still work.</p>
+        <p><span class="mark">There's no API and no server in between</span>, and no
+           account to create. Your HN session stays yours, which is why upvoting and
+           replying still work.</p>
       </div>
     </section>
 
@@ -131,27 +131,31 @@
       <div class="faq__list">
       <details class="qa">
         <summary>How do I install it?</summary>
-        <p>It isn't on the Chrome Web Store or Firefox Add-ons yet, so it installs
-           manually for now. Download the latest zip from
-           <a href="https://github.com/harrisjose/easyhn/releases">Releases</a>, then in
-           Chrome open <code>chrome://extensions</code>, turn on Developer mode and choose
-           <em>Load unpacked</em>. In Firefox, open
-           <code>about:debugging#/runtime/this-firefox</code> and choose
-           <em>Load Temporary Add-on</em> — note that Firefox drops temporary add-ons when
-           it restarts.</p>
+        <p>easyhn isn't on the Chrome Web Store or Firefox Add-ons yet, so it installs
+           manually for now. Download the build for your browser from
+           <a href="https://github.com/harrisjose/easyhn/releases">Releases</a>. There's a
+           separate zip for each browser.</p>
+        <p><strong>Chrome:</strong> unzip
+           <code>easyhn-&lt;version&gt;-chrome.zip</code> first, then open
+           <code>chrome://extensions</code>, turn on Developer mode, choose
+           <em>Load unpacked</em> and select the unzipped folder.</p>
+        <p><strong>Firefox:</strong> open
+           <code>about:debugging#/runtime/this-firefox</code>, choose
+           <em>Load Temporary Add-on</em> and select
+           <code>easyhn-&lt;version&gt;-firefox.zip</code> itself. Don't unzip it. Firefox
+           drops temporary add-ons when it restarts.</p>
       </details>
 
       <details class="qa">
         <summary>Does anything I read leave my browser?</summary>
-        <p>No — easyhn restyles the markup Hacker News already sent to your browser. There's
+        <p>No. easyhn restyles the markup Hacker News already sent to your browser. There's
            no API, no server in between, no tracking and no account.</p>
       </details>
 
       <details class="qa">
         <summary>Can I still upvote and reply?</summary>
-        <p>Yes. Sign in from the account button in the easyhn header and the upvote arrows
-           and an inline reply box become active, wired straight through your existing
-           Hacker News session.</p>
+        <p>Yes. Log in from the easyhn header. The upvote arrows and the inline reply box
+           then work through your existing Hacker News session.</p>
       </details>
 
       <details class="qa">
@@ -164,8 +168,8 @@
         <summary>What happens if Hacker News changes their HTML?</summary>
         <p>Because easyhn reads HN's own server-rendered markup, a significant change there
            can break it. That's the trade for needing no API and no server. It's
-           MIT-licensed on <a href="https://github.com/harrisjose/easyhn">GitHub</a> —
-           issues and pull requests welcome.</p>
+           MIT-licensed on <a href="https://github.com/harrisjose/easyhn">GitHub</a>, so
+           issues and pull requests are welcome.</p>
       </details>
       </div>
     </section>
@@ -175,7 +179,7 @@
       <p class="closing__sub">Free and open source, MIT-licensed, and it never asks you
         to sign up for anything.</p>
       <a class="btn btn--lg" href="https://github.com/harrisjose/easyhn/releases">Download for Chrome &amp; Firefox</a>
-      <p class="closing__note">Loads as an unpacked extension — see the FAQ above.</p>
+      <p class="closing__note">Installs manually for now. See the FAQ above.</p>
     </section>
   </main>
 

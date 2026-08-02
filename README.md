@@ -14,8 +14,7 @@ themeable, distraction-free interface — no separate app, no accounts, no pro t
 - **User profiles** — a tabbed profile (About, Stories, Comments, Favorites, plus
   Upvoted / Hidden on your own account) rendered in place.
 - **Customization** — theme (Light / Dark / Auto), font (sans / serif), font size,
-  content width, and density. Synced across your browsers and applied live to
-  every open tab.
+  content width, and density. Applied live to every open tab.
 - **Keyboard navigation** — `j` / `k` to move, `o` / Enter to open, `c` for comments.
 
 It works by parsing HN's own server-rendered HTML (not the JSON API), so the auth
@@ -47,11 +46,11 @@ still works as usual.
   keyboard: `j` / `k` to move the selection, `o` or Enter to open a story, `c` to
   jump to its comments.
 - **Read threads** — click any comment's chevron to collapse or expand it.
-- **Vote & reply** — sign in from the account button in the header. Once logged in,
-  the upvote arrows and an inline reply box become active on stories and comments.
+- **Vote & reply** — log in from the easyhn header. Once logged in, the upvote
+  arrows and an inline reply box become active on stories and comments.
 - **Settings** — click the gear in the easyhn header (or open the extension's
-  options page) to change theme, font, size, width, and density. Changes apply
-  instantly and sync to your other browsers.
+  options page) to change theme, font, font size, width, and density. Changes
+  apply instantly to every open tab.
 - **Toolbar icon** — opens a small card with quick links (HN front page + author).
 
 ## Development
