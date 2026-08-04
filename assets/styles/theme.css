@@ -1260,8 +1260,12 @@ body:has(.ehn-popup) {
   align-items: center;
   gap: var(--sp-3);
   margin-bottom: var(--sp-4);
+  /* The link rows below carry --sp-3 of their own horizontal padding, so
+     without matching it here the mark sits a step left of their icons and the
+     title a step left of their labels. */
+  padding-inline: var(--sp-3);
 }
-/* Self-contained brand mark (its own orange tile) — no .ehn-logo-mark wrapper. */
+/* The ghost is drawn in the brand orange itself, so it needs no tile behind it. */
 .ehn-popup-mark {
   width: 30px;
   height: 30px;
