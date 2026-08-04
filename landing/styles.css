@@ -312,12 +312,18 @@ em { font-style: normal; }
 .card__shot img {
   width: 100%;
   height: auto;
-  aspect-ratio: 500 / 330;
-  object-fit: cover;
+  aspect-ratio: 7 / 5;
+  /* contain, not cover: the captures have four different aspect ratios and
+     cover was cutting the point out of two of them — the upvote arrow off the
+     keyboard card, the slider off the settings card. Letterboxing shows the
+     whole capture and leaves the plate's tint in the gaps. */
+  object-fit: contain;
   border-radius: var(--radius-sm);
-  /* The captures are light-on-light against the plate now, so the specimen
-     needs its own edge to read as a screenshot. */
-  border: 1px solid var(--hairline);
+  /* No border: with contain, a border frames the letterbox rather than the
+     screenshot. drop-shadow follows the drawn pixels instead, so the specimen
+     keeps an edge wherever it actually ends. */
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.10))
+          drop-shadow(0 3px 8px rgba(0, 0, 0, 0.06));
 }
 
 /* Body face, not the display serif. Instrument Serif is reserved for the page's
