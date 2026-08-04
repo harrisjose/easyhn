@@ -84,27 +84,6 @@ em { font-style: normal; }
                   max(var(--space-lg), env(safe-area-inset-right));
 }
 
-/* ---- Eyebrow / label ---- */
-.eyebrow {
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-.eyebrow--rule {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  color: var(--accent-text);
-}
-.eyebrow--rule::after {
-  content: "";
-  flex: 1;
-  height: 1px;
-  background: var(--hairline);
-}
-
 /* ============ Buttons & links ============ */
 .btn {
   display: inline-flex;
@@ -282,7 +261,7 @@ em { font-style: normal; }
   font-weight: 400;
   font-size: clamp(1.75rem, 3.4vw, 2rem);
   line-height: 1.1;
-  letter-spacing: -0.002em;
+  letter-spacing: 0.002em;
   color: var(--ink);
   text-wrap: balance;
 }
@@ -341,15 +320,25 @@ em { font-style: normal; }
   border: 1px solid var(--hairline);
 }
 
-.card h3 {
-  font-family: var(--font-display);
+/* Body face, not the display serif. Instrument Serif is reserved for the page's
+   spine — wordmark, hero, section titles — so it still signifies something when
+   it appears; these are labels on screenshots, not prose. Hierarchy comes from
+   size and colour rather than weight: 16px ink over 14px ink-soft, both at 400.
+   Inter wants negative tracking here where the serif wanted positive.
+
+   The closing claim shares these rules — it is the same tier of heading, just
+   without a screenshot above it. */
+.card h3,
+.claim h3 {
+  font-family: var(--font-body);
   font-weight: 400;
   font-size: var(--text-h3);
-  line-height: 1.25;
-  letter-spacing: 0.004em;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
   color: var(--ink);
 }
-.card > p {
+.card > p,
+.claim p {
   margin-top: var(--space-xs);
   font-size: var(--text-md);
   line-height: 1.5;
@@ -358,25 +347,12 @@ em { font-style: normal; }
 
 /* ============ Closing claim of the features section ============ */
 /* The privacy point has no UI to show, so it sits under the grid as a plain
-   statement rather than pretending to be a fourth screenshot. */
+   statement rather than pretending to be a fourth screenshot. Its type comes
+   from the card rules above. */
 .claim {
   margin-top: var(--space-3xl);
   padding-top: var(--space-lg);
   border-top: 1px solid var(--hairline);
-}
-.claim h3 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: var(--text-h3);
-  line-height: 1.3;
-  letter-spacing: 0.004em;
-  color: var(--ink);
-  margin-bottom: var(--space-xs);
-}
-.claim p {
-  font-size: var(--text-md);
-  line-height: 1.55;
-  color: var(--ink-soft);
 }
 
 /* ============ FAQ ============ */
@@ -437,7 +413,6 @@ em { font-style: normal; }
 
 /* ============ Features ============ */
 .features { padding-block: var(--space-2xl) 0; }
-.features .eyebrow--rule { margin-bottom: var(--space-md); }
 
 /* Keyboard caps */
 .keys {

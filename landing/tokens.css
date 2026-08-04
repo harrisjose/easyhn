@@ -65,10 +65,10 @@
 
   /* Anchored to a 13px base; the display clamp hits its 42px max at ~941px. */
   --text-display: clamp(1.4375rem, 4.46vw, 2.625rem);  /* 23 → 42 */
-  --text-h3:      1.25rem;     /* 20 — feature headings */
-  --text-lg:      1rem;        /* 16 — lede */
-  --text-md:      0.9375rem;   /* 15 — feature body copy */
-  --text-base:    0.8125rem;   /* 13 — also the eyebrow/label size */
+  --text-h3:      1rem;        /* 16 — card + claim headings, set in the body face */
+  --text-lg:      1rem;        /* 16 — lede, section intros */
+  --text-md:      0.875rem;    /* 14 — body copy: cards, claim, FAQ, closing */
+  --text-base:    0.8125rem;   /* 13 — body, closing CTA */
   --text-sm:      0.75rem;     /* 12 */
   --text-xs:      0.6875rem;   /* 11 */
 
