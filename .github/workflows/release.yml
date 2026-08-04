@@ -40,10 +40,48 @@ jobs:
           name: easyhn-extension
           path: .output/*.zip
 
+      # Most people reach the Releases page straight from the Download button on
+      # the landing page, so the notes have to carry the install steps too.
+      # GitHub pre-pends this body to the auto-generated changelog.
+      - name: Compose install notes
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          VERSION: ${{ github.ref_name }}
+        run: |
+          v="${VERSION#v}"
+          cat > release-body.md <<EOF
+          ## Install
+
+          Easyhn isn't on the Chrome Web Store or Firefox Add-ons yet, so it installs
+          by hand. Grab the zip for your browser below — \`-sources.zip\` is only there
+          for store review, you don't need it.
+
+          ### Chrome, Edge, Brave, Arc
+
+          1. Download \`easyhn-$v-chrome.zip\` and unzip it.
+          2. Open \`chrome://extensions\` and turn on **Developer mode** (top right).
+          3. Click **Load unpacked** and select the unzipped folder.
+
+          Keep that folder somewhere permanent — deleting it uninstalls the extension.
+
+          ### Firefox
+
+          1. Download \`easyhn-$v-firefox.zip\`. Don't unzip it.
+          2. Open \`about:debugging#/runtime/this-firefox\`.
+          3. Click **Load Temporary Add-on** and select the zip.
+
+          Firefox drops temporary add-ons when it restarts, so repeat this after each
+          restart.
+
+          Then open [news.ycombinator.com](https://news.ycombinator.com). More at
+          [easyhn.harrisjose.com](https://easyhn.harrisjose.com).
+          EOF
+
       - name: Publish release
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: .output/*.zip
+          body_path: release-body.md
           generate_release_notes: true
           fail_on_unmatched_files: true
