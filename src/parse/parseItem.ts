@@ -60,7 +60,7 @@ function parseSelfText(fatitem: Element | null): string | undefined {
   return undefined;
 }
 
-function parseComments(doc: Document): Comment[] {
+export function parseComments(doc: Document): Comment[] {
   const rows = Array.from(doc.querySelectorAll<HTMLTableRowElement>('tr.comtr'));
   const roots: Comment[] = [];
   // Open ancestors, deepest last: pop until the top is shallower than this
@@ -85,7 +85,7 @@ function parseComments(doc: Document): Comment[] {
   return roots;
 }
 
-function parseCommentRow(row: HTMLTableRowElement): Comment | null {
+export function parseCommentRow(row: HTMLTableRowElement): Comment | null {
   const id = row.id;
   if (!id) return null;
 

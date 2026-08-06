@@ -64,6 +64,24 @@ export interface ItemPage {
   commentForm?: ReplyForm;
 }
 
+/**
+ * A permalink to a single comment (`/item?id=` pointing at a comment rather
+ * than a story). HN renders the comment in place of the story header and only
+ * its own replies below, so the thread it belongs to has to come from the
+ * navigation links in its header.
+ */
+export interface CommentPage {
+  /** The linked comment, with its reply subtree as children. */
+  comment: Comment;
+  /** Title of the story the thread belongs to (HN's "on:" link). */
+  onStoryTitle?: string;
+  onStoryUrl?: string;
+  /** One level up — the parent comment, or the story for a top-level comment. */
+  parentUrl?: string;
+  /** The whole thread anchored at this comment (HN's "context" link). */
+  contextUrl?: string;
+}
+
 export interface Comment {
   id: string;
   author?: string;

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { ItemPage, ProfilePage, Route, Session } from '@/src/types';
+import type { CommentPage, ItemPage, ProfilePage, Route, Session } from '@/src/types';
 import type { StoryListResult } from '@/src/parse/parseStoryList';
+import type { Settings } from '@/src/settings/schema';
 import { useSettings } from '@/src/settings/useSettings';
 import { applyTheme, applyPageBackground, watchSystemTheme } from '@/src/settings/applyTheme';
 import { ToastContext, SettingsContext, SettingsUIContext, AccountUIContext } from './util';
@@ -10,11 +11,13 @@ import { AccountPanel } from './components/AccountPanel';
 import { Close } from './components/icons';
 import { StoryList } from './views/StoryList';
 import { Item } from './views/Item';
+import { SingleComment } from './views/SingleComment';
 import { Profile } from './views/Profile';
 
 export type AppPayload =
   | { kind: 'storylist'; list: StoryListResult }
   | { kind: 'item'; item: ItemPage }
+  | { kind: 'comment'; page: CommentPage }
   | { kind: 'profile'; profile: ProfilePage };
 
 export function App({
@@ -22,13 +25,16 @@ export function App({
   route,
   session,
   payload,
+  initialSettings,
 }: {
   host: HTMLElement;
   route: Route;
   session: Session;
   payload: AppPayload;
+  /** Settings read before mount, so the first paint is already the right size. */
+  initialSettings?: Settings;
 }) {
-  const { settings } = useSettings();
+  const { settings } = useSettings(initialSettings);
   const [toast, setToast] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
@@ -66,6 +72,9 @@ export function App({
                 <StoryList stories={payload.list.stories} moreUrl={payload.list.moreUrl} />
               )}
               {payload.kind === 'item' && <Item item={payload.item} loggedIn={session.loggedIn} />}
+              {payload.kind === 'comment' && (
+                <SingleComment page={payload.page} loggedIn={session.loggedIn} />
+              )}
               {payload.kind === 'profile' && <Profile profile={payload.profile} />}
             </main>
 

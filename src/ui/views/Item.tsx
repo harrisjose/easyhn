@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import type { ItemPage } from '@/src/types';
 import { userUrl, fromSiteUrl, plural, newTab, useAppSettings } from '../util';
 import { useUpvote } from '../useUpvote';
+import { useCommentAnchor } from '../useCommentAnchor';
 import { CommentNode } from '../components/CommentNode';
 import { Composer } from '../components/Composer';
 import { Prose } from '../components/Prose';
@@ -19,9 +20,12 @@ export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) 
   const { voted, handleVote } = useUpvote(story.vote);
   const [composing, setComposing] = useState(false);
   const total = useMemo(() => totalComments(item), [item]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  // Comment permalinks link back here as item?id=<story>#<comment>.
+  useCommentAnchor(containerRef);
 
   return (
-    <div className="ehn-item">
+    <div className="ehn-item" ref={containerRef}>
       <div className="ehn-item-head">
         <h1 className="ehn-item-title">
           {story.url ? (
