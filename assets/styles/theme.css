@@ -454,6 +454,28 @@ body {
 .ehn-item-title a:hover {
   color: var(--ehn-accent);
 }
+/* Comment-permalink breadcrumb: the story title, one step smaller than a story
+   headline (it's context here, not the subject), with the arrow hung in the
+   left gutter so the title itself stays flush with the comment below. */
+.ehn-crumb {
+  font-size: 1.35em;
+}
+.ehn-crumb a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--sp-2);
+}
+.ehn-crumb-arrow {
+  width: 0.7em;
+  height: 0.7em;
+  flex: none;
+  margin-left: -1.4em;
+  color: var(--fg-faint);
+  transition: color 0.14s ease;
+}
+.ehn-crumb a:hover .ehn-crumb-arrow {
+  color: var(--ehn-accent);
+}
 /* Item actions sit at the right end of the meta row (the title stays flush
    with the content column — no left gutter). */
 .ehn-item-actions {
@@ -499,10 +521,16 @@ body {
 .ehn-comment-body {
   padding: calc(14px * var(--ehn-density)) 0;
   border-top: 1px solid var(--border);
+  /* Clears the sticky header (57px) when a "context" link scrolls a comment to
+     the top of the viewport — see useCommentAnchor. */
+  scroll-margin-top: calc(57px + var(--sp-4));
 }
 /* No divider between the "N comments" heading and the first comment — the
-   heading already separates them. */
-.ehn-comments-count + .ehn-comment > .ehn-comment-body {
+   heading already separates them. Same on a comment permalink, where the
+   comment follows the item head directly and its rule would double up with
+   the head's own bottom border. */
+.ehn-comments-count + .ehn-comment > .ehn-comment-body,
+.ehn-item-head + .ehn-comment > .ehn-comment-body {
   border-top: none;
   padding-top: var(--sp-2);
 }
@@ -616,6 +644,23 @@ body {
 .ehn-dead {
   color: var(--fg-faint);
   font-style: italic;
+}
+/* The comment a "context" link sent us to (see useCommentAnchor): a brief accent
+   wash that fades, so you can tell where you landed in a long thread. The tint
+   is painted on the body row and bled into the gutter so it reads as one band.
+   Reduced motion gets the same cue held still rather than nothing at all. */
+.ehn-comment.ehn-flash > .ehn-comment-body {
+  background: var(--accent-soft);
+  box-shadow: -12px 0 0 var(--accent-soft), 12px 0 0 var(--accent-soft);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ehn-comment.ehn-flash > .ehn-comment-body {
+    animation: ehn-flash 2s ease-out forwards;
+  }
+  @keyframes ehn-flash {
+    from { background: var(--accent-soft); box-shadow: -12px 0 0 var(--accent-soft), 12px 0 0 var(--accent-soft); }
+    to { background: transparent; box-shadow: none; }
+  }
 }
 
 /* ---- Reply composer ---- */

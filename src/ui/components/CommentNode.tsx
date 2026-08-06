@@ -66,7 +66,9 @@ export function CommentNode({ comment, loggedIn }: { comment: Comment; loggedIn:
                 <UpArrow filled={voted} />
               </button>
             )}
-            {loggedIn && comment.replyUrl && (
+            {/* Either a reply link to fetch the form from, or (on a comment
+                permalink) the form HN already served on the page. */}
+            {loggedIn && (comment.replyUrl || replyForm) && (
               <button
                 onClick={openReply}
                 disabled={loadingForm}

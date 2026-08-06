@@ -9,6 +9,7 @@
 
 import {
   ArrowFatUp,
+  ArrowLeft,
   ArrowUpRight,
   CaretDown,
   ChatCircle,
@@ -36,6 +37,11 @@ export function Chevron({ className }: IconProps) {
 /** Reply / comment bubble. */
 export function Reply({ className }: IconProps) {
   return <ChatCircle className={className} weight="bold" aria-hidden="true" />;
+}
+
+/** Back / up-a-level arrow (the comment-permalink breadcrumb). */
+export function BackArrow({ className }: IconProps) {
+  return <ArrowLeft className={className} weight="bold" aria-hidden="true" />;
 }
 
 /** Settings toggle — vertical faders / knobs. */

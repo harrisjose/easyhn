@@ -5,9 +5,13 @@ import { getSettings, patchSettings, watchSettings } from './store';
 /**
  * React hook exposing the current settings plus an `update` patcher. Stays in
  * sync across tabs/pages via the storage watcher.
+ *
+ * Pass `initial` when the caller already read storage (the content script does,
+ * before mounting) — starting from the defaults and correcting on the first
+ * effect re-wraps the whole page one frame in.
  */
-export function useSettings() {
-  const [settings, setSettings] = useState<Settings>(DEFAULT_SETTINGS);
+export function useSettings(initial: Settings = DEFAULT_SETTINGS) {
+  const [settings, setSettings] = useState<Settings>(initial);
 
   useEffect(() => {
     let active = true;

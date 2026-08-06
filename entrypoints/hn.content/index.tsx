@@ -5,9 +5,12 @@ import { detectRoute } from '@/src/parse/detectRoute';
 import { parseSession } from '@/src/parse/auth';
 import { parseStoryList } from '@/src/parse/parseStoryList';
 import { parseItem } from '@/src/parse/parseItem';
+import { parseCommentPage } from '@/src/parse/parseComment';
 import { parseUser } from '@/src/parse/parseUser';
 import { parseUserComments } from '@/src/parse/parseUserComments';
-import { PAGE_BG } from '@/src/settings/applyTheme';
+import { getSettings } from '@/src/settings/store';
+import { DEFAULT_SETTINGS } from '@/src/settings/schema';
+import { applyPageBackground, applyTheme, PAGE_BG } from '@/src/settings/applyTheme';
 import { App, type AppPayload } from '@/src/ui/App';
 import '@/assets/styles/theme.css';
 
@@ -34,6 +37,12 @@ export default defineContentScript({
       return;
     }
 
+    // Read settings before the first paint. Applying them from an effect instead
+    // re-wraps the column (width / font size) a frame in, which on a long thread
+    // shifts the content by hundreds of pixels — a visible jump, and enough to
+    // throw the comment anchor off its target.
+    const settings = await getSettings().catch(() => DEFAULT_SETTINGS);
+
     const ui = await createShadowRootUi(ctx, {
       name: 'easyhn-root',
       position: 'inline',
@@ -44,12 +53,21 @@ export default defineContentScript({
         // Make the host fill the page and host our CSS-variable scope.
         (shadowHost as HTMLElement).style.cssText =
           'display:block;position:relative;z-index:2147483646;';
+        // After cssText, which would otherwise wipe the custom properties.
+        applyTheme(shadowHost as HTMLElement, settings);
+        applyPageBackground(settings);
         const wrapper = document.createElement('div');
         wrapper.className = 'ehn-root';
         container.append(wrapper);
         const root = createRoot(wrapper);
         root.render(
-          <App host={shadowHost as HTMLElement} route={route} session={session} payload={payload} />,
+          <App
+            host={shadowHost as HTMLElement}
+            route={route}
+            session={session}
+            payload={payload}
+            initialSettings={settings}
+          />,
         );
         return root;
       },
@@ -67,6 +85,11 @@ function buildPayload(route: ReturnType<typeof detectRoute>, session: Session): 
     return { kind: 'storylist', list: parseStoryList() };
   }
   if (route.kind === 'item' && route.itemId) {
+    // /item?id= serves both stories and single comments, and the URL doesn't say
+    // which — only the page does, so ask the comment parser first (it returns
+    // null on a story page).
+    const page = parseCommentPage(route.itemId);
+    if (page) return { kind: 'comment', page };
     const item = parseItem(route.itemId);
     return item ? { kind: 'item', item } : null;
   }

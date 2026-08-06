@@ -17,7 +17,9 @@ export function UserCommentList({ comments }: { comments: UserComment[] }) {
             {c.onStoryTitle && (
               <>
                 <span className="sep">·</span>
-                <a className="ehn-oncomment" href={c.onStoryUrl}>
+                {/* Anchored at the comment so the thread opens where it sits,
+                    rather than at the top of a page of hundreds. */}
+                <a className="ehn-oncomment" href={c.onStoryUrl && `${c.onStoryUrl}#${c.id}`}>
                   {c.onStoryTitle}
                 </a>
               </>
