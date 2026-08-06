@@ -113,18 +113,15 @@ pnpm test:fixtures  # re-capture fixtures from live HN
 
 ## Landing page
 
-The marketing site lives in `landing/` and deploys to
-[easyhn.harrisjose.com](https://easyhn.harrisjose.com) via Cloudflare.
+The marketing site lives in `landing/` and is served at
+[easyhn.harrisjose.com](https://easyhn.harrisjose.com). Cloudflare deploys it on
+every push to `main`, so shipping a copy change is just a commit — see
+[`landing/README.md`](landing/README.md).
 
 ```bash
 cd landing
 npm run dev      # serve on http://localhost:4600
-npm run deploy   # wrangler deploy
 ```
-
-Type is self-hosted in `landing/public/fonts/` (latin subsets, ~83KB) rather than
-loaded from a CDN — the page's own pitch is that nothing leaves your browser, so it
-shouldn't call a third party to render its headline.
 
 ### The hero image
 
