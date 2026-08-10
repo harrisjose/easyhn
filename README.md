@@ -9,6 +9,8 @@ themeable, distraction-free interface — no separate app, no accounts, no pro t
 - **Redesigned story lists** — Top / New / Best / Ask / Show / Jobs, with domains,
   score, author, age and comment counts.
 - **Readable comment threads** with one-click collapse/expand.
+- **New since your last visit** — comments added since you last opened a thread
+  are dotted in the margin, with a "N new" button that steps through them.
 - **Account features** — sign in / out and, when logged in, upvote and reply
   (inline composer), wired straight through to HN using your existing session.
 - **User profiles** — a tabbed profile (About, Stories, Comments, Favorites, plus
@@ -45,7 +47,10 @@ still works as usual.
 - **Browse** — use the top nav (Top / New / Best / Ask / Show / Jobs), or the
   keyboard: `j` / `k` to move the selection, `o` or Enter to open a story, `c` to
   jump to its comments.
-- **Read threads** — click any comment's chevron to collapse or expand it.
+- **Read threads** — click any comment's chevron to collapse or expand it. Come
+  back later and anything posted since your last visit carries an orange dot;
+  the "N new" button next to the comment count jumps between them. Turn it off
+  in Settings and easyhn forgets which threads you've opened.
 - **Vote & reply** — log in from the easyhn header. Once logged in, the upvote
   arrows and an inline reply box become active on stories and comments.
 - **Settings** — click the gear in the easyhn header (or open the extension's

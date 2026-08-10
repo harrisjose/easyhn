@@ -509,11 +509,31 @@ body {
   font-size: 1.0em;
 }
 .ehn-comments-count {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
   margin: var(--sp-5) 0 var(--sp-3);
   font-weight: 600;
   font-size: 1.25em;
   letter-spacing: -0.01em;
   color: var(--fg);
+}
+/* "N new" — sits beside the comment count and steps through the new ones. */
+.ehn-newjump {
+  font: inherit;
+  font-size: 0.62em;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--ehn-accent);
+  background: var(--accent-soft);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--r-pill);
+  padding: 3px 10px;
+  cursor: pointer;
+  transition: background 0.14s ease;
+}
+.ehn-newjump:hover {
+  background: color-mix(in srgb, var(--ehn-accent) 20%, transparent);
 }
 
 /* ---- Comments ---- */
@@ -553,6 +573,28 @@ body {
 }
 .ehn-comment-head .sep {
   color: var(--fg-faint);
+}
+/* A comment posted since the reader's last visit. Just the dot: tinting the
+   bodies floods a thread where most comments are new, which is the thread you
+   most need to read. Out of the flow, in the collapse toggle's gutter — inline,
+   it pushes the author name off the column every other one aligns to. */
+.ehn-new-dot {
+  position: absolute;
+  right: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 13px;
+  width: 6px;
+  height: 6px;
+  border-radius: var(--r-pill);
+  background: var(--ehn-accent);
+  transition: opacity 0.14s ease;
+}
+/* The chevron takes the gutter back on hover and keeps it while collapsed: by
+   then you're acting on the comment, not scanning for what's new. */
+.ehn-comment-body:hover > .ehn-comment-head .ehn-new-dot,
+.ehn-comment-head .ehn-collapse.collapsed ~ .ehn-new-dot {
+  opacity: 0;
 }
 /* The collapse toggle floats into the left gutter (out of the flow) so the
    author line sits flush with the comment body text below it. It reveals on
@@ -1217,6 +1259,18 @@ body {
 }
 
 /* ---- Misc ---- */
+/* Standard screen-reader-only text: off-screen but not hidden from AT. */
+.ehn-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
 .ehn-empty {
   padding: var(--sp-7) var(--sp-3);
   color: var(--fg-dim);

@@ -87,6 +87,9 @@ export interface Comment {
   author?: string;
   ageText?: string;
   ageTitle?: string;
+  /** Posted-at in unix seconds, read off the age tooltip. Undefined if HN's
+   *  markup didn't carry one — see parseEpoch. */
+  time?: number;
   /** Rendered comment HTML (sanitised subset HN produces). */
   html: string;
   depth: number;

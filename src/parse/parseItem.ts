@@ -95,7 +95,7 @@ export function parseCommentRow(row: HTMLTableRowElement): Comment | null {
     Math.round(Number(ind?.querySelector('img')?.getAttribute('width') ?? 0) / 40);
 
   const author = row.querySelector('.hnuser')?.textContent?.trim() || undefined;
-  const { ageText, ageTitle } = parseAge(row);
+  const { ageText, ageTitle, time } = parseAge(row);
 
   const commtext = row.querySelector('.commtext');
   const dead = !commtext;
@@ -111,6 +111,7 @@ export function parseCommentRow(row: HTMLTableRowElement): Comment | null {
     author,
     ageText,
     ageTitle,
+    time,
     html,
     depth: Number.isFinite(depth) ? depth : 0,
     vote: parseVote(id, row),

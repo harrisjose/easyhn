@@ -106,6 +106,18 @@ export function SettingsPanel({
           />
         </label>
       </Field>
+
+      <Field label="Comments">
+        <label className="ehn-switch-row">
+          <span>Mark comments added since your last visit</span>
+          <input
+            type="checkbox"
+            className="ehn-switch"
+            checked={settings.highlightNew}
+            onChange={(e) => update({ highlightNew: e.target.checked })}
+          />
+        </label>
+      </Field>
     </div>
   );
 }

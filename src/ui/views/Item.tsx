@@ -1,8 +1,9 @@
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import type { ItemPage } from '@/src/types';
 import { userUrl, fromSiteUrl, plural, newTab, useAppSettings } from '../util';
 import { useUpvote } from '../useUpvote';
 import { useCommentAnchor } from '../useCommentAnchor';
+import { useNewComments } from '../useNewComments';
 import { CommentNode } from '../components/CommentNode';
 import { Composer } from '../components/Composer';
 import { Prose } from '../components/Prose';
@@ -23,6 +24,27 @@ export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) 
   const containerRef = useRef<HTMLDivElement>(null);
   // Comment permalinks link back here as item?id=<story>#<comment>.
   useCommentAnchor(containerRef);
+  // Record HN's own count, not ours: it's the number the story lists show, and
+  // the two disagree by a comment or two.
+  const { newIds, order: newOrder } = useNewComments(
+    story.id,
+    item.comments,
+    story.commentCount ?? total,
+    settings.highlightNew,
+  );
+  const nextNew = useRef(0);
+
+  const jumpToNew = useCallback(() => {
+    if (!newOrder.length) return;
+    const id = newOrder[nextNew.current % newOrder.length];
+    nextNew.current += 1;
+    const el = containerRef.current?.querySelector<HTMLElement>(`#ehn-c-${id}`);
+    // Scroll the comment's own row, not the element: `.ehn-comment` wraps its
+    // whole reply subtree (same reasoning as useCommentAnchor).
+    const row = el?.querySelector<HTMLElement>(':scope > .ehn-comment-body') ?? el;
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    row?.scrollIntoView({ block: 'start', behavior: still ? 'auto' : 'smooth' });
+  }, [newOrder]);
 
   return (
     <div className="ehn-item" ref={containerRef}>
@@ -85,11 +107,20 @@ export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) 
       )}
 
       <div className="ehn-comments-count">
-        {total > 0 ? plural(total, 'comment') : 'No comments yet'}
+        <span>{total > 0 ? plural(total, 'comment') : 'No comments yet'}</span>
+        {newOrder.length > 0 && (
+          <button
+            className="ehn-newjump"
+            onClick={jumpToNew}
+            title="Jump to the next comment added since your last visit"
+          >
+            {newOrder.length} new
+          </button>
+        )}
       </div>
 
       {item.comments.map((c) => (
-        <CommentNode key={c.id} comment={c} loggedIn={loggedIn} />
+        <CommentNode key={c.id} comment={c} loggedIn={loggedIn} newIds={newIds} />
       ))}
     </div>
   );

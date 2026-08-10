@@ -27,11 +27,28 @@ export function domainOf(url?: string): string | undefined {
 export function parseAge(scope: Element | null | undefined): {
   ageText?: string;
   ageTitle?: string;
+  time?: number;
 } {
   const ageEl = scope?.querySelector('.age');
   const ageText = ageEl?.querySelector('a')?.textContent?.trim() || ageEl?.textContent?.trim();
   const ageTitle = ageEl?.getAttribute('title') ?? undefined;
-  return { ageText, ageTitle };
+  return { ageText, ageTitle, time: parseEpoch(ageTitle) };
+}
+
+/**
+ * Unix seconds out of an `.age` title. HN writes both forms in the one
+ * attribute — "2026-08-10T06:16:42 1786341758" — so take the epoch it hands us
+ * and fall back to the ISO half, which is UTC but written without a zone: hence
+ * the appended Z, without which it parses as local time and lands hours out.
+ */
+export function parseEpoch(ageTitle: string | undefined): number | undefined {
+  if (!ageTitle) return undefined;
+  const epoch = ageTitle.match(/\b(\d{9,})\b/);
+  if (epoch) return Number(epoch[1]);
+  const iso = ageTitle.match(/^\d{4}-\d{2}-\d{2}T[\d:]+/);
+  if (!iso) return undefined;
+  const ms = Date.parse(`${iso[0]}Z`);
+  return Number.isNaN(ms) ? undefined : Math.floor(ms / 1000);
 }
 
 /**

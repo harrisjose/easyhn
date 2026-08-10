@@ -11,6 +11,9 @@ export interface Settings {
   density: Density;
   /** Open story/article title links in a new tab. */
   openInNewTab: boolean;
+  /** Mark the comments added to a thread since you last opened it. Off also
+   *  means we stop keeping the per-thread reading history it needs. */
+  highlightNew: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -19,6 +22,7 @@ export const DEFAULT_SETTINGS: Settings = {
   fontSize: 15,
   density: 'default',
   openInNewTab: true,
+  highlightNew: true,
 };
 
 /** Multiplier applied to list/comment vertical padding via `--ehn-density`. */

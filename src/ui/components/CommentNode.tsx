@@ -1,19 +1,30 @@
 import { useState } from 'react';
 import type { Comment, ReplyForm } from '@/src/types';
 import { fetchReplyForm } from '@/src/actions';
+import { NO_NEW } from '@/src/visits/newComments';
 import { userUrl, itemUrl, useToast } from '../util';
 import { useUpvote } from '../useUpvote';
 import { Composer } from './Composer';
 import { Prose } from './Prose';
 import { UpArrow, Chevron, Reply } from './icons';
 
-export function CommentNode({ comment, loggedIn }: { comment: Comment; loggedIn: boolean }) {
+export function CommentNode({
+  comment,
+  loggedIn,
+  newIds = NO_NEW,
+}: {
+  comment: Comment;
+  loggedIn: boolean;
+  /** Comments added since the reader's last visit — see useNewComments. */
+  newIds?: ReadonlySet<string>;
+}) {
   const toast = useToast();
   const { voted, canUpvote, handleVote } = useUpvote(comment.vote);
   const [collapsed, setCollapsed] = useState(false);
   const [replyForm, setReplyForm] = useState<ReplyForm | null>(comment.replyForm ?? null);
   const [replying, setReplying] = useState(false);
   const [loadingForm, setLoadingForm] = useState(false);
+  const isNew = newIds.has(comment.id);
 
   async function openReply() {
     setReplying(true);
@@ -40,6 +51,12 @@ export function CommentNode({ comment, loggedIn }: { comment: Comment; loggedIn:
           >
             <Chevron />
           </button>
+          {isNew && (
+            <>
+              <span className="ehn-new-dot" aria-hidden="true" />
+              <span className="ehn-sr-only">New since your last visit:</span>
+            </>
+          )}
           {comment.author ? (
             <a className="ehn-comment-author" href={userUrl(comment.author)}>
               {comment.author}
@@ -105,7 +122,7 @@ export function CommentNode({ comment, loggedIn }: { comment: Comment; loggedIn:
       {!collapsed && comment.children.length > 0 && (
         <div className="ehn-children">
           {comment.children.map((child) => (
-            <CommentNode key={child.id} comment={child} loggedIn={loggedIn} />
+            <CommentNode key={child.id} comment={child} loggedIn={loggedIn} newIds={newIds} />
           ))}
         </div>
       )}
