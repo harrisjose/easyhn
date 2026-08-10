@@ -1,4 +1,4 @@
-import { FONT_STACK, WIDTH_PX, DENSITY_SCALE, type Settings } from './schema';
+import { FONT_STACK, DENSITY_SCALE, type Settings } from './schema';
 
 function prefersDark(): boolean {
   return typeof window !== 'undefined' && window.matchMedia
@@ -22,7 +22,6 @@ export function applyTheme(el: HTMLElement, s: Settings): void {
   const css = el.style;
   css.setProperty('--ehn-font', FONT_STACK[s.font]);
   css.setProperty('--ehn-font-size', `${s.fontSize}px`);
-  css.setProperty('--ehn-width', `${WIDTH_PX[s.width]}px`);
   css.setProperty('--ehn-density', `${DENSITY_SCALE[s.density]}`);
 }
 

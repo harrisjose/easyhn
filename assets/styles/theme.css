@@ -13,6 +13,8 @@
   --ehn-accent: #ff6600;
   --ehn-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --ehn-font-size: 15px;
+  /* Content column — the header's middle grid track matches it, so the two
+     have to move together. */
   --ehn-width: 820px;
   /* Vertical-whitespace multiplier for lists/threads (see DENSITY_SCALE). */
   --ehn-density: 1;

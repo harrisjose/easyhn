@@ -1,6 +1,5 @@
 export type Theme = 'light' | 'dark' | 'auto';
 export type FontFamily = 'sans' | 'serif';
-export type Width = 'narrow' | 'medium' | 'wide';
 export type Density = 'compact' | 'default' | 'comfortable';
 
 export interface Settings {
@@ -8,7 +7,6 @@ export interface Settings {
   font: FontFamily;
   /** Base font size in px. */
   fontSize: number;
-  width: Width;
   /** Vertical whitespace in lists and comment threads, independent of size. */
   density: Density;
   /** Open story/article title links in a new tab. */
@@ -19,15 +17,8 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: 'auto',
   font: 'sans',
   fontSize: 15,
-  width: 'medium',
   density: 'default',
   openInNewTab: true,
-};
-
-export const WIDTH_PX: Record<Width, number> = {
-  narrow: 640,
-  medium: 820,
-  wide: 1040,
 };
 
 /** Multiplier applied to list/comment vertical padding via `--ehn-density`. */

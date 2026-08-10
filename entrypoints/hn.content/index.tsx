@@ -38,7 +38,7 @@ export default defineContentScript({
     }
 
     // Read settings before the first paint. Applying them from an effect instead
-    // re-wraps the column (width / font size) a frame in, which on a long thread
+    // re-wraps the column (font / font size) a frame in, which on a long thread
     // shifts the content by hundreds of pixels — a visible jump, and enough to
     // throw the comment anchor off its target.
     const settings = await getSettings().catch(() => DEFAULT_SETTINGS);

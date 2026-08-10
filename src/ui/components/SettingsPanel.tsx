@@ -3,7 +3,6 @@ import {
   type Settings,
   type Theme,
   type FontFamily,
-  type Width,
   type Density,
   FONT_STACK,
 } from '@/src/settings/schema';
@@ -15,7 +14,6 @@ const THEMES: { value: Theme; label: string; Icon: ComponentType<{ className?: s
   { value: 'auto', label: 'Auto', Icon: ThemeAuto },
 ];
 const FONTS: FontFamily[] = ['sans', 'serif'];
-const WIDTHS: Width[] = ['narrow', 'medium', 'wide'];
 const DENSITIES: Density[] = ['compact', 'default', 'comfortable'];
 
 /** The shared settings controls — reused by the popup, options page and the
@@ -92,21 +90,6 @@ export function SettingsPanel({
               aria-pressed={settings.density === d}
             >
               {cap(d)}
-            </button>
-          ))}
-        </div>
-      </Field>
-
-      <Field label="Width">
-        <div className="ehn-seg">
-          {WIDTHS.map((w) => (
-            <button
-              key={w}
-              className={`ehn-seg-btn${settings.width === w ? ' active' : ''}`}
-              onClick={() => update({ width: w })}
-              aria-pressed={settings.width === w}
-            >
-              {cap(w)}
             </button>
           ))}
         </div>

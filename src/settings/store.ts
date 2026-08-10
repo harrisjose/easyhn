@@ -8,7 +8,12 @@ import { DEFAULT_SETTINGS, type Settings } from './schema';
  */
 export const settingsItem = storage.defineItem<Settings>('sync:settings', {
   fallback: DEFAULT_SETTINGS,
-  version: 1,
+  version: 2,
+  migrations: {
+    // Nothing reads the dropped `width` key, but every patch would keep
+    // re-writing it into sync storage. Strip it once.
+    2: ({ width: _width, ...rest }: Settings & { width?: string }) => rest,
+  },
 });
 
 export async function getSettings(): Promise<Settings> {

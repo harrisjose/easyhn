@@ -39,11 +39,9 @@ export function useCommentAnchor(root: RefObject<HTMLElement | null>) {
 
     go(true);
 
-    // The first scroll aims at a layout that is still moving: settings (font,
-    // width) are applied in a later effect, and re-wrapping the column shifts a
-    // long thread by hundreds of pixels. Re-pin on every resize of our tree
-    // until it settles — but never fight the reader, so the first real input
-    // ends it.
+    // The first scroll aims at a tree that may still be sizing, and any re-wrap
+    // shifts a long thread by hundreds of pixels. Re-pin on every resize until
+    // it settles — but never fight the reader, so the first real input ends it.
     let settling = true;
     const stop = () => {
       if (!settling) return;
