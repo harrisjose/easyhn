@@ -11,8 +11,8 @@ export interface Settings {
   density: Density;
   /** Open story/article title links in a new tab. */
   openInNewTab: boolean;
-  /** Mark the comments added to a thread since you last opened it. Off also
-   *  means we stop keeping the per-thread reading history it needs. */
+  /** Mark the comments added to a thread since you last opened it. Off stops
+   *  both the marks and the recording; history already stored is left alone. */
   highlightNew: boolean;
 }
 

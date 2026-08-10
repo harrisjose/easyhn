@@ -1,49 +1,34 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { Comment } from '@/src/types';
-import { clearVisits, getVisit, hasVisits, recordVisit } from '@/src/visits/store';
-import { NO_NEW, newSince } from '@/src/visits/newComments';
+import { NO_MARKS, type Marks } from '@/src/visits/ledger';
+import { useVisitLedger } from './util';
 
 /**
  * Mark the comments added to a thread since the reader last opened it.
  *
- * Read the stored visit before re-stamping it, or opening a thread erases the
- * marks you came back to see. Consequence: opening one counts as reading it,
- * even if you close it again straight away.
+ * `comments` is deliberately not a dependency: opening a thread records the
+ * visit, so re-running would read back the timestamp it just wrote and decide
+ * nothing is new. The page model is parsed once and never mutated, so the tree
+ * cannot change under a mounted thread anyway.
  */
-export function useNewComments(
-  itemId: string,
-  comments: Comment[],
-  count: number | undefined,
-  enabled: boolean,
-): { newIds: ReadonlySet<string>; order: string[] } {
-  const [since, setSince] = useState<number | null>(null);
+export function useNewComments(itemId: string, comments: Comment[], enabled: boolean): Marks {
+  const ledger = useVisitLedger();
+  const [marks, setMarks] = useState<Marks>(NO_MARKS);
 
   useEffect(() => {
-    let active = true;
-
     if (!enabled) {
-      setSince(null);
-      // Off means we keep nothing — drop history an earlier session left behind.
-      void hasVisits().then((any) => {
-        if (any) return clearVisits();
-      });
+      setMarks(NO_MARKS);
       return;
     }
-
-    void (async () => {
-      const visit = await getVisit(itemId);
-      if (!active) return;
-      setSince(visit?.seenAt ?? null);
-      await recordVisit(itemId, count);
-    })();
-
+    let active = true;
+    void ledger.openThread(itemId, comments).then((m) => {
+      if (active) setMarks(m);
+    });
     return () => {
       active = false;
     };
-  }, [itemId, count, enabled]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- see above
+  }, [itemId, enabled, ledger]);
 
-  const order = useMemo(() => newSince(comments, since), [comments, since]);
-  const newIds = useMemo(() => (order.length ? new Set(order) : NO_NEW), [order]);
-
-  return { newIds, order };
+  return marks;
 }

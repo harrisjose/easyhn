@@ -1,5 +1,6 @@
 import type { Comment, ItemPage, Story } from '@/src/types';
-import { parseVote, parseReplyForm, parseAge, parseCommentCount, domainOf, toAbsolute } from './auth';
+import { toAbsolute } from '@/src/hn/urls';
+import { parseVote, parseReplyForm, parseAge, parseCommentCount, domainOf } from './auth';
 
 /** Parse an /item page: the story header + its full comment tree. */
 export function parseItem(itemId: string, doc: Document = document): ItemPage | null {

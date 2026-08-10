@@ -1,5 +1,5 @@
 import type { Session } from '@/src/types';
-import { HN_ORIGIN, PROFILE_TABS, userUrl } from '../util';
+import { HN_ORIGIN, PROFILE_TABS, userUrl } from '@/src/hn/urls';
 import { Close } from './icons';
 
 /** The header user button opens this: an account menu when signed in, or a

@@ -1,5 +1,5 @@
 import type { UserComment } from '@/src/types';
-import { itemUrl } from '../util';
+import { itemUrl } from '@/src/hn/urls';
 import { Prose } from './Prose';
 
 /** A flat list of a user's own comments (the profile "Comments" tab). */

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Story } from '@/src/types';
-import { itemUrl } from '../util';
+import { itemUrl } from '@/src/hn/urls';
 import { StoryRow } from '../components/StoryRow';
 
 export function StoryList({ stories, moreUrl }: { stories: Story[]; moreUrl?: string }) {

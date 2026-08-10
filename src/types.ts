@@ -8,6 +8,16 @@ export type RouteKind =
 
 export type ProfileTab = 'about' | 'stories' | 'comments' | 'favorites' | 'upvoted' | 'hidden';
 
+/**
+ * One Hacker News page, as easyhn models it. Produced by the Takeover module
+ * and rendered as-is — nothing downstream touches HN's markup.
+ */
+export type PageModel =
+  | { kind: 'storylist'; stories: Story[]; moreUrl?: string }
+  | { kind: 'item'; item: ItemPage }
+  | { kind: 'permalink'; permalink: CommentPage }
+  | { kind: 'profile'; profile: ProfilePage };
+
 export interface Route {
   kind: RouteKind;
   /** The HN list slug for story lists (news, newest, ask, show, jobs, front, best). */

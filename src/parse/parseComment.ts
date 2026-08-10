@@ -1,5 +1,6 @@
 import type { CommentPage } from '@/src/types';
-import { parseReplyForm, toAbsolute } from './auth';
+import { toAbsolute } from '@/src/hn/urls';
+import { parseReplyForm } from './auth';
 import { parseCommentRow, parseComments } from './parseItem';
 
 /**

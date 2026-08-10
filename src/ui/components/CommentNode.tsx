@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import type { Comment, ReplyForm } from '@/src/types';
-import { fetchReplyForm } from '@/src/actions';
 import { NO_NEW } from '@/src/visits/newComments';
-import { userUrl, itemUrl, useToast } from '../util';
+import { userUrl, itemUrl } from '@/src/hn/urls';
+import { useToast, useHn } from '../util';
 import { useUpvote } from '../useUpvote';
 import { Composer } from './Composer';
 import { Prose } from './Prose';
@@ -19,7 +19,8 @@ export function CommentNode({
   newIds?: ReadonlySet<string>;
 }) {
   const toast = useToast();
-  const { voted, canUpvote, handleVote } = useUpvote(comment.vote);
+  const hn = useHn();
+  const { voted, available, disabled, onVote } = useUpvote(comment.vote);
   const [collapsed, setCollapsed] = useState(false);
   const [replyForm, setReplyForm] = useState<ReplyForm | null>(comment.replyForm ?? null);
   const [replying, setReplying] = useState(false);
@@ -30,7 +31,7 @@ export function CommentNode({
     setReplying(true);
     if (replyForm || !comment.replyUrl) return;
     setLoadingForm(true);
-    const form = await fetchReplyForm(comment.replyUrl);
+    const form = await hn.fetchReplyForm(comment.replyUrl);
     setLoadingForm(false);
     if (form) setReplyForm(form);
     else {
@@ -73,9 +74,10 @@ export function CommentNode({
             </>
           )}
           <span className="ehn-comment-actions">
-            {(canUpvote || voted) && (
+            {available && (
               <button
-                onClick={handleVote}
+                onClick={onVote}
+                disabled={disabled}
                 className={voted ? 'voted' : ''}
                 title={voted ? 'Upvoted' : 'Upvote'}
                 aria-label={voted ? 'Upvoted' : 'Upvote'}

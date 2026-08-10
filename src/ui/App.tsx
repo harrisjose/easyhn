@@ -1,10 +1,18 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { CommentPage, ItemPage, ProfilePage, Route, Session } from '@/src/types';
-import type { StoryListResult } from '@/src/parse/parseStoryList';
+import { useCallback, useRef, useState } from 'react';
+import type { PageModel, Route, Session } from '@/src/types';
 import type { Settings } from '@/src/settings/schema';
+import type { VisitLedger } from '@/src/visits/ledger';
+import type { HnClient } from '@/src/hn/client';
 import { useSettings } from '@/src/settings/useSettings';
-import { applyTheme, applyPageBackground, watchSystemTheme } from '@/src/settings/applyTheme';
-import { ToastContext, SettingsContext, SettingsUIContext, AccountUIContext } from './util';
+import { useApplyTheme } from '@/src/settings/useApplyTheme';
+import {
+  ToastContext,
+  SettingsContext,
+  SettingsUIContext,
+  AccountUIContext,
+  VisitLedgerContext,
+  HnClientContext,
+} from './util';
 import { Header } from './components/Header';
 import { SettingsPanel } from './components/SettingsPanel';
 import { AccountPanel } from './components/AccountPanel';
@@ -14,43 +22,33 @@ import { Item } from './views/Item';
 import { SingleComment } from './views/SingleComment';
 import { Profile } from './views/Profile';
 
-export type AppPayload =
-  | { kind: 'storylist'; list: StoryListResult }
-  | { kind: 'item'; item: ItemPage }
-  | { kind: 'comment'; page: CommentPage }
-  | { kind: 'profile'; profile: ProfilePage };
-
 export function App({
   host,
   route,
   session,
-  payload,
+  page,
+  ledger,
+  hn,
   initialSettings,
 }: {
   host: HTMLElement;
   route: Route;
   session: Session;
-  payload: AppPayload;
+  page: PageModel;
+  /** Visit ledger, wired to extension storage by the content script. */
+  ledger: VisitLedger;
+  /** Everything we ask Hacker News to do, wired to fetch by the content script. */
+  hn: HnClient;
   /** Settings read before mount, so the first paint is already the right size. */
   initialSettings?: Settings;
 }) {
-  const { settings } = useSettings(initialSettings);
+  const { settings, update } = useSettings(initialSettings);
   const [toast, setToast] = useState<string | null>(null);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  // Keep the shadow host's CSS variables / data-theme in sync with settings,
-  // re-applying when the OS theme flips while on "auto". The page background
-  // behind us lives outside the shadow root and is synced alongside.
-  useEffect(() => {
-    const sync = () => {
-      applyTheme(host, settings);
-      applyPageBackground(settings);
-    };
-    sync();
-    return watchSystemTheme(sync);
-  }, [host, settings]);
+  useApplyTheme(settings, host);
 
   const notify = useCallback((msg: string) => {
     setToast(msg);
@@ -63,35 +61,54 @@ export function App({
 
   return (
     <ToastContext.Provider value={notify}>
-      <SettingsContext.Provider value={settings}>
-        <SettingsUIContext.Provider value={openSettings}>
-          <AccountUIContext.Provider value={openAccount}>
-            <Header route={route} session={session} />
-            <main className="ehn-container">
-              {payload.kind === 'storylist' && (
-                <StoryList stories={payload.list.stories} moreUrl={payload.list.moreUrl} />
-              )}
-              {payload.kind === 'item' && <Item item={payload.item} loggedIn={session.loggedIn} />}
-              {payload.kind === 'comment' && (
-                <SingleComment page={payload.page} loggedIn={session.loggedIn} />
-              )}
-              {payload.kind === 'profile' && <Profile profile={payload.profile} />}
-            </main>
+      <HnClientContext.Provider value={hn}>
+      <VisitLedgerContext.Provider value={ledger}>
+        <SettingsContext.Provider value={settings}>
+          <SettingsUIContext.Provider value={openSettings}>
+            <AccountUIContext.Provider value={openAccount}>
+              <Header route={route} session={session} />
+              <main className="ehn-container">
+                {page.kind === 'storylist' && (
+                  <StoryList stories={page.stories} moreUrl={page.moreUrl} />
+                )}
+                {page.kind === 'item' && <Item item={page.item} loggedIn={session.loggedIn} />}
+                {page.kind === 'permalink' && (
+                  <SingleComment page={page.permalink} loggedIn={session.loggedIn} />
+                )}
+                {page.kind === 'profile' && <Profile profile={page.profile} />}
+              </main>
 
-            {settingsOpen && <SettingsPopover onClose={() => setSettingsOpen(false)} />}
-            {accountOpen && (
-              <AccountPanel session={session} onClose={() => setAccountOpen(false)} />
-            )}
-            {toast && <div className="ehn-toast">{toast}</div>}
-          </AccountUIContext.Provider>
-        </SettingsUIContext.Provider>
-      </SettingsContext.Provider>
+              {settingsOpen && (
+                <SettingsPopover
+                  settings={settings}
+                  update={update}
+                  onClose={() => setSettingsOpen(false)}
+                />
+              )}
+              {accountOpen && (
+                <AccountPanel session={session} onClose={() => setAccountOpen(false)} />
+              )}
+              {toast && <div className="ehn-toast">{toast}</div>}
+            </AccountUIContext.Provider>
+          </SettingsUIContext.Provider>
+        </SettingsContext.Provider>
+      </VisitLedgerContext.Provider>
+      </HnClientContext.Provider>
     </ToastContext.Provider>
   );
 }
 
-function SettingsPopover({ onClose }: { onClose: () => void }) {
-  const { settings, update } = useSettings();
+/** Reads and writes App's settings — never its own copy, or the panel would
+ *  edit one instance while the tree behind it renders another. */
+function SettingsPopover({
+  settings,
+  update,
+  onClose,
+}: {
+  settings: Settings;
+  update: (patch: Partial<Settings>) => void;
+  onClose: () => void;
+}) {
   return (
     <div className="ehn-overlay" onClick={onClose}>
       <div className="ehn-popover" onClick={(e) => e.stopPropagation()}>

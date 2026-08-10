@@ -1,5 +1,6 @@
 import type { Story } from '@/src/types';
-import { parseVote, parseAge, parseCommentCount, domainOf, toAbsolute } from './auth';
+import { toAbsolute } from '@/src/hn/urls';
+import { parseVote, parseAge, parseCommentCount, domainOf } from './auth';
 
 export interface StoryListResult {
   stories: Story[];

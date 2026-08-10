@@ -1,5 +1,6 @@
 import type { UserComment } from '@/src/types';
-import { parseVote, parseAge, toAbsolute } from './auth';
+import { toAbsolute } from '@/src/hn/urls';
+import { parseVote, parseAge } from './auth';
 import { stripReply } from './parseItem';
 
 /**

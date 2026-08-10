@@ -1,14 +1,5 @@
 import type { Session, VoteState, ReplyForm } from '@/src/types';
-
-/** Resolve an HN-relative href (e.g. "vote?id=1") to an absolute URL. */
-export function toAbsolute(href: string | null | undefined): string | undefined {
-  if (!href) return undefined;
-  try {
-    return new URL(href, 'https://news.ycombinator.com/').href;
-  } catch {
-    return undefined;
-  }
-}
+import { toAbsolute } from '@/src/hn/urls';
 
 /** Display domain for an external story URL, e.g. "github.com". */
 export function domainOf(url?: string): string | undefined {

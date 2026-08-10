@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import type { ReplyForm } from '@/src/types';
-import { postComment } from '@/src/actions';
-import { useToast } from '../util';
+import { useToast, useHn } from '../util';
 
 /**
  * Inline comment/reply box. Posts to HN's /comment endpoint using the hidden
@@ -22,13 +21,14 @@ export function Composer({
   autoFocus?: boolean;
 }) {
   const toast = useToast();
+  const hn = useHn();
   const [text, setText] = useState('');
   const [busy, setBusy] = useState(false);
 
   async function submit() {
     if (!text.trim() || busy) return;
     setBusy(true);
-    const ok = await postComment(form, text);
+    const ok = await hn.postComment(form, text);
     setBusy(false);
     if (ok) {
       setText('');

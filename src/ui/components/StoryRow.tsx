@@ -1,5 +1,6 @@
 import type { Story } from '@/src/types';
-import { itemUrl, userUrl, fromSiteUrl, plural, newTab, useAppSettings } from '../util';
+import { itemUrl, userUrl, fromSiteUrl } from '@/src/hn/urls';
+import { plural, newTab, useAppSettings } from '../util';
 import { useUpvote } from '../useUpvote';
 import { UpArrow } from './icons';
 
@@ -15,7 +16,7 @@ export function StoryRow({
   showJobBadge?: boolean;
 }) {
   const settings = useAppSettings();
-  const { voted, handleVote } = useUpvote(story.vote);
+  const { voted, disabled, onVote } = useUpvote(story.vote);
 
   const href = story.url ?? itemUrl(story.id);
   // Only external article links open in a new tab; self/Ask posts go to the
@@ -59,8 +60,8 @@ export function StoryRow({
       </div>
       <button
         className={`ehn-vote${voted ? ' voted' : ''}`}
-        onClick={handleVote}
-        disabled={!story.vote.canUpvote && !voted}
+        onClick={onVote}
+        disabled={disabled}
         title={voted ? 'Upvoted' : 'Upvote'}
         aria-label={voted ? 'Upvoted' : 'Upvote'}
       >

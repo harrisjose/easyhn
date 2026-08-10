@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useRef, useState } from 'react';
 import type { ItemPage } from '@/src/types';
-import { userUrl, fromSiteUrl, plural, newTab, useAppSettings } from '../util';
+import { userUrl, fromSiteUrl } from '@/src/hn/urls';
+import { plural, newTab, useAppSettings } from '../util';
 import { useUpvote } from '../useUpvote';
 import { useCommentAnchor } from '../useCommentAnchor';
 import { useNewComments } from '../useNewComments';
@@ -18,18 +19,15 @@ function totalComments(item: ItemPage): number {
 export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) {
   const { story } = item;
   const settings = useAppSettings();
-  const { voted, handleVote } = useUpvote(story.vote);
+  const { voted, disabled, onVote } = useUpvote(story.vote);
   const [composing, setComposing] = useState(false);
   const total = useMemo(() => totalComments(item), [item]);
   const containerRef = useRef<HTMLDivElement>(null);
   // Comment permalinks link back here as item?id=<story>#<comment>.
   useCommentAnchor(containerRef);
-  // Record HN's own count, not ours: it's the number the story lists show, and
-  // the two disagree by a comment or two.
   const { newIds, order: newOrder } = useNewComments(
     story.id,
     item.comments,
-    story.commentCount ?? total,
     settings.highlightNew,
   );
   const nextNew = useRef(0);
@@ -70,8 +68,8 @@ export function Item({ item, loggedIn }: { item: ItemPage; loggedIn: boolean }) 
           <span className="ehn-item-actions">
             <button
               className={`ehn-vote ehn-vote-lg${voted ? ' voted' : ''}`}
-              onClick={handleVote}
-              disabled={!story.vote.canUpvote && !voted}
+              onClick={onVote}
+              disabled={disabled}
               title={voted ? 'Upvoted' : 'Upvote'}
               aria-label={voted ? 'Upvoted' : 'Upvote'}
             >

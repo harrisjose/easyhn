@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { ProfilePage, ProfileTab } from '@/src/types';
-import { parseUser } from '@/src/parse/parseUser';
-import { fetchDoc } from '@/src/actions';
-import { PROFILE_TABS, userUrl } from '../util';
+import { PROFILE_TABS } from '@/src/hn/urls';
+import { useHn } from '../util';
 import { Prose } from '../components/Prose';
 import { UserCommentList } from '../components/UserCommentList';
 import { StoryList } from './StoryList';
@@ -71,6 +70,7 @@ function Empty() {
  * details in the background rather than blocking the render.
  */
 function useProfileStats(profile: ProfilePage) {
+  const hn = useHn();
   const [stats, setStats] = useState<{ karma?: number; created?: string }>({
     karma: profile.karma,
     created: profile.created,
@@ -79,15 +79,14 @@ function useProfileStats(profile: ProfilePage) {
   useEffect(() => {
     if (profile.tab === 'about' || profile.karma != null || profile.created) return;
     let cancelled = false;
-    fetchDoc(userUrl(profile.id)).then((doc) => {
-      if (cancelled || !doc) return;
-      const p = parseUser(profile.id, doc);
-      if (p) setStats({ karma: p.karma, created: p.created });
+    hn.fetchProfile(profile.id).then((p) => {
+      if (cancelled || !p) return;
+      setStats({ karma: p.karma, created: p.created });
     });
     return () => {
       cancelled = true;
     };
-  }, [profile.id, profile.tab, profile.karma, profile.created]);
+  }, [hn, profile.id, profile.tab, profile.karma, profile.created]);
 
   return stats;
 }
