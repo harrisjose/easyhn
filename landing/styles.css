@@ -362,14 +362,19 @@ em { font-style: normal; }
 
 /* ============ Legal (privacy) ============ */
 .legal { padding-block: var(--space-2xl) var(--space-3xl); }
-.legal__updated {
-  margin-top: var(--space-sm);
+/* Tag name included so this outranks `.legal p` below, which would otherwise
+   win on specificity and render the meta line at full body size. It sits tight
+   under the title — a byline for the heading, not its own block — and the body
+   then takes a clear break from both. */
+.legal p.legal__updated {
+  margin-top: var(--space-xs);
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--ink-faint);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
+.legal p.legal__updated + p { margin-top: var(--space-lg); }
 .legal h2 {
   margin-top: var(--space-xl);
   font-family: var(--font-body);
@@ -520,6 +525,10 @@ kbd {
   gap: 0.4rem 0.7rem;
   font-size: var(--text-sm);
   color: var(--ink-faint);
+}
+.footer__inner .brand img {
+  vertical-align: -0.18em;
+  margin-right: var(--space-xs);
 }
 .footer__inner a {
   color: var(--ink-soft);

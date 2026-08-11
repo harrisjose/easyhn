@@ -34,73 +34,72 @@
   <main>
     <section class="legal wrap">
       <h1 class="section-title">Privacy</h1>
-      <p class="legal__updated">Last updated 2026-08-11.</p>
+      <p class="legal__updated">Last updated 2026-08-11</p>
 
       <p><span class="proper-name">Easy for Hacker News</span> has no server. There is nothing
-        to send your data to, so it doesn't collect any — no analytics, no
+        to send your data to, so it doesn't collect any: no analytics, no
         tracking, no ads, no account. This page exists only because the Chrome
         Web Store and Firefox Add-ons require a privacy policy from every
-        extension; it says, in full, what it does and doesn't do with what it
-        can see.</p>
+        extension. It covers everything the extension can see and everything
+        it stores.</p>
 
       <h2>What it can see</h2>
       <p><span class="proper-name">Easy</span> runs only on
         <code>news.ycombinator.com</code>. It reads the HTML that page already
         sent your browser and replaces it with its own rendering. It never
-        talks to any other site, and no page you read is transmitted anywhere
-        — not to Hacker News beyond what your browser would send it anyway,
-        and not to anyone else.</p>
+        talks to any other site, and no page you read is sent anywhere else.
+        Hacker News sees only what your browser would have sent it without the
+        extension.</p>
 
       <h2>Signing in, voting, and replying</h2>
       <p><span class="proper-name">Easy</span> doesn't have its own login.
         When you sign in, you're using Hacker News's own form, and Hacker News
-        sets the session cookie the same way it always has — it never sees
-        your password. Voting and replying work by submitting Hacker News's
-        own links and forms with that session, exactly as the native page
-        would. It only reads the session Hacker News reports back; it never
-        creates or stores one itself.</p>
+        sets the session cookie the same way it always has.
+        <span class="proper-name">Easy</span> never sees your password.
+        Voting and replying work by submitting Hacker News's own links and
+        forms with that session, the same as the native page. It only reads
+        the session Hacker News reports back, and never creates or stores
+        one.</p>
 
       <h2>What's stored on your device</h2>
-      <p><span class="proper-name">Easy for Hacker News</span> uses the browser's built-in
-        <code>storage</code> permission to remember two things, locally:</p>
+      <p><span class="proper-name">Easy</span> uses the browser's built-in
+        <code>storage</code> permission to remember two things:</p>
       <ul>
-        <li>Your display settings — theme, font, size, density — so they carry
+        <li>Your display settings (theme, font, size, density), so they carry
           across your open tabs.</li>
         <li>Which threads you've opened, so it can mark comments posted since
-          your last visit. You can turn this off in Settings, which also
-          clears what's already stored.</li>
+          your last visit. You can turn this off in Settings, under
+          <em>Mark comments added since your last visit</em>. That stops both
+          the marks and the recording; anything already stored stays on your
+          device until you remove the extension.</li>
       </ul>
       <p>If your browser syncs extension storage across your own devices
         (Chrome and Firefox both offer this), that sync belongs to your
-        browser, not to <span class="proper-name">Easy for Hacker News</span> — the same
-        mechanism any extension's settings use. Nothing here ever leaves your
+        browser, not to <span class="proper-name">Easy</span>. It is the same
+        mechanism any extension's settings use, and nothing here leaves your
         browser through it.</p>
 
       <h2>Third parties</h2>
-      <p>None. <span class="proper-name">Easy for Hacker News</span> makes no network requests
-        of its own — every request you see it make is one you could make by
-        clicking around Hacker News directly.</p>
+      <p>None. <span class="proper-name">Easy</span> makes no network requests
+        of its own. Every request it makes is one you could make by clicking
+        around Hacker News yourself.</p>
 
       <h2>Source</h2>
-      <p><span class="proper-name">Easy for Hacker News</span> is MIT-licensed and its source
-        is on
-        <a href="https://github.com/harrisjose/easyhn">GitHub</a> — every claim
-        on this page is checkable against the code that ships.</p>
+      <p><span class="proper-name">Easy</span> is MIT-licensed. The source that
+        ships is in the
+        <a href="https://github.com/harrisjose/easyhn">GitHub repository</a>,
+        so you can check every claim on this page against it.</p>
 
       <h2>Contact</h2>
-      <p>Questions or concerns: open an issue on
-        <a href="https://github.com/harrisjose/easyhn/issues">GitHub</a> or
-        reach out on <a href="https://x.com/harrispjose">X</a>.</p>
+      <p>Have a question? <a
+          href="https://github.com/harrisjose/easyhn/issues">Open an issue on
+          GitHub</a>, or message <a href="https://x.com/harrispjose">@harrispjose
+          on X</a>.</p>
     </section>
   </main>
 
   <footer class="footer">
     <div class="wrap footer__inner">
-      <span class="brand">
-        <img draggable="false" src="public/icon.svg" alt="" width="20" height="20" />
-        <span>easy</span>
-      </span>
-      <span class="dot" aria-hidden="true">·</span>
       <a href="https://github.com/harrisjose/easyhn/releases">Releases</a>
       <span class="dot" aria-hidden="true">·</span>
       <span>Made by <a href="https://x.com/harrispjose">@harrispjose</a></span>
