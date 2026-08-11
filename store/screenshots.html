@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>easyhn — store screenshot lab</title>
+<style>
+  /* Renders one Chrome/Firefox store screenshot (1280x800) per ?shot=N.
+     Reuses the landing page's tokens and card-plate treatment so these read
+     as the same object, not a separate marketing artifact.
+     Regenerate: see store/README.md. */
+  @font-face {
+    font-family: "Instrument Serif";
+    src: url("../landing/public/fonts/instrument-serif-400.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Inter";
+    font-weight: 300 800;
+    src: url("../landing/public/fonts/inter-var.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "JetBrains Mono";
+    src: url("../landing/public/fonts/jetbrains-mono-400.woff2") format("woff2");
+  }
+
+  :root {
+    --paper: #faf9f7;
+    --ink: #17181a;
+    --ink-soft: #55575c;
+    --ink-faint: #8a8c92;
+    --hairline: rgba(0, 0, 0, 0.09);
+    --accent-text: #b34700;
+    --font-display: "Instrument Serif", Georgia, serif;
+    --font-body: "Inter", -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    width: 1280px; height: 800px;
+    overflow: hidden;
+    background: var(--paper);
+    background-image: radial-gradient(120% 60% at 50% -14%, rgba(255, 102, 0, 0.06), transparent 62%);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .frame {
+    width: 1280px; height: 800px;
+    padding: 44px 64px 48px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--ink);
+  }
+  .brand img { width: 24px; height: 24px; border-radius: 6px; display: block; }
+  .brand b { font-weight: 400; color: var(--accent-text); }
+
+  .pill {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--ink-faint);
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    padding: 6px 14px;
+  }
+  .pill b { color: var(--ink-soft); font-weight: 400; }
+
+  .stage {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    padding: 28px 0;
+  }
+
+  .plate {
+    aspect-ratio: 7 / 5;
+    height: 100%;
+    padding: 14px;
+    border-radius: 18px;
+    background: linear-gradient(160deg, rgba(255, 102, 0, 0.10), rgba(0, 0, 0, 0.035));
+    box-shadow: 0 22px 50px -30px rgba(0, 0, 0, 0.35);
+  }
+  .plate img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.10)) drop-shadow(0 4px 12px rgba(0,0,0,0.08));
+  }
+
+  .caption h2 {
+    margin: 0;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 26px;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .caption p {
+    margin: 8px 0 0;
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 640px;
+  }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <div class="row">
+      <span class="brand">
+        <img src="../landing/public/icon.svg" alt="" />
+        easy<b>hn</b>
+      </span>
+      <span class="pill"><b>news.ycombinator.com</b></span>
+    </div>
+    <div class="stage">
+      <div class="plate"><img id="shot" alt="" /></div>
+    </div>
+    <div class="caption">
+      <h2 id="title"></h2>
+      <p id="desc"></p>
+    </div>
+  </div>
+
+<script>
+  const SHOTS = {
+    1: {
+      img: "../landing/public/card-list.jpg",
+      title: "Scannable lists",
+      desc: "Domain, score, author, age and comment count on every row.",
+    },
+    2: {
+      img: "../landing/public/card-thread.jpg",
+      title: "Readable comments",
+      desc: "Comfortable line lengths, nesting you can follow, and one-click collapse.",
+    },
+    3: {
+      img: "../landing/public/card-keys.jpg",
+      title: "Keyboard navigation",
+      desc: "j / k to move, o to open, c for comments.",
+    },
+    4: {
+      img: "../landing/public/card-settings.jpg",
+      title: "Reading controls",
+      desc: "Theme, font, size and density — applied instantly to every open tab.",
+    },
+  };
+  const n = new URLSearchParams(location.search).get("shot") || "1";
+  const s = SHOTS[n];
+  document.getElementById("shot").src = s.img;
+  document.getElementById("title").textContent = s.title;
+  document.getElementById("desc").textContent = s.desc;
+</script>
+</body>
+</html>

@@ -361,6 +361,47 @@ em { font-style: normal; }
   border-top: 1px solid var(--hairline);
 }
 
+/* ============ Legal (privacy) ============ */
+.legal { padding-block: var(--space-2xl) var(--space-3xl); }
+.legal__updated {
+  margin-top: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.legal h2 {
+  margin-top: var(--space-xl);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  letter-spacing: -0.012em;
+  color: var(--ink);
+}
+.legal p, .legal li {
+  margin-top: var(--space-sm);
+  font-size: var(--text-md);
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+.legal ul { margin: var(--space-sm) 0 0; padding-left: 1.25rem; }
+.legal li { margin-top: var(--space-xs); }
+.legal a {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--hairline-strong);
+  text-underline-offset: 2px;
+}
+.legal a:hover { color: var(--accent-text); text-decoration-color: var(--accent-line); }
+.legal code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--paper-3);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+}
+
 /* ============ FAQ ============ */
 .faq { padding-block: var(--space-3xl) 0; }
 .faq .section-title { margin-bottom: var(--space-lg); }

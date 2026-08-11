@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Privacy — easyhn</title>
+  <meta name="description" content="easyhn's privacy policy: it has no server, collects no data, and sends nothing anywhere but news.ycombinator.com." />
+  <link rel="canonical" href="https://easyhn.harrisjose.com/privacy" />
+  <meta name="theme-color" content="#faf9f7" />
+  <meta name="color-scheme" content="light" />
+  <meta name="robots" content="noindex" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="easyhn" />
+  <meta property="og:url" content="https://easyhn.harrisjose.com/privacy" />
+  <meta property="og:title" content="Privacy — easyhn" />
+  <meta property="og:description" content="easyhn's privacy policy: it has no server, collects no data, and sends nothing anywhere but news.ycombinator.com." />
+
+  <link rel="icon" href="public/icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="public/icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar__inner">
+      <a class="brand" href="/" style="text-decoration: none;">
+        <img draggable="false" src="public/icon.svg" alt="" width="20" height="20" />
+        <span>easy<span class="brand__hn">hn</span></span>
+      </a>
+      <a class="btn btn--sm" href="https://github.com/harrisjose/easyhn/releases/latest">Download</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="legal wrap">
+      <h1 class="section-title">Privacy</h1>
+      <p class="legal__updated">Last updated 2026-08-11.</p>
+
+      <p>easyhn has no server. There is nothing to send your data to, so it
+        doesn't collect any — no analytics, no tracking, no ads, no account.
+        This page exists only because the Chrome Web Store and Firefox Add-ons
+        require a privacy policy from every extension; it says, in full, what
+        easyhn does and doesn't do with what it can see.</p>
+
+      <h2>What easyhn can see</h2>
+      <p>easyhn runs only on <code>news.ycombinator.com</code>. It reads the
+        HTML that page already sent your browser and replaces it with its own
+        rendering. It never talks to any other site, and no page you read is
+        transmitted anywhere — not to Hacker News beyond what your browser
+        would send it anyway, and not to anyone else.</p>
+
+      <h2>Signing in, voting, and replying</h2>
+      <p>easyhn doesn't have its own login. When you sign in, you're using
+        Hacker News's own form, and Hacker News sets the session cookie the
+        same way it always has — easyhn never sees your password. Voting and
+        replying work by submitting Hacker News's own links and forms with
+        that session, exactly as the native page would. easyhn only reads the
+        session Hacker News reports back; it never creates or stores one
+        itself.</p>
+
+      <h2>What's stored on your device</h2>
+      <p>easyhn uses the browser's built-in <code>storage</code> permission to
+        remember two things, locally:</p>
+      <ul>
+        <li>Your display settings — theme, font, size, density — so they carry
+          across your open tabs.</li>
+        <li>Which threads you've opened, so it can mark comments posted since
+          your last visit. You can turn this off in Settings, which also
+          clears what's already stored.</li>
+      </ul>
+      <p>If your browser syncs extension storage across your own devices
+        (Chrome and Firefox both offer this), that sync is your browser's, not
+        easyhn's — the same mechanism any extension's settings use. Nothing
+        here ever leaves your browser through easyhn itself.</p>
+
+      <h2>Third parties</h2>
+      <p>None. easyhn makes no network requests of its own — every request
+        you see it make is one you could make by clicking around Hacker News
+        directly.</p>
+
+      <h2>Source</h2>
+      <p>easyhn is MIT-licensed and its source is on
+        <a href="https://github.com/harrisjose/easyhn">GitHub</a> — every claim
+        on this page is checkable against the code that ships.</p>
+
+      <h2>Contact</h2>
+      <p>Questions or concerns: open an issue on
+        <a href="https://github.com/harrisjose/easyhn/issues">GitHub</a> or
+        reach out on <a href="https://x.com/harrispjose">X</a>.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <span class="brand">
+        <img draggable="false" src="public/icon.svg" alt="" width="20" height="20" />
+        <span>easy<span class="brand__hn">hn</span></span>
+      </span>
+      <span class="dot" aria-hidden="true">·</span>
+      <a href="https://github.com/harrisjose/easyhn/releases">Releases</a>
+      <span class="dot" aria-hidden="true">·</span>
+      <span>Made by <a href="https://x.com/harrispjose">@harrispjose</a></span>
+    </div>
+  </footer>
+</body>
+</html>
