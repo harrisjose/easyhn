@@ -1,5 +1,5 @@
 import type { Session } from '@/src/types';
-import { HN_ORIGIN, PROFILE_TABS, userUrl } from '@/src/hn/urls';
+import { HN_ORIGIN, PROFILE_TABS, SUBMIT_URL, userUrl } from '@/src/hn/urls';
 import { Close } from './icons';
 
 /** The header user button opens this: an account menu when signed in, or a
@@ -22,6 +22,12 @@ function UserMenu({ session, onClose }: { session: Session; onClose: () => void 
         <a className="ehn-menu-head" href={userUrl(u)}>
           <strong>{u}</strong>
           {session.karma != null && <span>{session.karma.toLocaleString()} karma</span>}
+        </a>
+        <div className="ehn-menu-sep" />
+        {/* The only way into HN's submit form once easyhn has taken over the
+            pages its header link would have been on. */}
+        <a className="ehn-menu-item" href={SUBMIT_URL}>
+          Submit
         </a>
         <div className="ehn-menu-sep" />
         {links.map((l) => (

@@ -15,6 +15,10 @@ export function fromSiteUrl(site: string): string {
   return `${HN_ORIGIN}/from?site=${encodeURIComponent(site)}`;
 }
 
+/** HN's own submission form. Not a page easyhn redesigns — following this
+ *  link hands the reader back to native HN. */
+export const SUBMIT_URL = `${HN_ORIGIN}/submit`;
+
 /** Resolve an HN-relative href (e.g. "vote?id=1") to an absolute URL. */
 export function toAbsolute(href: string | null | undefined): string | undefined {
   if (!href) return undefined;

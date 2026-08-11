@@ -8,7 +8,14 @@ import { createPatcher, inMemorySettingsStore } from '../src/settings/patcher';
 import { DEFAULT_SETTINGS, type Settings } from '../src/settings/schema';
 import { PAGE_BG } from '../src/settings/applyTheme';
 import { createHnClient } from '../src/hn/client';
-import { LIST_PATHS, NAV, PROFILE_TABS, PROFILE_TAB_BY_PATH } from '../src/hn/urls';
+import {
+  HN_ORIGIN,
+  LIST_PATHS,
+  NAV,
+  PROFILE_TABS,
+  PROFILE_TAB_BY_PATH,
+  SUBMIT_URL,
+} from '../src/hn/urls';
 import type { Comment, PageModel } from '../src/types';
 
 // Fixtures are real Hacker News HTML captured under tests/fixtures. Refresh
@@ -344,6 +351,11 @@ console.log('\n# Site tables agree');
   check(
     planTakeover(mk('/hidden'))?.route.tab === 'hidden',
     `the idless tab is routed without an id`,
+  );
+  // The account menu's Submit link deliberately hands the reader to native HN.
+  check(
+    SUBMIT_URL === `${HN_ORIGIN}/submit` && planTakeover(mk('/submit')) === null,
+    `the submit link points at a page easyhn leaves native`,
   );
 }
 
