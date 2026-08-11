@@ -87,10 +87,7 @@ const card = h(
     // Lockup
     h({ display: 'flex', alignItems: 'center' }, [
       { type: 'img', props: { src: ghost, width: 62, height: 62 } },
-      h({ ...serif, fontSize: 46, letterSpacing: '0.006em', marginLeft: 16, display: 'flex' }, [
-        h({ ...serif, fontSize: 46 }, 'easy'),
-        h({ fontFamily: 'Instrument Serif', fontSize: 46, color: TOKENS.accentText }, 'hn'),
-      ]),
+      h({ ...serif, fontSize: 46, letterSpacing: '0.006em', marginLeft: 16 }, 'easy'),
     ]),
 
     // Headline

@@ -18,7 +18,7 @@ export default defineConfig({
     keepProfileChanges: true,
   },
   manifest: ({ browser }) => ({
-    name: 'easyhn',
+    name: 'Easy for Hacker News',
     description: 'A clean, readable UI for Hacker News.',
     permissions: ['storage'],
     // Needed so the content script can POST votes/replies to HN on the
@@ -33,7 +33,7 @@ export default defineConfig({
       128: 'icon/128.png',
     },
     action: {
-      default_title: 'easyhn',
+      default_title: 'Easy for Hacker News',
       default_icon: {
         16: 'icon/16.png',
         32: 'icon/32.png',

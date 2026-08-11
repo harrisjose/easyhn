@@ -67,7 +67,6 @@
     color: var(--ink);
   }
   .brand img { width: 24px; height: 24px; border-radius: 6px; display: block; }
-  .brand b { font-weight: 400; color: var(--accent-text); }
 
   .pill {
     font-family: var(--font-mono);
@@ -105,6 +104,25 @@
     filter: drop-shadow(0 1px 1px rgba(0,0,0,0.10)) drop-shadow(0 4px 12px rgba(0,0,0,0.08));
   }
 
+  /* The light/dark shot keeps the same 7:5 plate as the other four — same
+     footprint as the rest of the set — but instead of one image it layers
+     two full-plate panes and clips each to a diagonal half with clip-path.
+     Sources are raw/theme-*-crop.png: pre-cropped (see raw/crop-tool.html)
+     to just the story rows, no nav bar and no rank-number gutter. */
+  .plate--split { position: relative; overflow: hidden; }
+  .plate--split .pane {
+    position: absolute;
+    inset: 0;
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+  }
+  /* Diagonal seam: each polygon stops short of the other by ~0.6%, so the
+     plate's own gradient shows through as a hairline dividing it rather than
+     the two crops abutting with a hard pixel edge. */
+  .plate--split .pane--a { clip-path: polygon(0 0, 57.7% 0, 41.7% 100%, 0 100%); }
+  .plate--split .pane--b { clip-path: polygon(58.3% 0, 100% 0, 100% 100%, 42.3% 100%); }
+
   .caption h2 {
     margin: 0;
     font-family: var(--font-body);
@@ -127,12 +145,12 @@
     <div class="row">
       <span class="brand">
         <img src="../landing/public/icon.svg" alt="" />
-        easy<b>hn</b>
+        easy
       </span>
       <span class="pill"><b>news.ycombinator.com</b></span>
     </div>
     <div class="stage">
-      <div class="plate"><img id="shot" alt="" /></div>
+      <div class="plate" id="plate"><img id="shot" alt="" /></div>
     </div>
     <div class="caption">
       <h2 id="title"></h2>
@@ -142,6 +160,13 @@
 
 <script>
   const SHOTS = {
+    0: {
+      split: true,
+      light: "raw/theme-light-crop.png",
+      dark: "raw/theme-dark-crop.png",
+      title: "Light and dark",
+      desc: "Switches instantly, on its own schedule or the system's — every open tab follows.",
+    },
     1: {
       img: "../landing/public/card-list.jpg",
       title: "Scannable lists",
@@ -165,7 +190,15 @@
   };
   const n = new URLSearchParams(location.search).get("shot") || "1";
   const s = SHOTS[n];
-  document.getElementById("shot").src = s.img;
+  const plate = document.getElementById("plate");
+  if (s.split) {
+    plate.classList.add("plate--split");
+    plate.innerHTML = `<div class="pane pane--a" style="background-image:url(${s.light})"></div>` +
+                       `<div class="pane pane--b" style="background-image:url(${s.dark})"></div>`;
+  } else {
+    plate.innerHTML = `<img id="shot" alt="" />`;
+    document.getElementById("shot").src = s.img;
+  }
   document.getElementById("title").textContent = s.title;
   document.getElementById("desc").textContent = s.desc;
 </script>

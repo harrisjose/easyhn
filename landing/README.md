@@ -1,6 +1,6 @@
 # easyhn landing page
 
-The marketing site for [easyhn](../README.md), served at
+The marketing site for [Easy for Hacker News](../README.md), served at
 [easyhn.harrisjose.com](https://easyhn.harrisjose.com). Plain HTML and CSS — no
 framework, no build step, so what's in this folder is what ships.
 

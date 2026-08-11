@@ -12,7 +12,7 @@ function Options() {
     <div className="ehn-root" style={{ minHeight: '100vh' }}>
       <div style={{ maxWidth: 520, margin: '0 auto', padding: '40px 20px' }}>
         <h1 className="ehn-logo" style={{ fontSize: '1.8em', marginBottom: 4 }}>
-          easyhn
+          easy
         </h1>
         <p style={{ color: 'var(--fg-dim)', marginTop: 0, marginBottom: 28 }}>
           A clean, readable interface for Hacker News. Open{' '}

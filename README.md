@@ -1,7 +1,7 @@
 # easyhn
 
 A clean, readable, cross-browser UI for [Hacker News](https://news.ycombinator.com).
-Open `news.ycombinator.com` and easyhn takes over the page in place with a
+Open `news.ycombinator.com` and Easy for Hacker News takes over the page in place with a
 themeable, distraction-free interface — no separate app, no accounts, no pro tier.
 
 ## Features
@@ -25,7 +25,7 @@ tokens HN needs for voting and replying stay intact and nothing leaves your brow
 ## Install
 
 Download the latest build from the [**Releases**](https://github.com/harrisjose/easyhn/releases)
-page, then load it into your browser. easyhn isn't on the Chrome Web Store or
+page, then load it into your browser. Easy for Hacker News isn't on the Chrome Web Store or
 Firefox Add-ons yet, so it installs as an unpacked / temporary extension for now.
 
 - **Chrome:** download `easyhn-<version>-chrome.zip`, unzip it, then open
@@ -38,11 +38,11 @@ Firefox Add-ons yet, so it installs as an unpacked / temporary extension for now
 Then open [news.ycombinator.com](https://news.ycombinator.com). Prefer to build it
 yourself? See [Development](#development).
 
-## Using easyhn
+## Using Easy for Hacker News
 
-Just open [news.ycombinator.com](https://news.ycombinator.com) — easyhn replaces the
-page automatically. Pages it doesn't redesign are left untouched, so the rest of HN
-still works as usual.
+Just open [news.ycombinator.com](https://news.ycombinator.com) — Easy for Hacker News
+replaces the page automatically. Pages it doesn't redesign are left untouched, so the
+rest of HN still works as usual.
 
 - **Browse** — use the top nav (Top / New / Best / Ask / Show / Jobs), or the
   keyboard: `j` / `k` to move the selection, `o` or Enter to open a story, `c` to
@@ -50,10 +50,10 @@ still works as usual.
 - **Read threads** — click any comment's chevron to collapse or expand it. Come
   back later and anything posted since your last visit carries an orange dot;
   the "N new" button next to the comment count jumps between them. Turn it off
-  in Settings and easyhn forgets which threads you've opened.
-- **Vote & reply** — log in from the easyhn header. Once logged in, the upvote
+  in Settings and it forgets which threads you've opened.
+- **Vote & reply** — log in from the header. Once logged in, the upvote
   arrows and an inline reply box become active on stories and comments.
-- **Settings** — click the gear in the easyhn header (or open the extension's
+- **Settings** — click the gear in the header (or open the extension's
   options page) to change theme, font, font size and density. Changes
   apply instantly to every open tab.
 - **Toolbar icon** — opens a small card with quick links (HN front page + author).
@@ -82,7 +82,7 @@ pnpm dev:firefox    # launch Firefox
 For a persistent local install (rather than the `pnpm dev` HMR browser), run
 `pnpm install-local`. It builds and copies the extension to `./unpacked` — a stable
 folder to point Chrome's **Load unpacked** at once; after later runs just hit the
-reload icon on the easyhn card.
+reload icon on the Easy for Hacker News card.
 
 ### Build & package
 

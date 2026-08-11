@@ -165,10 +165,6 @@ em { font-style: normal; }
   color: var(--ink);
 }
 .brand img { border-radius: 5px; }
-/* "hn" picks up the accent so the name reads as easy + HN. Uses --accent-text,
-   not the brand orange: at 18px this is body-size type, and #ff6600 manages
-   only 2.8:1 on paper against this 5.2:1. */
-.brand__hn { color: var(--accent-text); }
 
 /* ============ Hero ============ */
 .hero {
@@ -212,6 +208,9 @@ em { font-style: normal; }
   color: var(--accent-text);
   text-decoration-color: var(--accent-line);
 }
+/* Sets the product name apart in running copy the way the lede's own links
+   do — a flat step from --ink-soft to --ink, no weight change. */
+.proper-name { color: var(--ink); }
 /* Stacked: the button's label is a full phrase, and the source link can't share
    a line with it without competing. */
 .actions {

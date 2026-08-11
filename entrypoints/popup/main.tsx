@@ -28,7 +28,7 @@ function Popup() {
       <div className="ehn-popup-head">
         <EasyhnMark className="ehn-popup-mark" />
         <div>
-          <div className="ehn-popup-title">easyhn</div>
+          <div className="ehn-popup-title">easy</div>
           <div className="ehn-popup-tag">A clean, readable UI for Hacker News</div>
         </div>
       </div>
