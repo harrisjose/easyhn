@@ -2,7 +2,7 @@
   "name": "easyhn",
   "description": "A clean, readable, cross-browser UI for Hacker News",
   "private": true,
-  "version": "0.3.2",
+  "version": "1.0.0",
   "type": "module",
   "author": "Harris Jose (https://x.com/harrispjose)",
   "license": "MIT",
