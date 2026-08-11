@@ -515,7 +515,7 @@ kbd {
 .footer__inner {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
+  align-items: baseline;
   justify-content: center;
   gap: 0.4rem 0.7rem;
   font-size: var(--text-sm);
