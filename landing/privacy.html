@@ -12,11 +12,9 @@
     (() => {
       let saved;
       try { saved = localStorage.getItem('easyhn-theme'); } catch (_) {}
-      const mode = saved === 'light' || saved === 'dark' || saved === 'system' ? saved : 'system';
-      const theme = mode === 'system'
-        ? matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-        : mode;
-      document.documentElement.dataset.themeMode = mode;
+      const override = saved === 'light' || saved === 'dark' ? saved : null;
+      const theme = override
+        ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
       document.documentElement.dataset.theme = theme;
       document.documentElement.style.colorScheme = theme;
     })();
@@ -44,13 +42,7 @@
       </a>
       <div class="topbar__actions">
         <button class="theme-toggle" type="button" data-theme-toggle
-                aria-label="Theme: System. Switch to light mode" title="Theme: System">
-          <svg class="theme-toggle__icon theme-toggle__icon--system" viewBox="0 0 24 24"
-               fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
-               stroke-linejoin="round" aria-hidden="true">
-            <rect x="3.5" y="4.5" width="17" height="12" rx="2" />
-            <path d="M9 20h6M12 16.5V20" />
-          </svg>
+                aria-label="Switch to dark mode" title="Switch to dark mode">
           <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
                aria-hidden="true">

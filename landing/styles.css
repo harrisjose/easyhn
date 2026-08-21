@@ -280,9 +280,9 @@ strong { font-weight: 600; color: var(--ink); }
   scale: 0.25;
   filter: blur(4px);
 }
-:root[data-theme-mode="system"] .theme-toggle__icon--system,
-:root[data-theme-mode="light"] .theme-toggle__icon--sun,
-:root[data-theme-mode="dark"] .theme-toggle__icon--moon {
+/* The icon shows the theme on screen; pressing it offers only the opposite. */
+:root[data-theme="light"] .theme-toggle__icon--sun,
+:root[data-theme="dark"] .theme-toggle__icon--moon {
   opacity: 1;
   scale: 1;
   filter: blur(0);
