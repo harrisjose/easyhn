@@ -2,38 +2,52 @@
 
 Everything here is for the Chrome Web Store / Firefox Add-ons listings — not part of the site or the extension build.
 
-- `screenshots/*.png` — 1280×800, no alpha, numbered in upload order (`0-theme` first). Upload as-is to either store.
-- `screenshots.html` — the source template. Reuses the landing page's fonts and tokens, framed for a store listing instead of a feature grid. Shots 1–4 use the actual `landing/public/card-*.jpg` captures; shot 0 is a light/dark diagonal split built from `raw/theme-*-crop.png` instead (see below).
-- `raw/theme-light.jpg`, `raw/theme-dark.jpg` — full-page captures of the live extension on news.ycombinator.com, one per theme, same page load so the story rows match. Unprocessed — still has the nav bar and rank-number column.
-- `raw/theme-light-crop.png`, `raw/theme-dark-crop.png` — the above, cropped to just the story rows (no nav bar, no rank-number gutter) via `raw/crop-tool.html`. These are what shot 0 actually uses.
+The set is frameless: the product fills each canvas edge-to-edge, no cards, no baked-in captions. Words live in the listing text, not the pixels.
+
+- `screenshots/` — final PNGs, numbered in upload order.
+- `screenshots.html` — the screenshot template, one 1280×800 shot per `?shot=N`. Reads from `raw/captures/`; a slot whose capture is missing renders a labelled placeholder rather than silently shipping something stale.
+- `promo.html` — both promo tiles from one source: `?size=marquee` → 1400×560, `?size=small` → 440×280. The marquee's right side is a flat screenshot bleeding off three edges.
+
+## Captures (`raw/captures/`)
+
+Full-page screenshots of the live build on news.ycombinator.com, named for their slot:
+
+| File | Slot | Status |
+| --- | --- | --- |
+| `front-light.png` | 1 | Current live front page in light mode. |
+| `thread-dark.png` | 3 | Current live comment thread in dark mode. |
+| `keyboard-light.png` | 4 | Current live front page with the first story focused. |
+| `settings-light.png` | 5 | Current live item/thread page with the settings panel open. |
+
+Drop a file in with the right name and re-render; nothing else changes. `scripts/cdp.mjs shot` captures at 1280×800 CSS pixels and 2× device scale so the output stays sharp without changing aspect ratio.
+
+**Settings capture rule:** Always open Settings over an item/thread page so the screenshot shows the article and discussion context behind the panel. Do not capture Settings over a story-list page.
+
+## Theme split sources
+
+- `raw/theme-light.jpg`, `raw/theme-dark.jpg` — full-page captures of the live extension, one per theme, same page load so the story rows match. Shot 2 layers these directly along a diagonal at normal product scale.
+- `raw/theme-light-crop.png`, `raw/theme-dark-crop.png` — legacy close crops retained as source material, but no longer used by Shot 2.
 - `raw/crop-tool.html` — loads one raw capture at a natural-size offset inside a fixed, clipped viewport, so a headless-Chrome screenshot of it *is* the crop. Existing offsets (`left:-400px; top:-66px`, 480×600 box) match the current app layout; recompute them if the header height or list padding changes.
 
 ## Regenerating
 
-After a UI change, retake the four `landing/public/card-*.jpg` screenshots the same way they were shot for the landing page's feature grid. For shot 0:
+```
+cd store
+CHROME="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
-1. Open news.ycombinator.com with the extension installed, screenshot it, switch the theme in Settings, screenshot again — same page load, so both captures show the same stories. Save over `raw/theme-light.jpg` / `raw/theme-dark.jpg`.
-2. Re-crop both through `crop-tool.html` (adjust the offsets first if the layout moved):
+# screenshots 1–5
+"$CHROME" --headless --disable-gpu --force-device-scale-factor=3 \
+  --window-size=1280,800 --screenshot=/tmp/shot.png \
+  "file://$(pwd)/screenshots.html?shot=1"   # 0–4
+sips -z 800 1280 /tmp/shot.png --out screenshots/1-front-light.png
 
-   ```
-   cd store/raw
-   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
-     --headless --disable-gpu --force-device-scale-factor=3 --window-size=480,600 \
-     --screenshot=theme-light-crop.png "file://$(pwd)/crop-tool.html?src=theme-light.jpg"
-   # repeat for dark
-   ```
+# promos
+"$CHROME" --headless --disable-gpu --force-device-scale-factor=3 \
+  --window-size=1400,560 --screenshot=/tmp/marquee.png "file://$(pwd)/promo.html?size=marquee"
+sips -z 560 1400 /tmp/marquee.png --out screenshots/promo-marquee.png
+# repeat with ?size=small at 440x280 → promo-small.png
+```
 
-3. Re-render all five shots:
+`--force-device-scale-factor=3` renders oversized before the downscale — sharper than 2x, worth the larger intermediate since these never ship. Run each `sips` call on its own — piping several through a shell loop has silently swapped output filenames here before.
 
-   ```
-   cd store
-   "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
-     --headless --disable-gpu --force-device-scale-factor=3 --window-size=1280,800 \
-     --screenshot=/tmp/shot.png "file://$(pwd)/screenshots.html?shot=0"   # 0–4
-
-   sips -z 800 1280 /tmp/shot.png --out screenshots/0-theme.png
-   ```
-
-`--force-device-scale-factor=3` renders at 3840×2400 before the downscale — sharper than 2x, worth the larger intermediate file since these never ship, only the final 1280×800 PNGs do. `sips -z 800 1280` brings each back to the exact size both stores expect; PNG output is lossless throughout, so nothing here re-compresses on the way down. Run each `sips` call on its own — piping several through a shell loop has silently swapped output filenames here before.
-
-The one hard quality ceiling: `raw/theme-*.jpg` come from the browser screenshot tool itself, which caps captures at 1512×795 JPEG regardless of window size — resizing the browser window before capturing doesn't get more source pixels, confirmed by testing. Everything downstream of that capture is now lossless and supersampled to compensate, but a genuinely sharper shot 0 would need a higher-fidelity capture method upstream.
+The one hard quality ceiling: the browser screenshot tool caps window captures at ~1512×795 JPEG regardless of window size, which bounds `theme-*-crop.png` sharpness. Everything downstream is lossless and supersampled to compensate.

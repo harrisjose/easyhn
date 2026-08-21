@@ -36,7 +36,7 @@ try {
 const TOKENS = {
   paper: '#faf9f7',
   ink: '#17181a',
-  inkFaint: '#8a8c92',
+  inkFaint: '#707278',
   accentStrong: '#e35400', // display-size accent text
   accentText: '#b34700', //   small accent text
   accentLine: 'rgba(255, 102, 0, 0.45)',
@@ -76,7 +76,7 @@ const card = h(
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: '76px 88px 66px',
+    padding: '68px 88px 52px',
     backgroundColor: TOKENS.paper,
     // The page's warm top wash, a shade stronger: it has to still register in a
     // ~500px-wide timeline thumbnail.
@@ -84,11 +84,8 @@ const card = h(
       'radial-gradient(120% 68% at 50% 0%, rgba(255, 102, 0, 0.10), rgba(255, 102, 0, 0) 64%)',
   },
   [
-    // Lockup
-    h({ display: 'flex', alignItems: 'center' }, [
-      { type: 'img', props: { src: ghost, width: 62, height: 62 } },
-      h({ ...serif, fontSize: 46, letterSpacing: '0.006em', marginLeft: 16 }, 'easy'),
-    ]),
+    // Mark — the headline already carries the product name.
+    { type: 'img', props: { src: ghost, width: 72, height: 72 } },
 
     // Headline
     h(
@@ -96,33 +93,59 @@ const card = h(
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        fontSize: 96,
-        lineHeight: 0.98,
+        lineHeight: 0.92,
         letterSpacing: '0.002em',
       },
       [
-        h(serif, 'Hacker News,'),
-        h({ fontFamily: 'Instrument Serif', color: TOKENS.accentStrong }, 'without the squint.'),
+        h({ ...serif, fontSize: 116 }, 'Easy'),
+        h(
+          {
+            fontFamily: 'Instrument Serif',
+            fontSize: 78,
+            color: TOKENS.accentStrong,
+            marginTop: 12,
+          },
+          'for Hacker News',
+        ),
       ],
     ),
 
-    // Footer strip
+    // Action and trust points
     h(
       {
         display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
-        fontFamily: 'JetBrains Mono',
-        fontSize: 21,
-        letterSpacing: '0.08em',
-        textTransform: 'uppercase',
-        color: TOKENS.inkFaint,
       },
       [
-        h({}, 'Chrome & Firefox'),
-        h({ color: TOKENS.accentLine, padding: '0 18px' }, '•'),
-        h({}, 'Free & open source'),
-        h({ color: TOKENS.accentLine, padding: '0 18px' }, '•'),
-        h({}, 'Nothing leaves your browser'),
+        h(
+          {
+            display: 'flex',
+            alignItems: 'center',
+            padding: '15px 28px',
+            borderRadius: 999,
+            backgroundColor: TOKENS.ink,
+            color: '#ffffff',
+            fontFamily: 'JetBrains Mono',
+            fontSize: 19,
+            letterSpacing: '0.04em',
+            textTransform: 'uppercase',
+          },
+          'Add to Chrome',
+        ),
+        h(
+          {
+            display: 'flex',
+            alignItems: 'center',
+            marginTop: 18,
+            fontFamily: 'JetBrains Mono',
+            fontSize: 17,
+            letterSpacing: '0.07em',
+            textTransform: 'uppercase',
+            color: TOKENS.inkFaint,
+          },
+          'Free & open source',
+        ),
       ],
     ),
   ],

@@ -5,33 +5,21 @@
 <title>easyhn — store screenshot lab</title>
 <style>
   /* Renders one Chrome/Firefox store screenshot (1280x800) per ?shot=N.
-     Reuses the landing page's tokens and card-plate treatment so these read
-     as the same object, not a separate marketing artifact.
+     Frameless: the product fills the canvas edge-to-edge, no cards, no
+     captions — words live in the listing text, not baked into pixels.
+     Sources are full-page captures of the current build; shots whose
+     capture hasn't been taken yet render a labelled placeholder instead
+     of silently shipping something stale.
      Regenerate: see store/README.md. */
-  @font-face {
-    font-family: "Instrument Serif";
-    src: url("../landing/public/fonts/instrument-serif-400.woff2") format("woff2");
-  }
-  @font-face {
-    font-family: "Inter";
-    font-weight: 300 800;
-    src: url("../landing/public/fonts/inter-var.woff2") format("woff2");
+  :root {
+    --paper: #faf9f7;
+    --ink-faint: #707278;
+    --hairline: rgba(0, 0, 0, 0.09);
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
   }
   @font-face {
     font-family: "JetBrains Mono";
     src: url("../landing/public/fonts/jetbrains-mono-400.woff2") format("woff2");
-  }
-
-  :root {
-    --paper: #faf9f7;
-    --ink: #17181a;
-    --ink-soft: #55575c;
-    --ink-faint: #8a8c92;
-    --hairline: rgba(0, 0, 0, 0.09);
-    --accent-text: #b34700;
-    --font-display: "Instrument Serif", Georgia, serif;
-    --font-body: "Inter", -apple-system, sans-serif;
-    --font-mono: "JetBrains Mono", ui-monospace, monospace;
   }
 
   * { box-sizing: border-box; }
@@ -40,167 +28,89 @@
     width: 1280px; height: 800px;
     overflow: hidden;
     background: var(--paper);
-    background-image: radial-gradient(120% 60% at 50% -14%, rgba(255, 102, 0, 0.06), transparent 62%);
-    font-family: var(--font-body);
-    -webkit-font-smoothing: antialiased;
   }
 
-  .frame {
-    width: 1280px; height: 800px;
-    padding: 44px 64px 48px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-display);
-    font-size: 22px;
-    color: var(--ink);
-  }
-  .brand img { width: 24px; height: 24px; border-radius: 6px; display: block; }
-
-  .pill {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    color: var(--ink-faint);
-    background: #fff;
-    border: 1px solid var(--hairline);
-    border-radius: 999px;
-    padding: 6px 14px;
-  }
-  .pill b { color: var(--ink-soft); font-weight: 400; }
-
-  .stage {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 0;
-    padding: 28px 0;
-  }
-
-  .plate {
-    aspect-ratio: 7 / 5;
-    height: 100%;
-    padding: 14px;
-    border-radius: 18px;
-    background: linear-gradient(160deg, rgba(255, 102, 0, 0.10), rgba(0, 0, 0, 0.035));
-    box-shadow: 0 22px 50px -30px rgba(0, 0, 0, 0.35);
-  }
-  .plate img {
+  .shot { width: 1280px; height: 800px; display: none; }
+  .shot.on { display: block; }
+  .pending.on { display: grid; }
+  .shot img {
+    display: block;
     width: 100%; height: 100%;
     object-fit: cover;
-    border-radius: 10px;
-    display: block;
-    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.10)) drop-shadow(0 4px 12px rgba(0,0,0,0.08));
   }
 
-  /* The light/dark shot keeps the same 7:5 plate as the other four — same
-     footprint as the rest of the set — but instead of one image it layers
-     two full-plate panes and clips each to a diagonal half with clip-path.
-     Sources are raw/theme-*-crop.png: pre-cropped (see raw/crop-tool.html)
-     to just the story rows, no nav bar and no rank-number gutter. */
-  .plate--split { position: relative; overflow: hidden; }
-  .plate--split .pane {
-    position: absolute;
-    inset: 0;
+  /* The theme shot: two full-page captures, one per theme, meeting along a
+     diagonal. Both render at normal product scale and share the same left
+     anchor so story rows stay aligned across the split. */
+  .split { position: relative; }
+  .split .pane {
+    position: absolute; inset: 0;
     background-repeat: no-repeat;
-    background-position: center top;
-    background-size: cover;
+    background-size: auto 800px;
+    background-position: left top;
   }
-  /* Diagonal seam: each polygon stops short of the other by ~0.6%, so the
-     plate's own gradient shows through as a hairline dividing it rather than
-     the two crops abutting with a hard pixel edge. */
-  .plate--split .pane--a { clip-path: polygon(0 0, 57.7% 0, 41.7% 100%, 0 100%); }
-  .plate--split .pane--b { clip-path: polygon(58.3% 0, 100% 0, 100% 100%, 42.3% 100%); }
+  .split .pane--a { clip-path: polygon(0 0, 55% 0, 45% 100%, 0 100%); }
+  .split .pane--b { clip-path: polygon(55% 0, 100% 0, 100% 100%, 45% 100%); }
 
-  .caption h2 {
-    margin: 0;
-    font-family: var(--font-body);
-    font-weight: 600;
-    font-size: 26px;
-    letter-spacing: -0.015em;
-    color: var(--ink);
+  /* Placeholder for a shot whose capture is still owed. */
+  .pending {
+    display: grid;
+    place-items: center;
   }
-  .caption p {
-    margin: 8px 0 0;
-    font-size: 17px;
-    line-height: 1.5;
-    color: var(--ink-soft);
-    max-width: 640px;
+  .pending span {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    color: var(--ink-faint);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    padding: 12px 24px;
   }
 </style>
 </head>
 <body>
-  <div class="frame">
-    <div class="row">
-      <span class="brand">
-        <img src="../landing/public/icon.svg" alt="" />
-        easy
-      </span>
-      <span class="pill"><b>news.ycombinator.com</b></span>
-    </div>
-    <div class="stage">
-      <div class="plate" id="plate"><img id="shot" alt="" /></div>
-    </div>
-    <div class="caption">
-      <h2 id="title"></h2>
-      <p id="desc"></p>
-    </div>
+  <div class="shot" id="shot">
+    <img id="img" alt="" />
   </div>
+  <div class="shot split" id="split">
+    <div class="pane pane--a"></div>
+    <div class="pane pane--b"></div>
+  </div>
+  <div class="shot pending" id="pending"><span></span></div>
 
 <script>
+  /* Upload order. Every source is a full-bleed capture of the live build;
+     when a file is missing the slot renders the placeholder rather than an
+     outdated substitute. */
   const SHOTS = {
-    0: {
-      split: true,
-      light: "raw/theme-light-crop.png",
-      dark: "raw/theme-dark-crop.png",
-      title: "Light and dark",
-      desc: "Switches instantly, on its own schedule or the system's — every open tab follows.",
-    },
-    1: {
-      img: "../landing/public/card-list.jpg",
-      title: "Scannable lists",
-      desc: "Domain, score, author, age and comment count on every row.",
-    },
-    2: {
-      img: "../landing/public/card-thread.jpg",
-      title: "Readable comments",
-      desc: "Comfortable line lengths, nesting you can follow, and one-click collapse.",
-    },
-    3: {
-      img: "../landing/public/card-keys.jpg",
-      title: "Keyboard navigation",
-      desc: "j / k to move, o to open, c for comments.",
-    },
-    4: {
-      img: "../landing/public/card-settings.jpg",
-      title: "Reading controls",
-      desc: "Theme, font, size and density — applied instantly to every open tab.",
-    },
+    0: { img: "raw/captures/front-light.png" },
+    1: { light: "raw/theme-light.jpg", dark: "raw/theme-dark.jpg" },
+    2: { img: "raw/captures/thread-dark.png" },
+    3: { img: "raw/captures/keyboard-light.png",
+         todo: "keyboard navigation — full-page capture, list focused on a row" },
+    4: { img: "raw/captures/settings-light.png",
+         todo: "settings panel — full-page capture, panel open" },
   };
-  const n = new URLSearchParams(location.search).get("shot") || "1";
+
+  const n = new URLSearchParams(location.search).get("shot") || "0";
   const s = SHOTS[n];
-  const plate = document.getElementById("plate");
-  if (s.split) {
-    plate.classList.add("plate--split");
-    plate.innerHTML = `<div class="pane pane--a" style="background-image:url(${s.light})"></div>` +
-                       `<div class="pane pane--b" style="background-image:url(${s.dark})"></div>`;
+  const on = (id) => document.getElementById(id).classList.add("on");
+
+  if (s.light) {
+    document.querySelector("#split .pane--a")
+      .style.backgroundImage = `url(${s.light})`;
+    document.querySelector("#split .pane--b")
+      .style.backgroundImage = `url(${s.dark})`;
+    on("split");
   } else {
-    plate.innerHTML = `<img id="shot" alt="" />`;
-    document.getElementById("shot").src = s.img;
+    const img = document.getElementById("img");
+    img.addEventListener("load", () => on("shot"));
+    img.addEventListener("error", () => {
+      document.querySelector("#pending span").textContent =
+        `capture pending — ${s.todo || s.img}`;
+      on("pending");
+    });
+    img.src = s.img;
   }
-  document.getElementById("title").textContent = s.title;
-  document.getElementById("desc").textContent = s.desc;
 </script>
 </body>
 </html>

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>easyhn — store promo lab</title>
+<style>
+  /* Renders the two Chrome Web Store promo tiles:
+        ?size=marquee → 1400x560
+        ?size=small   → 440x280
+     Same voice as the landing page: paper, serif headline with the accent
+     second line, quiet mono labels. The marquee's right side is a flat,
+     straight screenshot bleeding off the edge — no rotation, no borders.
+     Regenerate: see store/README.md. */
+  @font-face {
+    font-family: "Instrument Serif";
+    src: url("../landing/public/fonts/instrument-serif-400.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Inter";
+    font-weight: 300 800;
+    src: url("../landing/public/fonts/inter-var.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "JetBrains Mono";
+    src: url("../landing/public/fonts/jetbrains-mono-400.woff2") format("woff2");
+  }
+
+  :root {
+    --paper: #faf9f7;
+    --ink: #17181a;
+    --ink-soft: #55575c;
+    --ink-faint: #707278;
+    --hairline: rgba(0, 0, 0, 0.09);
+    --accent-strong: #e35400;
+    --font-display: "Instrument Serif", Georgia, serif;
+    --font-body: "Inter", -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; overflow: hidden; background: var(--paper); }
+  body {
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    font-family: var(--font-body);
+  }
+
+  .marquee { width: 1400px; height: 560px; }
+  .small   { width: 440px;  height: 280px; }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--brand-gap, 8px);
+    font-family: var(--font-display);
+    color: var(--ink);
+  }
+  .brand img { border-radius: 5px; display: block; }
+  .mark { display: block; }
+
+  h1 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.02;
+    color: var(--ink);
+    letter-spacing: 0.002em;
+  }
+  h1 em { font-style: normal; color: var(--accent-strong); }
+
+  .sub {
+    margin: 0;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+
+  .pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--pill-gap, 12px);
+  }
+  .pills span {
+    font-size: var(--pill-size, 15px);
+    color: var(--ink-faint);
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: 999px;
+    padding: var(--pill-pad, 9px 20px);
+  }
+
+  /* The screenshot bleeds off the top, right and bottom edges — straight,
+     separated from the paper only by a wide soft shadow. */
+  .bleed {
+    position: absolute;
+    right: -72px;
+    top: -56px; bottom: -56px;
+    width: var(--bleed-width, 700px);
+    display: grid;
+    place-items: center start;
+  }
+  .bleed img {
+    height: 560px;
+    width: auto;
+    object-fit: cover;
+    object-position: left center;
+    box-shadow: -32px 24px 80px -48px rgba(23, 24, 26, 0.45);
+  }
+
+  .marquee .mark { width: 36px; height: 36px; margin: 64px 0 0 84px; }
+  .marquee h1 { font-size: 68px; margin: 36px 0 0 84px; max-width: 560px; }
+  .marquee .sub { font-size: 19px; max-width: 430px; margin: 28px 0 0 84px; }
+  .marquee .pills { margin: 36px 0 0 84px; }
+
+  .small { padding: 44px 0 0 40px; }
+  .small .brand { font-size: 17px; --brand-gap: 7px; }
+  .small .brand img { width: 20px; height: 20px; }
+  .small h1 { font-size: 34px; margin-top: 22px; }
+  .small .foot {
+    position: absolute;
+    left: 40px; bottom: 38px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+  .small .foot b { font-weight: 600; color: var(--ink); }
+</style>
+</head>
+<body>
+<script>
+  const size = new URLSearchParams(location.search).get("size") || "marquee";
+  document.body.classList.add(size);
+
+  const brand = `<span class="brand"><img src="../landing/public/icon.svg" alt="">easy</span>`;
+  const mark = `<img class="mark" src="../landing/public/icon.svg" alt="">`;
+
+  if (size === "small") {
+    document.body.innerHTML =
+      brand +
+      `<h1>Easy for<br><em>Hacker News.</em></h1>` +
+      `<div class="foot"><b>Chrome</b>&ensp;·&ensp;Free &amp; open source</div>`;
+  } else {
+    document.body.innerHTML =
+      mark +
+      `<h1>Easy for<br><em>Hacker News.</em></h1>` +
+      `<p class="sub">A cleaner, more readable Hacker News.</p>` +
+      `<div class="pills"><span>Chrome</span><span>Free &amp; open source</span><span>No account needed</span></div>` +
+      `<div class="bleed"><img src="raw/captures/front-light.png" alt=""></div>`;
+  }
+</script>
+</body>
+</html>

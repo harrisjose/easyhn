@@ -3,7 +3,7 @@
 // built-in WebSocket (Node 22+).
 //
 //   node scripts/cdp.mjs nav <url>            navigate the HN tab (or first tab)
-//   node scripts/cdp.mjs shot <out.png>       screenshot the HN tab
+//   node scripts/cdp.mjs shot <out.png>       screenshot at 1280×800 CSS px
 //   node scripts/cdp.mjs eval '<expression>'  evaluate JS in the HN tab
 
 const PORT = process.env.CDP_PORT ?? 9222;
@@ -53,6 +53,15 @@ if (cmd === 'nav') {
   await cdp.send('Page.navigate', { url: arg });
   console.log(`navigating ${target.id} -> ${arg}`);
 } else if (cmd === 'shot') {
+  // Keep store captures at their final aspect ratio. Device emulation is scoped
+  // to this CDP session, so it must happen in the same command as the shot.
+  await cdp.send('Emulation.setDeviceMetricsOverride', {
+    width: 1280,
+    height: 800,
+    deviceScaleFactor: 2,
+    mobile: false,
+  });
+  await new Promise((resolve) => setTimeout(resolve, 200));
   // Optional 3rd arg: "x,y,w,h" clip region (CSS px) for a zoomed crop.
   const clipArg = process.argv[4];
   const params = { format: 'png' };
