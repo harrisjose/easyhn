@@ -4,21 +4,34 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Easy for Hacker News</title>
-  <meta name="description" content="Easy is a browser extension that redesigns Hacker News right on news.ycombinator.com. No separate app, no account, and nothing you read leaves your browser. Chrome and Firefox." />
+  <meta name="description" content="Easy is a browser extension that redesigns Hacker News right on news.ycombinator.com. No separate app, no account, and nothing you read leaves your browser. On the Chrome Web Store." />
   <link rel="canonical" href="https://easyhn.harrisjose.com/" />
-  <meta name="theme-color" content="#faf9f7" />
-  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#faf9f7" data-theme-color />
+  <meta name="color-scheme" content="light dark" />
+  <script>
+    (() => {
+      let saved;
+      try { saved = localStorage.getItem('easyhn-theme'); } catch (_) {}
+      const mode = saved === 'light' || saved === 'dark' || saved === 'system' ? saved : 'system';
+      const theme = mode === 'system'
+        ? matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        : mode;
+      document.documentElement.dataset.themeMode = mode;
+      document.documentElement.dataset.theme = theme;
+      document.documentElement.style.colorScheme = theme;
+    })();
+  </script>
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Easy for Hacker News" />
   <meta property="og:url" content="https://easyhn.harrisjose.com/" />
   <meta property="og:title" content="Easy for Hacker News" />
-  <meta property="og:description" content="A cleaner, more readable Hacker News, right on news.ycombinator.com. No separate app, no account, and nothing you read leaves your browser." />
+  <meta property="og:description" content="A cleaner, more readable Hacker News, right on news.ycombinator.com. No separate app, no account, and nothing you read leaves your browser. On the Chrome Web Store." />
   <meta property="og:image" content="https://easyhn.harrisjose.com/public/og.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Easy for Hacker News. Chrome and Firefox, free and open source." />
+  <meta property="og:image:alt" content="Easy for Hacker News. Free and open source, on the Chrome Web Store." />
   <meta property="og:locale" content="en_US" />
 
   <!-- Twitter -->
@@ -26,12 +39,14 @@
   <meta name="twitter:site" content="@harrispjose" />
   <meta name="twitter:creator" content="@harrispjose" />
   <meta name="twitter:title" content="Easy for Hacker News" />
-  <meta name="twitter:description" content="A cleaner, more readable Hacker News, right on news.ycombinator.com. No separate app, no account, and nothing you read leaves your browser." />
+  <meta name="twitter:description" content="A cleaner, more readable Hacker News, right on news.ycombinator.com. No separate app, no account, and nothing you read leaves your browser. On the Chrome Web Store." />
   <meta name="twitter:image" content="https://easyhn.harrisjose.com/public/og.png" />
 
   <link rel="icon" href="public/icon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="public/icon.png" />
   <link rel="stylesheet" href="styles.css" />
+  <script src="theme.js" defer></script>
+  <script src="github-stars.js" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -40,7 +55,42 @@
         <img draggable="false" src="public/icon.svg" alt="" width="20" height="20" />
         <span>easy</span>
       </span>
-      <a class="btn btn--sm" href="https://github.com/harrisjose/easyhn/releases/latest">Download</a>
+      <div class="topbar__actions">
+        <button class="theme-toggle" type="button" data-theme-toggle
+                aria-label="Theme: System. Switch to light mode" title="Theme: System">
+          <svg class="theme-toggle__icon theme-toggle__icon--system" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+               stroke-linejoin="round" aria-hidden="true">
+            <rect x="3.5" y="4.5" width="17" height="12" rx="2" />
+            <path d="M9 20h6M12 16.5V20" />
+          </svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+               aria-hidden="true">
+            <circle cx="12" cy="12" r="3.5" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42" />
+          </svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24"
+               fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"
+               stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.4 15.2A8.5 8.5 0 0 1 8.8 3.6 8.5 8.5 0 1 0 20.4 15.2Z" />
+          </svg>
+        </button>
+        <a class="github-star" data-github-stars href="https://github.com/harrisjose/easyhn"
+         aria-label="Star Easy for Hacker News on GitHub (1 star)">
+        <span class="github-star__action">
+          <svg class="github-star__mark" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+            <path fill="currentColor" d="M12 .7a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2.23c-3.22.7-3.9-1.37-3.9-1.37-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.57-.3-5.27-1.29-5.27-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.16 1.18a10.9 10.9 0 0 1 5.76 0c2.2-1.49 3.16-1.18 3.16-1.18.63 1.59.23 2.76.12 3.05.73.81 1.18 1.83 1.18 3.09 0 4.4-2.71 5.38-5.29 5.67.42.36.78 1.07.78 2.16v3.2c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .7Z" />
+          </svg>
+        </span>
+        <span class="github-star__count" data-github-star-count>
+          <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+            <path fill="currentColor" d="m12 2.6 2.83 5.74 6.34.92-4.59 4.47 1.08 6.32L12 17.07l-5.66 2.98 1.08-6.32-4.59-4.47 6.34-.92L12 2.6Z" />
+          </svg>
+          <span data-github-star-number>1</span>
+        </span>
+        </a>
+      </div>
     </div>
   </header>
 
@@ -49,22 +99,32 @@
     <section class="hero wrap">
       <h1 class="hero__title">Hacker&nbsp;News,<br /><em>without&nbsp;the&nbsp;squint.</em></h1>
       <p class="lede">
-        I got frustrated with <a href="https://www.modernhn.com/">modern's</a> lack of
+        I got frustrated with <a href="https://www.modernhn.com/">modern’s</a> lack of
         maintenance and decided to build my own. Open
         <span class="nowrap">news.ycombinator.com</span> and
         <span class="proper-name">Easy</span> takes over the page.
       </p>
       <div class="actions">
-        <a class="btn" href="https://github.com/harrisjose/easyhn/releases/latest">Download for Chrome &amp; Firefox</a>
-        <a class="link-arrow" href="https://github.com/harrisjose/easyhn">View&nbsp;source&nbsp;→</a>
+        <a class="btn-chrome btn-chrome--ink" href="https://chromewebstore.google.com/detail/easy-for-hacker-news/lchfcbigmcnnllgpiifdmpfpbbkfkjie">
+          <img class="btn-chrome__icon" draggable="false" src="public/icons/chrome.svg" width="20" height="20" alt="" />
+          <span>Add to Chrome</span>
+        </a>
       </div>
     </section>
 
-    <!-- ============ Hero showcase: the real thing, in use ============ -->
+    <!-- ============ Hero showcase ============ -->
     <section class="showcase wrap">
-      <figure class="hero-shot reveal">
-        <img draggable="false" src="public/mockup-easyhn.jpg" width="1360" height="1020"
-             alt="Someone reading the Hacker News front page through Easy for Hacker News on a MacBook, showing the redesigned story list in dark mode." />
+      <figure class="macbook reveal">
+        <img class="macbook__frame" src="public/macbook.svg" alt="" width="1008" height="623" />
+        <div class="macbook__screen">
+          <span class="macbook__viewport">
+            <img class="theme-image theme-image--light" draggable="false" src="public/hero-product-light.png?v=2"
+                 width="1200" height="770"
+                 alt="The redesigned Hacker News front page displayed in Easy for Hacker News." />
+            <img class="theme-image theme-image--dark" draggable="false" src="public/hero-product-dark.png?v=2"
+                 width="1200" height="770" alt="" aria-hidden="true" />
+          </span>
+        </div>
       </figure>
     </section>
 
@@ -76,49 +136,94 @@
         same stories and the same account, just easier to read.
       </p>
 
-      <ul class="cards">
-        <li class="card">
-          <figure class="card__shot">
-            <img draggable="false" src="public/card-list.jpg" width="1400" height="1000" loading="lazy"
-                 alt="Story rows in Easy for Hacker News, each with the domain, points, author, age and comment count." />
-          </figure>
-          <h3>Scannable lists</h3>
-          <p>Domain, score, author, age and comment count on every row.</p>
-        </li>
+      <div class="feature-carousel" data-carousel role="region" aria-roledescription="carousel"
+           aria-label="Easy features">
+        <div class="feature-carousel__stage">
+          <article class="feature-carousel__panel" id="feature-panel-list" role="tabpanel"
+                   aria-labelledby="feature-dot-list" tabindex="0">
+            <figure class="feature-carousel__shot">
+              <span class="theme-image-stack">
+                <img class="theme-image theme-image--light" draggable="false" src="public/card-list-light.png"
+                     width="1200" height="695" loading="lazy"
+                     alt="Story rows in Easy for Hacker News, each with the domain, points, author, age and comment count." />
+                <img class="theme-image theme-image--dark" draggable="false" src="public/card-list-dark.png"
+                     width="1200" height="695" loading="lazy" alt="" aria-hidden="true" />
+              </span>
+            </figure>
+            <h3>Scannable lists</h3>
+            <p>Domain, score, author, age and comment count on every row.</p>
+          </article>
 
-        <li class="card">
-          <figure class="card__shot">
-            <img draggable="false" src="public/card-thread.jpg" width="1400" height="1000" loading="lazy"
-                 alt="A thread in Easy for Hacker News: a comment with two levels of replies nested beneath it, each step indented and separated by a rule." />
-          </figure>
-          <h3>Readable comments</h3>
-          <p>Comfortable line lengths, nesting you can follow, and one-click collapse.</p>
-        </li>
+          <article class="feature-carousel__panel" id="feature-panel-comments" role="tabpanel"
+                   aria-labelledby="feature-dot-comments" tabindex="0">
+            <figure class="feature-carousel__shot">
+              <span class="theme-image-stack">
+                <img class="theme-image theme-image--light" draggable="false" src="public/card-thread-light.png"
+                     width="1200" height="695" loading="lazy"
+                     alt="A thread in Easy for Hacker News with comfortably spaced, nested comments." />
+                <img class="theme-image theme-image--dark" draggable="false" src="public/card-thread-dark.png"
+                     width="1200" height="695" loading="lazy" alt="" aria-hidden="true" />
+              </span>
+            </figure>
+            <h3>Readable comments</h3>
+            <p>Comfortable line lengths, nesting you can follow, and one-click collapse.</p>
+          </article>
 
-        <li class="card">
-          <figure class="card__shot">
-            <img draggable="false" src="public/card-keys.jpg" width="1400" height="1000" loading="lazy"
-                 alt="The Easy for Hacker News story list with one row selected by keyboard, marked with an orange rule and an upvote arrow." />
-          </figure>
-          <h3>Keyboard navigation</h3>
-          <p><kbd>j</kbd><kbd>k</kbd> to move, <kbd>o</kbd> to open, <kbd>c</kbd> for comments.</p>
-        </li>
+          <article class="feature-carousel__panel" id="feature-panel-keys" role="tabpanel"
+                   aria-labelledby="feature-dot-keys" tabindex="0">
+            <figure class="feature-carousel__shot">
+              <span class="theme-image-stack">
+                <img class="theme-image theme-image--light" draggable="false" src="public/card-keys-light.png"
+                     width="1200" height="695" loading="lazy"
+                     alt="The Easy for Hacker News story list with one row selected by keyboard, marked with an orange rule and an upvote arrow." />
+                <img class="theme-image theme-image--dark" draggable="false" src="public/card-keys-dark.png"
+                     width="1200" height="695" loading="lazy" alt="" aria-hidden="true" />
+              </span>
+            </figure>
+            <h3>Keyboard navigation</h3>
+            <p><kbd>j</kbd><kbd>k</kbd> to move, <kbd>o</kbd> to open, <kbd>c</kbd> for comments.</p>
+          </article>
 
-        <li class="card">
-          <figure class="card__shot">
-            <img draggable="false" src="public/card-settings.jpg" width="1400" height="1000" loading="lazy"
-                 alt="The Easy for Hacker News settings panel, with theme, font, font size and density controls." />
-          </figure>
-          <h3>Reading controls</h3>
-          <p>Theme, font, size and density.</p>
-        </li>
-      </ul>
+          <article class="feature-carousel__panel" id="feature-panel-settings" role="tabpanel"
+                   aria-labelledby="feature-dot-settings" tabindex="0">
+            <figure class="feature-carousel__shot">
+              <span class="theme-image-stack">
+                <img class="theme-image theme-image--light" draggable="false" src="public/card-settings-light.png?v=2"
+                     width="1200" height="695" loading="lazy"
+                     alt="The Easy for Hacker News settings panel, with theme, font, font size and density controls." />
+                <img class="theme-image theme-image--dark" draggable="false" src="public/card-settings-dark.png?v=2"
+                     width="1200" height="695" loading="lazy" alt="" aria-hidden="true" />
+              </span>
+            </figure>
+            <h3>Reading controls</h3>
+            <p>Theme, font, size and density.</p>
+          </article>
+        </div>
 
-      <div class="claim">
-        <h3>And nothing leaves your browser</h3>
-        <p><span class="mark">There's no API and no server in between</span>, and no
-           account to create. Your HN session stays yours, which is why upvoting and
-           replying still work.</p>
+        <div class="feature-carousel__controls">
+          <div class="feature-carousel__dots" role="tablist" aria-label="Choose a feature">
+            <button id="feature-dot-list" type="button" role="tab" aria-selected="true"
+                    aria-controls="feature-panel-list" aria-label="Show Scannable lists" tabindex="0"></button>
+            <button id="feature-dot-comments" type="button" role="tab" aria-selected="false"
+                    aria-controls="feature-panel-comments" aria-label="Show Readable comments" tabindex="-1"></button>
+            <button id="feature-dot-keys" type="button" role="tab" aria-selected="false"
+                    aria-controls="feature-panel-keys" aria-label="Show Keyboard navigation" tabindex="-1"></button>
+            <button id="feature-dot-settings" type="button" role="tab" aria-selected="false"
+                    aria-controls="feature-panel-settings" aria-label="Show Reading controls" tabindex="-1"></button>
+          </div>
+          <button class="feature-carousel__autoplay" type="button" data-carousel-autoplay
+                  data-playing="true" aria-label="Pause carousel">
+            <svg class="feature-carousel__autoplay-icon feature-carousel__autoplay-icon--pause"
+                 viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 7v10M15 7v10" />
+            </svg>
+            <svg class="feature-carousel__autoplay-icon feature-carousel__autoplay-icon--play"
+                 viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m9 7 8 5-8 5Z" />
+            </svg>
+          </button>
+        </div>
+        <span class="sr-only" data-carousel-status aria-live="polite" aria-atomic="true">Slide 1 of 4</span>
       </div>
     </section>
 
@@ -129,24 +234,26 @@
       <div class="faq__list">
       <details class="qa">
         <summary>How do I install it?</summary>
-        <p><span class="proper-name">Easy for Hacker News</span> isn't on the Chrome Web Store or Firefox Add-ons yet, so it installs
-           manually for now. Download the build for your browser from
-           <a href="https://github.com/harrisjose/easyhn/releases/latest">Releases</a>. There's a
-           separate zip for each browser.</p>
-        <p><strong>Chrome:</strong> unzip
-           <code>easyhn-&lt;version&gt;-chrome.zip</code> first, then open
-           <code>chrome://extensions</code>, turn on Developer mode, choose
-           <em>Load unpacked</em> and select the unzipped folder.</p>
-        <p><strong>Firefox:</strong> open
+        <p>Get it from the <a href="https://chromewebstore.google.com/detail/easy-for-hacker-news/lchfcbigmcnnllgpiifdmpfpbbkfkjie">Chrome Web Store</a>.
+           Click <strong>Add to Chrome</strong> and it’s ready. No separate app, no account.</p>
+      </details>
+
+      <details class="qa">
+        <summary>Is there a version for Firefox?</summary>
+        <p>Not yet. There’s no listing on the Firefox Add-ons store, but you can build and
+           load it manually: grab
+           <code>easyhn-&lt;version&gt;-firefox.zip</code> from
+           <a href="https://github.com/harrisjose/easyhn/releases/latest">Releases</a>, open
            <code>about:debugging#/runtime/this-firefox</code>, choose
-           <em>Load Temporary Add-on</em> and select
-           <code>easyhn-&lt;version&gt;-firefox.zip</code> itself. Don't unzip it. Firefox
-           drops temporary add-ons when it restarts.</p>
+           <em>Load Temporary Add-on</em>, and select the zip itself without unzipping it.
+           Firefox drops temporary add-ons when it restarts, so you’ll reload it each session.</p>
+        <p>If a Firefox listing matters to you, open an issue on
+           <a href="https://github.com/harrisjose/easyhn">GitHub</a>.</p>
       </details>
 
       <details class="qa">
         <summary>Does anything I read leave my browser?</summary>
-        <p>No. <span class="proper-name">Easy</span> restyles the markup Hacker News already sent to your browser. There's
+        <p>No. <span class="proper-name">Easy</span> restyles the markup Hacker News already sent to your browser. There’s
            no API, no server in between, no tracking and no account.</p>
       </details>
 
@@ -158,14 +265,14 @@
 
       <details class="qa">
         <summary>Does it break the rest of Hacker News?</summary>
-        <p>No. Pages <span class="proper-name">Easy</span> doesn't redesign are left untouched, so everything else on the
+        <p>No. Pages <span class="proper-name">Easy</span> doesn’t redesign are left untouched, so everything else on the
            site works as usual.</p>
       </details>
 
       <details class="qa">
         <summary>What happens if Hacker News changes their HTML?</summary>
-        <p>Because <span class="proper-name">Easy</span> reads Hacker News' own server-rendered markup, a significant change there
-           can break it. It's MIT-licensed on
+        <p>Because <span class="proper-name">Easy</span> reads Hacker News’ own server-rendered markup, a significant change there
+           can break it. It’s MIT-licensed on
            <a href="https://github.com/harrisjose/easyhn">GitHub</a>, so issues and PRs
            are welcome.</p>
       </details>
@@ -174,10 +281,12 @@
 
     <!-- ============ Closing CTA ============ -->
     <section class="closing wrap">
-      <p class="closing__sub">Free and open source, MIT-licensed, and it never asks you
+      <p class="closing__sub">Free and open source, and it never asks you
         to sign up for anything.</p>
-      <a class="btn btn--lg" href="https://github.com/harrisjose/easyhn/releases/latest">Download for Chrome &amp; Firefox</a>
-      <p class="closing__note">Installs manually for now. See the FAQ above.</p>
+      <a class="btn-chrome btn-chrome--ink" href="https://chromewebstore.google.com/detail/easy-for-hacker-news/lchfcbigmcnnllgpiifdmpfpbbkfkjie">
+        <img class="btn-chrome__icon" draggable="false" src="public/icons/chrome.svg" width="20" height="20" alt="" />
+        <span>Add to Chrome</span>
+      </a>
     </section>
   </main>
 
@@ -205,6 +314,130 @@
         el.classList.add('reveal--armed');
         io.observe(el);
       }
+    }
+
+    // The feature list is fully readable without JavaScript. When scripting is
+    // available, enhance it into an accessible carousel with dot navigation,
+    // image-overlay controls and touch swiping.
+    for (const carousel of document.querySelectorAll('[data-carousel]')) {
+      const tabs = [...carousel.querySelectorAll('[role="tab"]')];
+      const panels = tabs.map((tab) => document.getElementById(tab.getAttribute('aria-controls')));
+      const status = carousel.querySelector('[data-carousel-status]');
+      const autoplayButton = carousel.querySelector('[data-carousel-autoplay]');
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const autoplayDelay = 6500;
+      let current = 0;
+      let timer = null;
+      let manuallyPaused = false;
+      let hoverPaused = false;
+      let focusPaused = false;
+
+      const select = (next, { focus = false } = {}) => {
+        current = (next + tabs.length) % tabs.length;
+        tabs.forEach((tab, index) => {
+          const selected = index === current;
+          tab.setAttribute('aria-selected', String(selected));
+          tab.tabIndex = selected ? 0 : -1;
+          panels[index].hidden = !selected;
+        });
+        status.textContent = `Slide ${current + 1} of ${tabs.length}`;
+        if (focus) tabs[current].focus();
+      };
+
+      const syncAutoplay = () => {
+        clearTimeout(timer);
+        timer = null;
+        const requested = !reducedMotion.matches && !manuallyPaused;
+        const running = requested && !hoverPaused && !focusPaused && !document.hidden;
+        autoplayButton.dataset.playing = String(requested);
+        autoplayButton.setAttribute('aria-label', requested ? 'Pause carousel' : 'Start carousel');
+        status.setAttribute('aria-live', requested ? 'off' : 'polite');
+        if (!running) return;
+        timer = window.setTimeout(() => {
+          select(current + 1);
+          syncAutoplay();
+        }, autoplayDelay);
+      };
+
+      carousel.classList.add('carousel-ready');
+
+      const arrowMarkup = {
+        prev: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6" /></svg>',
+        next: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg>'
+      };
+      for (const shot of carousel.querySelectorAll('.feature-carousel__shot')) {
+        for (const direction of ['prev', 'next']) {
+          const button = document.createElement('button');
+          button.className = `feature-carousel__nav feature-carousel__nav--${direction}`;
+          button.type = 'button';
+          button.dataset[direction === 'prev' ? 'carouselPrev' : 'carouselNext'] = '';
+          button.setAttribute('aria-label', direction === 'prev' ? 'Previous feature' : 'Next feature');
+          button.innerHTML = arrowMarkup[direction];
+          shot.append(button);
+        }
+      }
+
+      tabs.forEach((tab, index) => {
+        tab.addEventListener('click', () => { select(index); syncAutoplay(); });
+        tab.addEventListener('keydown', (event) => {
+          const keys = {
+            ArrowRight: current + 1,
+            ArrowDown: current + 1,
+            ArrowLeft: current - 1,
+            ArrowUp: current - 1,
+            Home: 0,
+            End: tabs.length - 1
+          };
+          if (!(event.key in keys)) return;
+          event.preventDefault();
+          select(keys[event.key], { focus: true });
+          syncAutoplay();
+        });
+      });
+
+      for (const button of carousel.querySelectorAll('[data-carousel-prev]')) {
+        button.addEventListener('click', () => { select(current - 1); syncAutoplay(); });
+      }
+      for (const button of carousel.querySelectorAll('[data-carousel-next]')) {
+        button.addEventListener('click', () => { select(current + 1); syncAutoplay(); });
+      }
+
+      autoplayButton.addEventListener('click', () => {
+        manuallyPaused = !manuallyPaused;
+        syncAutoplay();
+      });
+      carousel.addEventListener('mouseenter', () => { hoverPaused = true; syncAutoplay(); });
+      carousel.addEventListener('mouseleave', () => { hoverPaused = false; syncAutoplay(); });
+      carousel.addEventListener('focusin', () => { focusPaused = true; syncAutoplay(); });
+      carousel.addEventListener('focusout', () => {
+        requestAnimationFrame(() => {
+          focusPaused = carousel.contains(document.activeElement);
+          syncAutoplay();
+        });
+      });
+      document.addEventListener('visibilitychange', syncAutoplay);
+      reducedMotion.addEventListener('change', syncAutoplay);
+
+      for (const shot of carousel.querySelectorAll('.feature-carousel__shot')) {
+        let touchStart = null;
+        shot.addEventListener('pointerdown', (event) => {
+          if (event.pointerType !== 'touch' || event.target.closest('button')) return;
+          touchStart = { x: event.clientX, y: event.clientY };
+        });
+        shot.addEventListener('pointerup', (event) => {
+          if (!touchStart || event.pointerType !== 'touch') return;
+          const deltaX = event.clientX - touchStart.x;
+          const deltaY = event.clientY - touchStart.y;
+          touchStart = null;
+          if (Math.abs(deltaX) < 48 || Math.abs(deltaX) < Math.abs(deltaY) * 1.2) return;
+          select(current + (deltaX < 0 ? 1 : -1));
+          syncAutoplay();
+        });
+        shot.addEventListener('pointercancel', () => { touchStart = null; });
+      }
+
+      select(0);
+      syncAutoplay();
     }
   </script>
 </body>

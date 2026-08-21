@@ -36,7 +36,7 @@
   --paper-3:  #f0eeea;   /* insets, keycaps */
   --ink:      #17181a;   /* headlines */
   --ink-soft: #55575c;   /* body */
-  --ink-faint:#8a8c92;   /* captions, metadata */
+  --ink-faint:#707278;   /* captions, metadata — was #8a8c92 (3.19:1, failed AA) */
 
   --hairline:        rgba(0, 0, 0, 0.09);
   --hairline-strong: rgba(0, 0, 0, 0.15);
@@ -58,6 +58,19 @@
   --select:      rgba(255, 102, 0, 0.22);
   --focus:       #b34700;
 
+  /* Surfaces that need to stay legible as the page theme changes. */
+  --page-wash: rgba(255, 102, 0, 0.055);
+  --control-bg: rgba(255, 255, 255, 0.68);
+  --control-bg-hover: rgba(255, 255, 255, 0.9);
+  --control-border: rgba(0, 0, 0, 0.1);
+  --control-border-hover: rgba(0, 0, 0, 0.16);
+  --control-shadow: rgba(0, 0, 0, 0.28);
+  --control-shadow-hover: rgba(0, 0, 0, 0.32);
+  --cta-bg: #17181a;
+  --cta-bg-hover: #2b2c2f;
+  --cta-ink: #ffffff;
+  --feature-wash: rgba(0, 0, 0, 0.035);
+
   /* ---- Type ---- */
   --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
   --font-body:    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -65,12 +78,13 @@
 
   /* Anchored to a 13px base; the display clamp hits its 42px max at ~941px. */
   --text-display: clamp(1.4375rem, 4.46vw, 2.625rem);  /* 23 → 42 */
-  --text-h3:      1rem;        /* 16 — card + claim headings, set in the body face */
+  --text-h3:      1rem;        /* 16 — card headings, set in the body face */
   --text-lg:      1rem;        /* 16 — lede, section intros */
-  --text-md:      0.875rem;    /* 14 — body copy: cards, claim, FAQ, closing */
+  --text-md:      0.875rem;    /* 14 — body copy: cards, FAQ, closing */
   --text-base:    0.8125rem;   /* 13 — body, closing CTA */
   --text-sm:      0.75rem;     /* 12 */
   --text-xs:      0.6875rem;   /* 11 */
+  --text-body-lg: 0.9375rem;   /* 15 — long-form reading: FAQ answers, summaries */
 
   /* ---- Space ----
    * Anchored to the 13px base and its 19.5px line box, ~1.5 between steps. */
@@ -95,4 +109,38 @@
   --dur-fast: 160ms;
   --dur-mid:  420ms;
   --dur-slow: 720ms;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper: #151618;
+  --paper-2: #1d1e21;
+  --paper-3: #27282c;
+  --ink: #f4f2ee;
+  --ink-soft: #b6b6ba;
+  --ink-faint: #85868c;
+
+  --hairline: rgba(255, 255, 255, 0.1);
+  --hairline-strong: rgba(255, 255, 255, 0.17);
+
+  --accent-strong: #ff7a26;
+  --accent-text: #ff995c;
+  --accent-soft: rgba(255, 102, 0, 0.15);
+  --accent-line: rgba(255, 122, 38, 0.5);
+  --accent-glow: rgba(255, 102, 0, 0.2);
+  --select: rgba(255, 102, 0, 0.28);
+  --focus: #ff995c;
+
+  --page-wash: rgba(255, 102, 0, 0.08);
+  --control-bg: rgba(255, 255, 255, 0.06);
+  --control-bg-hover: rgba(255, 255, 255, 0.1);
+  --control-border: rgba(255, 255, 255, 0.12);
+  --control-border-hover: rgba(255, 255, 255, 0.2);
+  --control-shadow: rgba(0, 0, 0, 0.5);
+  --control-shadow-hover: rgba(0, 0, 0, 0.58);
+  --cta-bg: #f4f2ee;
+  --cta-bg-hover: #ffffff;
+  --cta-ink: #17181a;
+  --feature-wash: rgba(255, 255, 255, 0.035);
 }
