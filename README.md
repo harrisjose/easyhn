@@ -24,9 +24,11 @@ tokens HN needs for voting and replying stay intact and nothing leaves your brow
 
 ## Install
 
-Download the latest build from the [**Releases**](https://github.com/harrisjose/easyhn/releases)
-page, then load it into your browser. Easy for Hacker News isn't on the Chrome Web Store or
-Firefox Add-ons yet, so it installs as an unpacked / temporary extension for now.
+Install from the [**Chrome Web Store**](https://chromewebstore.google.com/detail/easy-for-hacker-news/lchfcbigmcnnllgpiifdmpfpbbkfkjie).
+
+Not on Firefox Add-ons yet. To run it there — or to try an unreleased build on
+Chrome — load it by hand from the
+[**Releases**](https://github.com/harrisjose/easyhn/releases) page:
 
 - **Chrome:** download `easyhn-<version>-chrome.zip`, unzip it, then open
   `chrome://extensions`, enable **Developer mode**, click **Load unpacked**, and
@@ -130,31 +132,11 @@ npm run dev      # serve on http://localhost:4600
 
 ### The hero image
 
-`landing/public/mockup-easyhn.jpg` is a composite: a stock photo of a MacBook with a
-real easyhn screenshot perspective-mapped onto the screen.
+The hero is a drawn MacBook frame (`landing/public/macbook.svg`) with a real
+easyhn screenshot sitting in its screen — one per theme
+(`hero-product-light.png` / `hero-product-dark.png`), swapped as the page's
+theme changes.
 
-**`design/mockup.svg` is the source template — keep it.** It's a Figma export
-containing two embedded PNGs: the photo plate, and a pre-warped placeholder whose alpha
-channel defines the screen quad (including the notch cutout). That placeholder is what
-makes the perspective correct — the screen is a true 4-corner projection (top edge
-+17.6°, bottom +20.9°, right edge 7% longer than left), not a shear, so the corners have
-to be read from it rather than eyeballed.
-
-To regenerate the hero after a UI change:
-
-1. Extract the corners from the placeholder's alpha and map them into photo space.
-2. Capture the new screenshot at 16:10 — stitch two scrolled captures if one is too
-   short, recovering the offset by correlation and putting the seam on a flat row.
-3. Grade it like a photographed screen: lift blacks to the panel's own black level, cap
-   highlights well below 255, add grain matching the plate (sigma ~3.4) — without the
-   grain it reads as pasted.
-4. Warp at 2x and downsample with Lanczos. Warping straight to final size minifies
-   through point sampling and aliases the text.
-
-The plate's blank screen is a flat synthetic fill, so it carries no real reflections to
-reuse — the sheen and edge falloff have to be synthesised (light source is upper-left).
-
-`mockup.svg` lives in `design/` rather than under `landing/` so it can't ship the 6MB
-to production. Wrangler's assets directory is `landing/` itself, so anything sitting
-there is uploaded unless it's named in `landing/.assetsignore` — keeping build-time
-source art outside that tree means there's no ignore rule to forget.
+To retake it after a UI change: capture the front page at the frame's aspect
+ratio in both themes, export at 2x so text stays sharp when downscaled, and
+bump the `?v=` query on the `<img>` tags in `landing/index.html` to bust caches.

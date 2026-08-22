@@ -27,7 +27,7 @@ A view of a single Comment addressed as an Item in its own right. Hacker News sh
 _Avoid_: single comment page, deep link, focused view
 
 **Session**:
-The reader's logged-in state, as Hacker News reports it on the page it served. easyhn reads a Session but never establishes one — logging in is Hacker News's own form, and the password never passes through easyhn.
+The reader's logged-in state, as Hacker News reports it on the page it served. easyhn shows its own login form, but it submits straight to Hacker News — the password is never read or stored by easyhn.
 _Avoid_: auth, credentials, login, account
 
 **Vote link**:
@@ -77,5 +77,5 @@ The person using easyhn. Distinct from a Hacker News *user*, which is any accoun
 _Avoid_: current user, viewer, me
 
 **Settings**:
-The Reader's display preferences. They follow the Reader across their browsers and reach every open Hacker News tab at once.
+The Reader's display preferences. They are carried by the browser's own sync between the Reader's browser profiles and reach every open Hacker News tab at once.
 _Avoid_: config, options, preferences

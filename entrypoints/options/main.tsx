@@ -36,7 +36,7 @@ function Options() {
         </ul>
 
         <p className="ehn-kbd-hint" style={{ marginTop: 28 }}>
-          Settings sync across your browsers and apply live to every open Hacker News tab.
+          Settings sync between your browser profiles and apply live to every open Hacker News tab.
         </p>
       </div>
     </div>

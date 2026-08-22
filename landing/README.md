@@ -23,9 +23,8 @@ reproduce locally; otherwise let the push do it.
 ## What gets uploaded
 
 `wrangler.jsonc` sets the assets directory to this folder itself, so **every file
-here is served unless it's named in `.assetsignore`**. That's why build-time source
-art lives in `../design/` rather than here — nothing to forget to ignore. If you add
-a config file or a script alongside the page, add it to `.assetsignore` too.
+here is served unless it's named in `.assetsignore`**. If you add a config file
+or a script alongside the page, add it to `.assetsignore` too.
 
 Type is self-hosted in `public/fonts/` (latin subsets, ~83KB) rather than loaded
 from a CDN: the page's own pitch is that nothing leaves your browser, so it

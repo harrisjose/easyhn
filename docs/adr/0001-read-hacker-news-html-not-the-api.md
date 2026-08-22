@@ -11,5 +11,5 @@ easyhn parses the HTML Hacker News already served to the page rather than fetchi
 ## Consequences
 
 - **Hacker News's markup is a dependency.** A layout change on their side can break parsing, and there is no version or contract to rely on. This is the cost we accepted, and it is why HTML fixtures are captured from live Hacker News and checked by a parse test suite rather than hand-written.
-- **Writes reuse Hacker News's own endpoints and the Reader's existing cookies**, which is why voting and commenting work without easyhn ever handling a password.
+- **Writes reuse Hacker News's own endpoints and the Reader's existing cookies**, which is why voting and commenting work without easyhn ever reading or storing a password.
 - **Fixtures captured anonymously cannot cover logged-in parsing.** Vote state, Session details and Reply forms only appear in HTML served to a signed-in Reader, so those paths need a different way to get exercised.

@@ -52,9 +52,11 @@ jobs:
           cat > release-body.md <<EOF
           ## Install
 
-          Easyhn isn't on the Chrome Web Store or Firefox Add-ons yet, so it installs
-          by hand. Grab the zip for your browser below — \`-sources.zip\` is only there
-          for store review, you don't need it.
+          Chrome users: get it from the
+          [Chrome Web Store](https://chromewebstore.google.com/detail/easy-for-hacker-news/lchfcbigmcnnllgpiifdmpfpbbkfkjie).
+
+          Not on Firefox Add-ons yet — and to try an unreleased build on Chrome, load a zip
+          from below by hand. \`-sources.zip\` is only there for store review, you don't need it.
 
           ### Chrome, Edge, Brave, Arc
 
