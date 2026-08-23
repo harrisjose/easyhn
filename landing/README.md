@@ -1,4 +1,4 @@
-# easyhn landing page
+# Landing page
 
 The marketing site for [Easy for Hacker News](../README.md), served at
 [easyhn.harrisjose.com](https://easyhn.harrisjose.com). Plain HTML and CSS — no
@@ -30,5 +30,13 @@ Type is self-hosted in `public/fonts/` (latin subsets, ~83KB) rather than loaded
 from a CDN: the page's own pitch is that nothing leaves your browser, so it
 shouldn't call a third party to render its headline.
 
-See the root README for [the hero image](../README.md#the-hero-image) — it's a
-composite, and regenerating it after a UI change has its own recipe.
+## Hero image
+
+The hero is a drawn MacBook frame (`public/macbook.svg`) with a real Easy
+screenshot sitting in its screen — one per theme
+(`hero-product-light.png` / `hero-product-dark.png`), swapped as the page's
+theme changes.
+
+To retake it after a UI change: capture the front page at the frame's aspect
+ratio in both themes, export at 2x so text stays sharp when downscaled, and
+bump the `?v=` query on the `<img>` tags in `index.html` to bust caches.
