@@ -279,8 +279,8 @@ body {
 .ehn-list {
   padding-top: var(--sp-3);
 }
-/* Rows stay calm — no hover fill. Keyboard selection is the only row
-   highlight, marked with an accent spine on the left. */
+/* Rows stay calm — no hover fill. Keyboard selection is marked only by a
+   darker surface, without an accent outline competing with the content. */
 .ehn-story {
   display: flex;
   gap: var(--sp-3);
@@ -288,11 +288,10 @@ body {
   padding: calc(var(--sp-3) * var(--ehn-density)) var(--sp-3);
   border-radius: var(--r-md);
   align-items: baseline;
-  transition: background 0.14s ease, box-shadow 0.14s ease;
+  transition: background 0.14s ease;
 }
 .ehn-story.selected {
   background: var(--bg-sunken);
-  box-shadow: inset 2px 0 0 var(--ehn-accent);
 }
 .ehn-rank {
   color: var(--fg-faint);
